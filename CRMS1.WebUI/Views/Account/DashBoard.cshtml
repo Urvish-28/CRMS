@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "DashBoard";
+}
+
+<h1>Admin DashBoard</h1>
+
+<h5 class="col-lg-10" style="text-align:right"> <button>
+    @Html.ActionLink("LogOut", "LogOut", "Account")
+</button>
+</h5>
+
+<div class="col-md-6">
+    <h4>User Management</h4>
+    <div class="list-group">
+        @Html.ActionLink("Add User", "DashBoard", "Account", null, new { @class = "list-group-item" })
+        @Html.ActionLink("User Role", "DashBoard", "Account", null, new { @class = "list-group-item" })
+    </div>
+</div>
+
+<div class="col-md-6">
+    <h4>Room Management</h4>
+    <div class="list-group">
+        @Html.ActionLink("Add Room", "DashBoard", "Account", null, new { @class = "list-group-item" })
+    </div>
+</div>

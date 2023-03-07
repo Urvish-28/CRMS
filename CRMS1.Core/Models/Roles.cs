@@ -7,19 +7,15 @@ using System.Threading.Tasks;
 
 namespace CRMS1.Core.Models
 {
-    public class User : BaseEntity
+    public class Roles : BaseEntity
     {
         [Key]
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string Role { get; set; }
 
-        public User()
+        public Roles()
         {
             this.Id = Guid.NewGuid();
         }
     }
-
 }
