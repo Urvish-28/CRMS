@@ -51,7 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataContext.cs" />
+    <Compile Include="CRMSEntities.cs" />
     <Compile Include="Migrations\202303060556295_initial.cs" />
     <Compile Include="Migrations\202303060556295_initial.designer.cs">
       <DependentUpon>202303060556295_initial.cs</DependentUpon>
@@ -74,6 +74,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\Role\RoleRepository.cs" />
     <Compile Include="SQLRepository.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +104,7 @@
       <DependentUpon>202303070509087_initial4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

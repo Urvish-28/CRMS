@@ -15,6 +15,6 @@ namespace CRMS1.Core.Models
         [ForeignKey("UserId")]
         public User User { get; set; }
         [ForeignKey("RoleId")]
-        public Roles role { get; set; }
+        public Roles Role { get; set; }
     }
 }

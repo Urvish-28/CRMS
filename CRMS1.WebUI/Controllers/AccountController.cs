@@ -30,7 +30,7 @@ namespace CRMS1.WebUI.Controllers
         [HttpPost]
         public ActionResult Login(LoginViewModel model, string returnUrl)
         {
-            var ad = Repository1.LoginRepository().Where(x => x.Email == model.Email && x.Password == model.Password).Count();
+            var user = Repository1.LoginRepository().Where(x => x.Email == model.Email && x.Password == model.Password).Count();
 
             if (!ModelState.IsValid)
             {
@@ -38,7 +38,7 @@ namespace CRMS1.WebUI.Controllers
             }
             else
             {
-                if (ad > 0)
+                if (user > 0)
                 {
                     return RedirectToAction("DashBoard");
                 }
