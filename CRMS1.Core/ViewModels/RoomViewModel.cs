@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace CRMS1.Core.ViewModels
 {
-    public class RoleViewModel : BaseEntity
+    public class RoomViewModel : BaseEntity
     {
         [Required]
-        public string Name { get; set; }
+        public string RoomNo { get; set; }
         [Required]
-        public string Code { get; set; }
+        public string RoomName { get; set; }
     }
 }

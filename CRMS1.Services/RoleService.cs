@@ -12,23 +12,21 @@ namespace CRMS1.Services
 {
     public interface IRoleService
     {
-        IEnumerable<Roles> gelAllRoles();
-        Roles getRoleById(Guid id);
-        void createRole(Roles model);
-        void updateRole(Roles model);
-        void deleteRole(Guid id);        
+        IEnumerable<Roles> GetAllRoles();
+        Roles GetRoleById(Guid id);
+        void CreateRole(Roles model);
+        void UpdateRole(Roles model);
+        void DeleteRole(Guid id);        
     }
     public class RoleService : IRoleService 
     {
-        //SQLRepository<Roles> rolescontext;
         private readonly IRoleRepository _roleRepository;
         public RoleService(IRoleRepository roleRepository)
         {
             this._roleRepository = roleRepository;
-            //this.rolescontext = Rolescontext;
         }
 
-        public void createRole(Roles model)
+        public void CreateRole(Roles model)
         {
             //Roles obj = new Roles();
             //obj.Id = model.Id;
@@ -36,24 +34,24 @@ namespace CRMS1.Services
             _roleRepository.Insert(model);
             _roleRepository.Commit();
         }
-        public void updateRole(Roles model)
+        public void UpdateRole(Roles model)
         {
             _roleRepository.Update(model);
             _roleRepository.Commit();
         }
-        public void deleteRole(Guid id)
+        public void DeleteRole(Guid id)
         {
             Roles obj = _roleRepository.Find(id);
             obj.IsDelete = true;
             _roleRepository.Update(obj);
-            _roleRepository.Commit();
+            _roleRepository.Commit();   
         }
         
-        public IEnumerable<Roles> gelAllRoles()
+        public IEnumerable<Roles> GetAllRoles()
         {
             return _roleRepository.Collection().Where(x=>x.IsDelete == false);
         }
-        public Roles getRoleById(Guid id)
+        public Roles GetRoleById(Guid id)
         {
             return _roleRepository.Find(id);
         }        

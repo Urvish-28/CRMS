@@ -13,11 +13,7 @@ namespace CRMS1.Core.ViewModels
         public string Name { get; set; }
         [Required]
         [EmailAddress]
-        public string Email_Id { get; set; }
-        [Required]
-        [StringLength(10)]
-        [DataType(DataType.PhoneNumber)]
-        public string Contact { get; set; }
+        public string Email { get; set; }
         [Required]
         [DataType(DataType.Password)]
         [StringLength(20, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
@@ -39,7 +35,5 @@ namespace CRMS1.Core.ViewModels
         [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Display(Name ="Remember me?")]
-        public string RememberMe { get; set; }
     }
 }

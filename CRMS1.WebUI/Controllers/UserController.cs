@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CRMS1.Core.Models;
+using CRMS1.Core.ViewModels;
+using CRMS1.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +11,105 @@ namespace CRMS1.WebUI.Controllers
 {
     public class UserController : Controller
     {
+        private readonly IUserService _usersevice;
+        private readonly IRoleService _roleService;
+        private readonly IUserRoleService _userRoleService;
+
+        public UserController(IUserService usersevice, 
+            IRoleService roleService, 
+            IUserRoleService userRoleService)
+        {
+            _usersevice = usersevice;
+            _roleService = roleService;
+            _userRoleService = userRoleService;
+        }
+        public UserController()
+        {
+        }
         // GET: User
         public ActionResult Index()
         {
-            return View();
+            List<User> users = _usersevice.GetAllUsers().ToList();
+            var list = _usersevice.GetUserList();
+            return View(list);
+        }
+        public ActionResult Create()
+        {
+            UserViewModel user = new UserViewModel();
+            user.RoleDropdown = _roleService.GetAllRoles()
+                .Select(x => new DropDown() { Id = x.Id, Name = x.Name }).ToList();
+            return View(user);
+        }
+        [HttpPost]
+        public ActionResult Create(UserViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.RoleDropdown = _roleService.GetAllRoles()
+                .Select(x => new DropDown() { Id = x.Id, Name = x.Name }).ToList(); 
+                return View(model);
+            }
+            else
+            {
+                _usersevice.AddUser(model);
+                return RedirectToAction("Index");
+            }
+        }
+        public ActionResult Edit(Guid id)
+        {
+            UserViewModel model = new UserViewModel();
+            User obj = _usersevice.GetUserById(id);
+            model.RoleDropdown = _roleService.GetAllRoles().Select(x => new DropDown() { Id = x.Id, Name = x.Name }).ToList();
+            if (obj == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                model.Name = obj.Name;
+                model.Email = obj.Email;
+                model.Password = obj.Password;
+                model.RoleId = _userRoleService.getByUserId(id).RoleId;
+                return View(model);
+            }
+        }
+        [HttpPost]
+        public ActionResult Edit(UserViewModel model)
+        {
+            User userToEdit = _usersevice.GetUserById(model.Id);
+            model.RoleDropdown = _roleService.GetAllRoles().Select(x => new DropDown() { Id = x.Id, Name = x.Name }).ToList();
+
+            if (userToEdit == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+                else
+                {
+                    _usersevice.UpdateUser(model);
+                    return RedirectToAction("Index");
+                }
+            }
+        }
+        public ActionResult Delete(Guid id)
+        {
+            User userToDelete = _usersevice.GetUserById(id);
+
+            _usersevice.DeleteUser(id);
+            return RedirectToAction("Index");
+            /*   if(userToDelete == null)
+               {
+                   return HttpNotFound();
+               }
+               else
+               {
+                   return View(userToDelete);
+               }*/
         }
     }
 }

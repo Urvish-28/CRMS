@@ -9,12 +9,13 @@ namespace CRMS1.Core.Models
 {
     public class UserRoles : BaseEntity
     {
-        public int Id { get; set; }
         public Guid UserId { get; set; }
         public Guid RoleId { get; set; }
-        [ForeignKey("UserId")]
-        public User User { get; set; }
-        [ForeignKey("RoleId")]
-        public Roles Role { get; set; }
+
+        public UserRoles()
+        {
+            this.Id = Guid.NewGuid();
+            this.CreatedOn = DateTime.Now;
+        }
     }
 }

@@ -1,5 +1,7 @@
 using CRMS1.Services;
 using CRMS1.SQL.Repositories.Role;
+using CRMS1.SQL.Repositories.UserRole;
+using CRMS1.SQL.Repositories.Users;
 using System;
 
 using Unity;
@@ -45,7 +47,13 @@ namespace CRMS1.WebUI
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<IRoleRepository, RoleRepository>();
+            container.RegisterType<IUsersRepository, UsersRepository>();
+            container.RegisterType<IUserRoleRepository, UserRoleRepository>();
+
+
             container.RegisterType<IRoleService, RoleService>();
+            container.RegisterType<IUserService, UserService>();
+            container.RegisterType<IUserRoleService, UserRoleService>();
         }
     }
 }

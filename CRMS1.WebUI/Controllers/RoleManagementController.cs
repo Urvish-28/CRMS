@@ -25,8 +25,8 @@ namespace CRMS1.WebUI.Controllers
         // GET: RoleManagement
         public ActionResult Index()
         {
-            List<Roles> Roles = _roleService.gelAllRoles().ToList();
-            return View(Roles);
+            List<Roles> roles = _roleService.GetAllRoles().ToList();
+            return View(roles);
         }
 
         public ActionResult Create()
@@ -48,17 +48,17 @@ namespace CRMS1.WebUI.Controllers
                 //context.Commit();
                 Roles obj = new Roles();        // mapping of View model to data model
                 obj.Name = model.Name;
-                obj.CreatedBy = DateTime.Now.ToString();
+                obj.Code = model.Code;
+                obj.CreatedOn = DateTime.Now;
                 //obj.CreatedBy = SessionHelper.UserId;
-                _roleService.createRole(obj);
-
+                _roleService.CreateRole(obj);
                 return RedirectToAction("Index");
             }
         }
 
         public ActionResult Edit(Guid Id)
         {
-            Roles obj = _roleService.getRoleById(Id);
+            Roles obj = _roleService.GetRoleById(Id);
             if (obj == null)
             {
                 return HttpNotFound();
@@ -68,6 +68,7 @@ namespace CRMS1.WebUI.Controllers
                 RoleViewModel model = new RoleViewModel();
                 model.Id = obj.Id;
                 model.Name = obj.Name;
+                model.Code = obj.Code;
                 return View(model);
             }
         }
@@ -75,8 +76,7 @@ namespace CRMS1.WebUI.Controllers
         [HttpPost]
         public ActionResult Edit(RoleViewModel model)
         {
-            Roles roleToEdit = _roleService.getRoleById(model.Id);
-
+            Roles roleToEdit = _roleService.GetRoleById(model.Id);
             if (roleToEdit == null)
             {
                 return HttpNotFound();
@@ -87,47 +87,27 @@ namespace CRMS1.WebUI.Controllers
                 {
                     return View(model);
                 }
-
                 roleToEdit.Name = model.Name;
+                roleToEdit.Code = model.Code;
                 roleToEdit.UpdatedOn = DateTime.Now;
-                _roleService.updateRole(roleToEdit);
-                
+                _roleService.UpdateRole(roleToEdit);
                 return RedirectToAction("Index");
             }
         }
 
         public ActionResult Delete(Guid id)
         {
-            _roleService.deleteRole(id);
-
-            /*            if (rolesToDelete == null)
-                        {
-                            return HttpNotFound();
-                        }
-                        else
-                        {
-                            return View(rolesToDelete);
-                        }
-            */
+            Roles rolesToDelete = _roleService.GetRoleById(id);
+            _roleService.DeleteRole(id);
+            /*     if (rolesToDelete == null)
+                 {
+                     return HttpNotFound();
+                 }
+                 else
+                 {
+                     return View(rolesToDelete);
+                 }      */
             return RedirectToAction("Index");
-
-        }
-
-        [HttpPost]
-        [ActionName("Delete")]
-        public ActionResult ConfirmDelete(Guid Id)
-        {
-            Roles roleToDelete = _roleService.getRoleById(Id);
-
-            if (!ModelState.IsValid)
-            {
-                return HttpNotFound();
-            }
-            else
-            {
-                _roleService.deleteRole(Id);
-                return RedirectToAction("Index");
-            }
         }
     }
 }
