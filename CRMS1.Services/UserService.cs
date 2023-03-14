@@ -51,18 +51,22 @@ namespace CRMS1.Services
         public void UpdateUser(UserViewModel model)
         {
             User userToUpdate = GetUserById(model.Id);
-            userToUpdate.Name = model.Name;
-            userToUpdate.Email = model.Email;
-            userToUpdate.Password = model.Password;
-            userToUpdate.UpdatedOn = DateTime.Now;
-            
-            _usersRepository.Update(userToUpdate);
-            _usersRepository.Commit();
+            if(userToUpdate != null)
+            {
+                userToUpdate.Name = model.Name;
+                userToUpdate.Email = model.Email;
+                userToUpdate.Password = model.Password;
+                userToUpdate.UpdatedOn = DateTime.Now;
 
-            UserRoles userroles = new UserRoles();
-            userroles.UserId = _userRoleService.GetAllUserRoles().Where(b => b.UserId == model.Id).FirstOrDefault().UserId;
-            userroles.RoleId = model.RoleId;
-            _userRoleService.updateUserRole(userroles);
+                _usersRepository.Update(userToUpdate);
+                _usersRepository.Commit();
+
+                UserRoles userroles = new UserRoles();
+                userroles.UserId = _userRoleService.GetAllUserRoles().Where(b => b.UserId == model.Id).FirstOrDefault().UserId;
+                userroles.RoleId = model.RoleId;
+                _userRoleService.updateUserRole(userroles);
+            }
+           
         }
         public void DeleteUser(Guid id)
         {

@@ -15,8 +15,8 @@ namespace CRMS1.WebUI.Controllers
         private readonly IRoleService _roleService;
         private readonly IUserRoleService _userRoleService;
 
-        public UserController(IUserService usersevice, 
-            IRoleService roleService, 
+        public UserController(IUserService usersevice,
+            IRoleService roleService,
             IUserRoleService userRoleService)
         {
             _usersevice = usersevice;
@@ -46,7 +46,7 @@ namespace CRMS1.WebUI.Controllers
             if (!ModelState.IsValid)
             {
                 model.RoleDropdown = _roleService.GetAllRoles()
-                .Select(x => new DropDown() { Id = x.Id, Name = x.Name }).ToList(); 
+                .Select(x => new DropDown() { Id = x.Id, Name = x.Name }).ToList();
                 return View(model);
             }
             else
@@ -76,40 +76,22 @@ namespace CRMS1.WebUI.Controllers
         [HttpPost]
         public ActionResult Edit(UserViewModel model)
         {
-            User userToEdit = _usersevice.GetUserById(model.Id);
             model.RoleDropdown = _roleService.GetAllRoles().Select(x => new DropDown() { Id = x.Id, Name = x.Name }).ToList();
-
-            if (userToEdit == null)
+            if (!ModelState.IsValid)
             {
-                return HttpNotFound();
+                return View(model);
             }
             else
             {
-                if (!ModelState.IsValid)
-                {
-                    return View(model);
-                }
-                else
-                {
-                    _usersevice.UpdateUser(model);
-                    return RedirectToAction("Index");
-                }
+                _usersevice.UpdateUser(model);
+                return RedirectToAction("Index");
             }
         }
         public ActionResult Delete(Guid id)
         {
             User userToDelete = _usersevice.GetUserById(id);
-
             _usersevice.DeleteUser(id);
             return RedirectToAction("Index");
-            /*   if(userToDelete == null)
-               {
-                   return HttpNotFound();
-               }
-               else
-               {
-                   return View(userToDelete);
-               }*/
         }
     }
 }

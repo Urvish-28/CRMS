@@ -13,9 +13,11 @@ namespace CRMS1.SQL.Repositories.Room
         IQueryable<Rooms> Collection();
         void Commit();
         void Insert(Rooms rooms);
-
+        void Update(Rooms rooms);
+        Rooms Find(Guid Id);
+        void Delete(Guid Id);
     }
-    public class RoomRepository
+    public class RoomRepository : IRoomRepository
     {
         public CRMSEntities context;
         internal DbSet<Rooms> dbset;
