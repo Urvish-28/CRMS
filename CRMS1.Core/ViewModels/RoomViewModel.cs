@@ -11,8 +11,9 @@ namespace CRMS1.Core.ViewModels
     public class RoomViewModel : BaseEntity
     {
         [Required]
-        public string RoomNo { get; set; }
-        [Required]
+        [Display(Name ="Name")]
         public string RoomName { get; set; }
+        [Required]
+        public int Capacity { get; set; }
     }
 }

@@ -4,11 +4,44 @@
     ViewBag.Title = "Index";
 }
 
+<script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+<script>
+    function myFunction(data) {
+
+        var id = $(data).attr('id')
+        if (confirm("Are You Sure You Want To Delete?") == true) {
+            $.ajax({
+                url: '@Url.Action("Delete","RoleManagement")',
+                data: { 'id': id},
+                type: "post",
+                success: function (savingStatus) {
+                    location.reload();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+
+                }
+            });
+        } else {
+
+        }
+    }
+</script>
+
+<br />
 <h2>Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+@if (@TempData["AlertMsg"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success !</strong> @TempData["AlertMsg"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
 <table class="table">
     <tr>
         <th>
@@ -20,19 +53,21 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.Name)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Code)
-    </td>
-    <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-    </td>
-</tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "RoleManagement", new { id = item.Id }, new { @class = "btn btn-warning" }) |
+                <button id="@item.Id" class="btn btn-danger" onClick="myFunction(this)">Delete</button>
+                @*   @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+            </td>
+        </tr>
+    }
 
 </table>

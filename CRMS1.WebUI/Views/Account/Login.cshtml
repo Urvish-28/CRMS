@@ -2,47 +2,68 @@
 
 @{
     ViewBag.Title = "Login";
+    Layout = null;
 }
 
-<h2>Login</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="generator" content="" />
+    <link rel="icon" href="images/favicon.ico" />
+    <!-- Custom styles for this template -->
+    <!-- Bootstrap core CSS -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-            </div>
-        </div>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+        <section class="login-section">
+            <div class="login-from">
+                <div class="login-logo mb-4 text-center">
+                    <a href=""><img src="~/Content/Images/crms.png" width="200"></a>
+                </div>
+                <h1 class="h4 mb-3">Sign In</h1>
+                <form method="post">
+                    <div class="form-group">
+                        <label class="label-title">Email Id</label>
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <label class="label-title">Password</label>
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                    <div class="form-group text-right">
+                        <a class="forgotPassword" href="@Url.Action("", "")">Forgot Password?</a>
+                    </div>
+                    @*                    <div class="form-group">
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.RememberMe, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.RememberMe, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.CheckBoxFor(model => model.RememberMe)
+                @Html.LabelFor(model => model.RememberMe, htmlAttributes: new { @class = "control-label col-md-4" })
                 @Html.ValidationMessageFor(model => model.RememberMe, "", new { @class = "text-danger" })
             </div>
         </div>*@
+                    <div class="mt-4">
+                        <button class="w-100 btn btn-lg btn-primary" id="btnlogin" type="submit">Sign In</button>
+                    </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Login" class="btn btn-success" />
+                </form>
             </div>
-        </div>
-    </div>
-}
+        </section>
+    }
+
+    <script src="Content/bootstrap.bundle.min.js"></script>
+</body>
+</html>
 
 

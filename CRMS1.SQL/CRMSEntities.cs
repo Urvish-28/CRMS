@@ -18,6 +18,6 @@ namespace CRMS1.SQL
         public DbSet<User> Users { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<UserRoles> UserRole { get; set; }
-        public DbSet<Rooms> Rooms { get; set; }
+        public DbSet<ConferenceRoom> ConferenceRoom { get; set; }
     }
 }

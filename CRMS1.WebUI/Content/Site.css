@@ -1,5 +1,5 @@
 ﻿body {
-    padding-top: 50px;
+  
     padding-bottom: 20px;
 }
 
@@ -21,4 +21,45 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+/*Login*/
+/*Login*/
+.login-section {
+    background-color:aliceblue;
+    min-height: 100vh;
+    padding: 30px;
+}
+
+.login-from {
+    margin: 50px auto;
+    max-width: 450px;
+    width: 100%;
+    padding: 30px;
+    background: #fff;
+    box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    border-radius: 10px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.label-title {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.forgotPassword {
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.text-right {
+    text-align: right;
+    margin-top: 0px;
+}
+
+.btn-primary btn-md {
+    width: 145px;
 }

@@ -16,8 +16,8 @@ namespace CRMS1.WebUI.Controllers
         private readonly IUserRoleService _userRoleService;
 
         public UserController(IUserService usersevice,
-            IRoleService roleService,
-            IUserRoleService userRoleService)
+                              IRoleService roleService,
+                              IUserRoleService userRoleService)
         {
             _usersevice = usersevice;
             _roleService = roleService;
@@ -29,7 +29,7 @@ namespace CRMS1.WebUI.Controllers
         // GET: User
         public ActionResult Index()
         {
-            List<User> users = _usersevice.GetAllUsers().ToList();
+          //  List<User> users = _usersevice.GetAllUsers().ToList();
             var list = _usersevice.GetUserList();
             return View(list);
         }
@@ -52,6 +52,7 @@ namespace CRMS1.WebUI.Controllers
             else
             {
                 _usersevice.AddUser(model);
+                TempData["AlertMsg"] = "Employee added successfully...!";
                 return RedirectToAction("Index");
             }
         }
@@ -84,6 +85,7 @@ namespace CRMS1.WebUI.Controllers
             else
             {
                 _usersevice.UpdateUser(model);
+                TempData["AlertMsg"] = "Employee Details Edited successfully...!";
                 return RedirectToAction("Index");
             }
         }
@@ -91,6 +93,7 @@ namespace CRMS1.WebUI.Controllers
         {
             User userToDelete = _usersevice.GetUserById(id);
             _usersevice.DeleteUser(id);
+            TempData["DltMsg"] = "Employee Deleted successfully...!";
             return RedirectToAction("Index");
         }
     }

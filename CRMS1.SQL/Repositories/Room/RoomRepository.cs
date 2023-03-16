@@ -10,25 +10,25 @@ namespace CRMS1.SQL.Repositories.Room
 {
     public interface IRoomRepository
     {
-        IQueryable<Rooms> Collection();
+        IQueryable<ConferenceRoom> Collection();
         void Commit();
-        void Insert(Rooms rooms);
-        void Update(Rooms rooms);
-        Rooms Find(Guid Id);
+        void Insert(ConferenceRoom rooms);
+        void Update(ConferenceRoom rooms);
+        ConferenceRoom Find(Guid Id);
         void Delete(Guid Id);
     }
     public class RoomRepository : IRoomRepository
     {
         public CRMSEntities context;
-        internal DbSet<Rooms> dbset;
+        internal DbSet<ConferenceRoom> dbset;
 
         public RoomRepository(CRMSEntities Context)
         {
             this.context = Context;
-            this.dbset = context.Set<Rooms>();
+            this.dbset = context.Set<ConferenceRoom>();
         }
 
-        public IQueryable<Rooms> Collection()
+        public IQueryable<ConferenceRoom> Collection()
         {
             return dbset;
         }
@@ -38,18 +38,18 @@ namespace CRMS1.SQL.Repositories.Room
             context.SaveChanges();
         }
 
-        public void Insert(Rooms rooms)
+        public void Insert(ConferenceRoom rooms)
         {
             dbset.Add(rooms);
         }
 
-        public void Update(Rooms rooms)
+        public void Update(ConferenceRoom rooms)
         {
             dbset.Attach(rooms);
             context.Entry(rooms).State = EntityState.Modified;
         }
 
-        public Rooms Find(Guid Id)
+        public ConferenceRoom Find(Guid Id)
         {
             return dbset.Find(Id);
         }

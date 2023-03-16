@@ -52,6 +52,7 @@ namespace CRMS1.WebUI.Controllers
                 obj.CreatedOn = DateTime.Now;
                 //obj.CreatedBy = SessionHelper.UserId;
                 _roleService.CreateRole(obj);
+                TempData["AlertMsg"] = "Role added successfully...!";
                 return RedirectToAction("Index");
             }
         }
@@ -91,6 +92,7 @@ namespace CRMS1.WebUI.Controllers
                 roleToEdit.Code = model.Code;
                 roleToEdit.UpdatedOn = DateTime.Now;
                 _roleService.UpdateRole(roleToEdit);
+                TempData["AlertMsg"] = "Role Edited successfully...!";
                 return RedirectToAction("Index");
             }
         }

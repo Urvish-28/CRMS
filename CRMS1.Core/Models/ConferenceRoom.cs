@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace CRMS1.Core.Models
 {
-    public class Rooms : BaseEntity
+    public class ConferenceRoom : BaseEntity
     {
-        public string RoomName { get; set; }
-        public string RoomNo { get; set; }
+        public string Name { get; set; }
+        public int Capacity { get; set; }
 
-        public Rooms()
+        public ConferenceRoom()
         {
             this.Id = Guid.NewGuid();
             this.CreatedOn = DateTime.Now;

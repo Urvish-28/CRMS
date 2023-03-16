@@ -5,22 +5,22 @@
 
 <h1>Admin DashBoard</h1>
 
-<h5 class="col-lg-10" style="text-align:right"> <button>
+@*<h5 class="col-lg-10" style="text-align:right"> <button>
     @Html.ActionLink("LogOut", "LogOut", "Account")
 </button>
-</h5>
+</h5>*@
 
 <div class="col-md-6">
     <h4>User Management</h4>
     <div class="list-group">
         @Html.ActionLink("Add Employee", "Index", "User", null, new { @class = "list-group-item" })
-        @Html.ActionLink("User Role", "Index", "RoleManagement", null, new { @class = "list-group-item" })
+        @Html.ActionLink("Add Role", "Index", "RoleManagement", null, new { @class = "list-group-item" })
     </div>
 </div>
 
 <div class="col-md-6">
     <h4>Room Management</h4>
     <div class="list-group">
-        @Html.ActionLink("Add Room", "Index", "Room", null, new { @class = "list-group-item" })
+        @Html.ActionLink("Add Conference Room", "Index", "Room", null, new { @class = "list-group-item" })
     </div>
 </div>

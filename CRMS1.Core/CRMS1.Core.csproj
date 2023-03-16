@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="Models\BaseEntity.cs" />
     <Compile Include="Models\Roles.cs" />
-    <Compile Include="Models\Rooms.cs" />
+    <Compile Include="Models\ConferenceRoom.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserRoles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

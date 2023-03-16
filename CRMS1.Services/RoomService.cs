@@ -14,8 +14,8 @@ namespace CRMS1.Services
         void CreateRoom(RoomViewModel model);
         void UpdateRoom(RoomViewModel model);
         void DeleteRoom(Guid id);
-        IEnumerable<Rooms> GetAllRoom();
-        Rooms GetRoomById(Guid id);
+        IEnumerable<ConferenceRoom> GetAllRoom();
+        ConferenceRoom GetRoomById(Guid id);
     }
     public class RoomService : IRoomService
     {
@@ -27,32 +27,32 @@ namespace CRMS1.Services
 
         public void CreateRoom(RoomViewModel model)
         {
-            Rooms obj = new Rooms();
-            obj.RoomName = model.RoomName;
-            obj.RoomNo = model.RoomNo;
+            ConferenceRoom obj = new ConferenceRoom();
+            obj.Capacity = model.Capacity;
+            obj.Name = model.RoomName;
             _roomRepository.Insert(obj);
             _roomRepository.Commit();
         }
         public void UpdateRoom(RoomViewModel model)
         {
-            Rooms obj = GetRoomById(model.Id);
-            obj.RoomName = model.RoomName;
-            obj.RoomNo = model.RoomNo;
+            ConferenceRoom obj = GetRoomById(model.Id);
+            obj.Capacity = model.Capacity;
+            obj.Name = model.RoomName;
             _roomRepository.Update(obj);
             _roomRepository.Commit();
         }
         public void DeleteRoom(Guid id)
         {
-            Rooms obj = _roomRepository.Find(id);
+            ConferenceRoom obj = _roomRepository.Find(id);
             obj.IsDelete = true;
             _roomRepository.Update(obj);
             _roomRepository.Commit();
         }
-        public IEnumerable<Rooms> GetAllRoom()
+        public IEnumerable<ConferenceRoom> GetAllRoom()
         {
             return _roomRepository.Collection().Where(x => x.IsDelete == false);
         }
-        public Rooms GetRoomById(Guid id)
+        public ConferenceRoom GetRoomById(Guid id)
         {
             return _roomRepository.Find(id);
         }

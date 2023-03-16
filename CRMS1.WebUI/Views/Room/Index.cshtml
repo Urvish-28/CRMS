@@ -1,11 +1,43 @@
-﻿@model IEnumerable<CRMS1.Core.Models.Rooms>
+﻿@model IEnumerable<CRMS1.Core.Models.ConferenceRoom>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+<script>
+    function myFunction(data) {
 
+        var id = $(data).attr('id')
+        if (confirm("Are You Sure You Want To Delete?") == true) {
+            $.ajax({
+                url: '@Url.Action("Delete","Room")',
+                data: { 'id': id},
+                type: "post",
+                success: function (savingStatus) {
+                    location.reload();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+
+                }
+            });
+        } else {
+
+        }
+    }
+</script>
+
+<br />
+<h2>Index</h2>
+@if (@TempData["AlertMsg"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success !</strong> @TempData["AlertMsg"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -15,24 +47,26 @@
             @Html.DisplayNameFor(model => model.RoomName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RoomNo)
+            @Html.DisplayNameFor(model => model.Capacity)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.RoomName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RoomNo)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Capacity)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "Room", new { id = item.Id }, new { @class = "btn btn-warning" }) |
+                <button id="@item.Id" class="btn btn-danger" onClick="myFunction(this)">Delete</button>
+                @*   @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+            </td>
+        </tr>
+    }
 
 </table>

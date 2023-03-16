@@ -44,7 +44,8 @@ namespace CRMS1.WebUI.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Error");
+                    ModelState.AddModelError("", "Email or Password is invalid");
+                    return View("Login");
                 }
             }
         }

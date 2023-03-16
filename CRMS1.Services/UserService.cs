@@ -26,7 +26,7 @@ namespace CRMS1.Services
         private readonly IRoleService _roleService;
         public UserService(IUsersRepository usersRepository , IUserRoleService userRoleService, IRoleService roleService)
         {
-           _usersRepository = usersRepository;
+            _usersRepository = usersRepository;
             _userRoleService = userRoleService;
             _roleService = roleService;
         }

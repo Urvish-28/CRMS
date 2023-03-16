@@ -19,7 +19,7 @@ namespace CRMS1.WebUI.Controllers
         // GET: Room
         public ActionResult Index()
         {
-            List<Rooms> room = _roomservice.GetAllRoom().ToList();
+            List<ConferenceRoom> room = _roomservice.GetAllRoom().ToList();
             return View(room);
         }
         public ActionResult Create()
@@ -37,12 +37,13 @@ namespace CRMS1.WebUI.Controllers
             else
             {
                 _roomservice.CreateRoom(model);
+                TempData["AlertMsg"] = "Conference Room added successfully...!";
                 return RedirectToAction("Index");
             }
         }
         public ActionResult Edit(Guid id)
         {
-            Rooms obj = _roomservice.GetRoomById(id);
+            ConferenceRoom obj = _roomservice.GetRoomById(id);
             if(obj == null)
             {
                 return HttpNotFound();
@@ -50,8 +51,8 @@ namespace CRMS1.WebUI.Controllers
             else
             {
                 RoomViewModel model = new RoomViewModel();
-                model.RoomName = obj.RoomName;
-                model.RoomNo = obj.RoomNo;
+                model.Capacity = obj.Capacity;
+                model.RoomName = obj.Name;
                 return View(model);
             }
         }
@@ -65,12 +66,13 @@ namespace CRMS1.WebUI.Controllers
             else
             {
                 _roomservice.UpdateRoom(model);
+                TempData["AlertMsg"] = "Conference Room Edited successfully...!";
                 return RedirectToAction("Index");
             }
         }
         public ActionResult Delete(Guid id)
         {
-            Rooms userToDelete = _roomservice.GetRoomById(id);
+            ConferenceRoom userToDelete = _roomservice.GetRoomById(id);
             _roomservice.DeleteRoom(id);
             return RedirectToAction("Index");
         }
