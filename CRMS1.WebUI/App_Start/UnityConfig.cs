@@ -1,6 +1,9 @@
+using CRMS1.Core.Models;
+using CRMS1.Core.ViewModels;
 using CRMS1.Services;
 using CRMS1.SQL.Repositories.Role;
 using CRMS1.SQL.Repositories.Room;
+using CRMS1.SQL.Repositories.SqlRepository;
 using CRMS1.SQL.Repositories.UserRole;
 using CRMS1.SQL.Repositories.Users;
 using System;
@@ -51,12 +54,15 @@ namespace CRMS1.WebUI
             container.RegisterType<IUsersRepository, UsersRepository>();
             container.RegisterType<IUserRoleRepository, UserRoleRepository>();
             container.RegisterType<IRoomRepository, RoomRepository>();
+            container.RegisterType<IRepository<CommonLookups>, SqlRepository<CommonLookups>>();
+
 
 
             container.RegisterType<IRoleService, RoleService>();
             container.RegisterType<IUserService, UserService>();
             container.RegisterType<IUserRoleService, UserRoleService>();
             container.RegisterType<IRoomService, RoomService>();
+            container.RegisterType<ICommonLookupService, CommonLookupService>();
         }
     }
 }

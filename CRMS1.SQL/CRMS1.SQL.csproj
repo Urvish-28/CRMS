@@ -43,6 +43,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -72,11 +73,16 @@
     <Compile Include="Migrations\202303160825456_roomtableupdated.designer.cs">
       <DependentUpon>202303160825456_roomtableupdated.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202303161309212_AddCommonLookup.cs" />
+    <Compile Include="Migrations\202303161309212_AddCommonLookup.designer.cs">
+      <DependentUpon>202303161309212_AddCommonLookup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Login\LoginRepository.cs" />
     <Compile Include="Repositories\Role\RoleRepository.cs" />
     <Compile Include="Repositories\Room\RoomRepository.cs" />
+    <Compile Include="Repositories\SqlRepository\SqlRepository.cs" />
     <Compile Include="Repositories\UserRole\UserRoleRepository.cs" />
     <Compile Include="Repositories\User\UsersRepository.cs" />
   </ItemGroup>
@@ -105,6 +111,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202303160825456_roomtableupdated.resx">
       <DependentUpon>202303160825456_roomtableupdated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202303161309212_AddCommonLookup.resx">
+      <DependentUpon>202303161309212_AddCommonLookup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

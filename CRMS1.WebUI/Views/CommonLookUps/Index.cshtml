@@ -1,0 +1,129 @@
+﻿@model IEnumerable<CRMS1.Core.Models.CommonLookups>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>CommonLookUp</h2>
+
+<p>
+    <button type="button" class="btn btn-sm btn-primary" onclick="createcommonlookup()">
+        Create
+    </button>
+</p>
+
+@if (@TempData["Alert"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Wrong !</strong> @TempData["Alert"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<table class="table table-bordered" id="tableId">
+    <tr class="btn-dark">
+        <th>
+            @Html.DisplayNameFor(model => model.ConfigName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ConfigKey)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ConfigValue)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DisplayOrder)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ConfigName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ConfigKey)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ConfigValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DisplayOrder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                <button id="@item.Id" type="button" class="btn btn-sm btn-warning" onclick="editcommonlookup(this)">Edit</button>
+                @*  @Html.ActionLink("Edit", "Edit", "CommonLookUps", new { id = item.Id }, new { @class = "btn btn-warning" }) *@|
+                <button id="@item.Id" class="btn btn-danger" onClick="myFunction(this)">Delete</button>
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+<div class="modal" id="addmodal" data-url='@Url.Action("Create","CommonLookUps")'>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+<script>
+    function myFunction(data) {
+
+            var id = $(data).attr('id')
+        if (confirm("Are You Sure You Want To Delete?") == true) {
+            $.ajax({
+                url: '@Url.Action("Delete","CommonLookUps")',
+                data: { 'id': id},
+                type: "post",
+                success: function (savingStatus) {
+                    location.reload();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+
+                }
+            });
+        } else {
+
+        }
+    }
+
+    function createcommonlookup() {
+        $.ajax({
+            url: '@Url.Action("Create","CommonLookUps")',
+            type: "Get",
+            success: function (data) {
+                $("#tableId").html(data);
+                $("#addmodal").modal('show');
+            }
+        });
+    }
+
+    function editcommonlookup(data) {
+
+        var id = $(data).attr('id')
+        $.ajax({
+            url: '@Url.Action("Edit","CommonLookUps")',
+            type: "Get",
+            data: { 'id': id },
+            success: function (data) {
+                $("#tableId").html(data);
+                $("#editmodal").modal('show');
+            }
+        });
+    }
+</script>

@@ -19,5 +19,6 @@ namespace CRMS1.SQL
         public DbSet<Roles> Roles { get; set; }
         public DbSet<UserRoles> UserRole { get; set; }
         public DbSet<ConferenceRoom> ConferenceRoom { get; set; }
+        public DbSet<CommonLookups> CommonLookups { get; set; }
     }
 }

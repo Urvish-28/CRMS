@@ -148,6 +148,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CommonLookUpsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RoleManagementController.cs" />
     <Compile Include="Controllers\RoomController.cs" />
@@ -205,6 +206,9 @@
     <Content Include="Views\Room\Index.cshtml" />
     <Content Include="Views\Room\Create.cshtml" />
     <Content Include="Views\Room\Edit.cshtml" />
+    <Content Include="Views\CommonLookUps\Index.cshtml" />
+    <Content Include="Views\CommonLookUps\_CreatePartial.cshtml" />
+    <Content Include="Views\CommonLookUps\_EditPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

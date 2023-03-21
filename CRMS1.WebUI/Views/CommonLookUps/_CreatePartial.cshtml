@@ -1,0 +1,108 @@
+﻿@model CRMS1.Core.ViewModels.CommonLookupsViewModel
+
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<div class="modal fade" id="addmodal" tabindex="-1" role="dialog" aria-labelledby="commonLookupLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content w-500">
+            <div class="modal-header">
+                <h3 class="modal-title" id="commonLookupLabel">Create CommonLookup</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form name="Createform">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.ConfigName, htmlAttributes: new { @class = "control-label col-md-2" })
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.ConfigName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ConfigName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.ConfigKey, htmlAttributes: new { @class = "control-label col-md-2" })
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.ConfigKey, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ConfigKey, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.ConfigValue, htmlAttributes: new { @class = "control-label col-md-2" })
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.ConfigValue, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ConfigValue, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.DisplayOrder, htmlAttributes: new { @class = "control-label col-md-2" })
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.DisplayOrder, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.DisplayOrder, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                            </div>
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+                            </div>
+                            <div class="col-md-9">
+                                @Html.CheckBoxFor(Model => Model.IsActive, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="@Url.Action("Index" , "CommonLookUps")" class="btn btn-danger">Close</a>
+                <button type="button" class="btn btn-primary" onclick="createpost()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+<script>
+
+    function createpost() {
+        var modal = $('#addmodal');
+        var form = $('form[name="Createform"]');
+
+        var data = form.serialize();
+        $.post("/CommonLookUps/Create", data, function (res) {
+                if (res) {
+                    location.reload();
+                }
+            })
+    }
+</script>

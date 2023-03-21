@@ -7,11 +7,11 @@
 <script>
     function myFunction(data) {
 
-        var id = $(data).attr('id')
+             var id = $(data).attr('id')
         if (confirm("Are You Sure You Want To Delete?") == true) {
             $.ajax({
                 url: '@Url.Action("Delete","User")',
-                data: { 'id': id },
+                data: { 'id': id},
                 type: "post",
                 success: function (savingStatus) {
                     location.reload();
@@ -20,6 +20,7 @@
 
                 }
             });
+
         } else {
 
         }
@@ -30,16 +31,16 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", "User", new { @class = "btn btn-primary" })
 </p>
 @if (@TempData["AlertMsg"] != null)
 {
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>Success !</strong> @TempData["AlertMsg"]
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success !</strong> @TempData["AlertMsg"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 }
 <table class="table">
     <tr>

@@ -39,12 +39,12 @@
     </div>
 }
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", "Room" , new { @class = "btn btn-primary" })
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.RoomName)
+            @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Capacity)
@@ -56,7 +56,7 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.RoomName)
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Capacity)
