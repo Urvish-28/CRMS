@@ -3,26 +3,25 @@
 @{
     ViewBag.Title = "Index";
 }
-
 <h2>CommonLookUp</h2>
 
-<p>
+<div>
     <button type="button" class="btn btn-sm btn-primary" onclick="createcommonlookup()">
         Create
     </button>
-</p>
-
+</div>
 @if (@TempData["Alert"] != null)
 {
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Wrong !</strong> @TempData["Alert"]
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success !</strong> @TempData["Alert"]
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
 }
+<br />
 
-<table class="table table-bordered" id="tableId">
+<table class="table table-bordered">
     <tr class="btn-dark">
         <th>
             @Html.DisplayNameFor(model => model.ConfigName)
@@ -68,7 +67,6 @@
             </td>
             <td>
                 <button id="@item.Id" type="button" class="btn btn-sm btn-warning" onclick="editcommonlookup(this)">Edit</button>
-                @*  @Html.ActionLink("Edit", "Edit", "CommonLookUps", new { id = item.Id }, new { @class = "btn btn-warning" }) *@|
                 <button id="@item.Id" class="btn btn-danger" onClick="myFunction(this)">Delete</button>
             </td>
         </tr>
@@ -76,29 +74,28 @@
 
 </table>
 
-
-<div class="modal" id="addmodal" data-url='@Url.Action("Create","CommonLookUps")'>
+<div id="createPopupModalForm">
+    <div class="modal" id="addmodal"></div>
+    <div class="modal" id="editmodal"></div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+
 <script>
     function myFunction(data) {
 
-            var id = $(data).attr('id')
+             var id = $(data).attr('id')
         if (confirm("Are You Sure You Want To Delete?") == true) {
             $.ajax({
-                url: '@Url.Action("Delete","CommonLookUps")',
+                url: '@Url.Action("Delete", "CommonLookUps")',
                 data: { 'id': id},
                 type: "post",
                 success: function (savingStatus) {
                     location.reload();
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-
                 }
             });
         } else {
-
         }
     }
 
@@ -107,7 +104,7 @@
             url: '@Url.Action("Create","CommonLookUps")',
             type: "Get",
             success: function (data) {
-                $("#tableId").html(data);
+                $("#createPopupModalForm").html(data);
                 $("#addmodal").modal('show');
             }
         });
@@ -121,7 +118,7 @@
             type: "Get",
             data: { 'id': id },
             success: function (data) {
-                $("#tableId").html(data);
+                $("#createPopupModalForm").html(data);
                 $("#editmodal").modal('show');
             }
         });

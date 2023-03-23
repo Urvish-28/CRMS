@@ -20,21 +20,21 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="@Url.Action("DashBoard","Account")">Home <span class="sr-only">(current)</span></a>
                 </li>
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Action("Index","CommonLookUps")">CommonLookup</a>
-            </li>
- @*           <li class="nav-item">
-                <a class="nav-link" href="@Url.Action("Index","RoleManagement")">Role</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Action("Index","Room")">Conference Room</a>
-            </li>*@ 
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Index","CommonLookUps")">CommonLookup</a>
+                </li>
+                @*  <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index","RoleManagement")">Role</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index","Room")">Conference Room</a>
+                    </li>*@
             </ul>
             <div>
                 <ul>
                     <li class="navbar-right">
-                        @Html.ActionLink("Logout", "LogOut", "Account", new { @class = "btn btn-danger" })
-@*                        <a class="nav-link" href="@Url.Action("Login","Account")">LogOut</a>*@
+                        <a href="@Url.Action("Login","Account")" class="btn btn-danger">Logout</a>
+                        @*  <a class="nav-link" href="@Url.Action("Login","Account")">LogOut</a>*@
                     </li>
                 </ul>
             </div>
@@ -51,6 +51,8 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script src='@Url.Content("~/Scripts/jquery.validate.js")' type='text/javascript'></script>
+    <script src='@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")' type='text/javascript'></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

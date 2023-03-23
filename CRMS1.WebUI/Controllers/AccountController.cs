@@ -50,7 +50,6 @@ namespace CRMS1.WebUI.Controllers
             }
         }
 
-
         public ActionResult DashBoard()
         {
             return View();

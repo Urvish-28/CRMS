@@ -18,6 +18,8 @@ namespace CRMS1.Services
         IEnumerable<User> GetAllUsers();
         User GetUserById(Guid id);
         IEnumerable<IndexViewModel> GetUserList();
+        User BindUserModel(UserViewModel model);
+        UserViewModel BindUserModel(User model);
     }
     public class UserService : IUserService
     {
@@ -33,12 +35,7 @@ namespace CRMS1.Services
         public void AddUser(UserViewModel model)
         {
             User obj = new User();
-            
-            obj.Name = model.Name;
-            obj.Email = model.Email;
-            obj.Password = model.Password;
-            obj.CreatedOn = DateTime.Now;
-            
+            obj = BindUserModel(model);
             _usersRepository.Insert(obj);
             _usersRepository.Commit();
 
@@ -53,11 +50,7 @@ namespace CRMS1.Services
             User userToUpdate = GetUserById(model.Id);
             if(userToUpdate != null)
             {
-                userToUpdate.Name = model.Name;
-                userToUpdate.Email = model.Email;
-                userToUpdate.Password = model.Password;
-                userToUpdate.UpdatedOn = DateTime.Now;
-
+                userToUpdate = BindUserModel(model);
                 _usersRepository.Update(userToUpdate);
                 _usersRepository.Commit();
 
@@ -105,6 +98,35 @@ namespace CRMS1.Services
                                Role = r.Name
                            };
             return userlist;
+        }
+
+        public User BindUserModel(UserViewModel model)
+        {
+            User obj = GetUserById(model.Id);
+            if(obj == null)
+            {
+                obj = new User();
+                obj.CreatedOn = DateTime.Now;
+            }
+            else
+            {
+                obj.UpdatedOn = DateTime.Now;
+            }
+            obj.Name = model.Name;
+            obj.Email = model.Email;
+            obj.Password = model.Password;
+            return obj;
+        }
+
+        public UserViewModel BindUserModel(User model)
+        {
+            UserViewModel obj = new UserViewModel();
+            obj.Name = model.Name;
+            obj.Email = model.Email;
+            obj.Password = model.Password;
+            obj.CreatedOn = DateTime.Now;
+            obj.UpdatedOn = DateTime.Now;
+            return obj;
         }
     }
 }

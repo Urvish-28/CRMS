@@ -16,6 +16,8 @@ namespace CRMS1.Services
         void DeleteRoom(Guid id);
         IEnumerable<ConferenceRoom> GetAllRoom();
         ConferenceRoom GetRoomById(Guid id);
+        ConferenceRoom BindConferenceRoomModel(RoomViewModel model);
+        RoomViewModel BindConferenceRoomModel(ConferenceRoom model);
     }
     public class RoomService : IRoomService
     {
@@ -55,6 +57,24 @@ namespace CRMS1.Services
         public ConferenceRoom GetRoomById(Guid id)
         {
             return _roomRepository.Find(id);
+        }
+        public ConferenceRoom BindConferenceRoomModel(RoomViewModel model)
+        {
+            ConferenceRoom obj = GetRoomById(model.Id);
+            if(obj == null)
+            {
+                obj = new ConferenceRoom();
+            }
+            obj.Capacity = model.Capacity;
+            obj.Name = model.RoomName;
+            return obj;
+        }
+        public RoomViewModel BindConferenceRoomModel(ConferenceRoom model)
+        {
+            RoomViewModel obj = new RoomViewModel();
+            obj.Capacity = model.Capacity;
+            obj.RoomName = model.Name;
+            return obj;
         }
     }
 }

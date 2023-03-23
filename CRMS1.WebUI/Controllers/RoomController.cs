@@ -51,8 +51,7 @@ namespace CRMS1.WebUI.Controllers
             else
             {
                 RoomViewModel model = new RoomViewModel();
-                model.Capacity = obj.Capacity;
-                model.RoomName = obj.Name;
+                model = _roomservice.BindConferenceRoomModel(obj);
                 return View(model);
             }
         }

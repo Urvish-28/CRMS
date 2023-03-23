@@ -10,12 +10,11 @@ namespace CRMS1.Core.ViewModels
 {
     public class CommonLookupsViewModel : BaseEntity
     {
-        [Required]
+        [Required(ErrorMessage ="please enter ConfigName")]
         public string ConfigName { get; set; }
-        [Required]
-        [Compare("ConfigName" , ErrorMessage ="Can not be same")]
+        [Required(ErrorMessage = "please enter ConfigKey")]
         public string ConfigKey { get; set; }
-        [Required]
+        [Required(ErrorMessage = "please enter ConfigValue")]
         public string ConfigValue { get; set; }
         public int? DisplayOrder { get; set; }
         public string Description { get; set; }

@@ -1,4 +1,5 @@
 ﻿using CRMS1.Core.Models;
+using CRMS1.Core.ViewModels;
 using CRMS1.SQL;
 using CRMS1.SQL.Repositories.Role;
 using System;
@@ -14,11 +15,13 @@ namespace CRMS1.Services
     {
         IEnumerable<Roles> GetAllRoles();
         Roles GetRoleById(Guid id);
-        void CreateRole(Roles model);
-        void UpdateRole(Roles model);
-        void DeleteRole(Guid id);        
+        void CreateRole(RoleViewModel model);
+        void UpdateRole(RoleViewModel model);
+        void DeleteRole(Guid id);
+        Roles BindRoleModel(RoleViewModel model);
+        RoleViewModel BindRoleModel(Roles model);
     }
-    public class RoleService : IRoleService 
+    public class RoleService : IRoleService
     {
         private readonly IRoleRepository _roleRepository;
         public RoleService(IRoleRepository roleRepository)
@@ -26,17 +29,18 @@ namespace CRMS1.Services
             this._roleRepository = roleRepository;
         }
 
-        public void CreateRole(Roles model)
+        public void CreateRole(RoleViewModel model)
         {
-            //Roles obj = new Roles();
-            //obj.Id = model.Id;
-            //obj.Name = model.Name;
-            _roleRepository.Insert(model);
+            Roles obj = new Roles();
+            obj = BindRoleModel(model);
+            _roleRepository.Insert(obj);
             _roleRepository.Commit();
         }
-        public void UpdateRole(Roles model)
+        public void UpdateRole(RoleViewModel model)
         {
-            _roleRepository.Update(model);
+            Roles obj = new Roles();
+            obj = BindRoleModel(model);
+            _roleRepository.Update(obj);
             _roleRepository.Commit();
         }
         public void DeleteRole(Guid id)
@@ -44,16 +48,36 @@ namespace CRMS1.Services
             Roles obj = _roleRepository.Find(id);
             obj.IsDelete = true;
             _roleRepository.Update(obj);
-            _roleRepository.Commit();   
+            _roleRepository.Commit();
         }
-        
+
         public IEnumerable<Roles> GetAllRoles()
         {
-            return _roleRepository.Collection().Where(x=>x.IsDelete == false);
+            return _roleRepository.Collection().Where(x => x.IsDelete == false);
         }
         public Roles GetRoleById(Guid id)
         {
             return _roleRepository.Find(id);
-        }        
+        }
+        public Roles BindRoleModel(RoleViewModel model)
+        {
+            Roles obj = GetRoleById(model.Id);
+            if(obj == null)
+            {
+                obj = new Roles();
+            }
+            obj.Id = model.Id;
+            obj.Name = model.Name;
+            obj.Code = model.Code;
+            return obj;
+        }
+        public RoleViewModel BindRoleModel(Roles model)
+        {
+            RoleViewModel obj = new RoleViewModel();
+            obj.Id = model.Id;
+            obj.Name = model.Name;
+            obj.Code = model.Code;
+            return obj;
+        }
     }
 }

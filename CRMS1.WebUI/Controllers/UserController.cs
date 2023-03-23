@@ -29,7 +29,6 @@ namespace CRMS1.WebUI.Controllers
         // GET: User
         public ActionResult Index()
         {
-          //  List<User> users = _usersevice.GetAllUsers().ToList();
             var list = _usersevice.GetUserList();
             return View(list);
         }
@@ -60,16 +59,15 @@ namespace CRMS1.WebUI.Controllers
         {
             UserViewModel model = new UserViewModel();
             User obj = _usersevice.GetUserById(id);
-            model.RoleDropdown = _roleService.GetAllRoles().Select(x => new DropDown() { Id = x.Id, Name = x.Name }).ToList();
             if (obj == null)
             {
                 return HttpNotFound();
             }
             else
             {
-                model.Name = obj.Name;
-                model.Email = obj.Email;
-                model.Password = obj.Password;
+                model = _usersevice.BindUserModel(obj);
+
+                model.RoleDropdown = _roleService.GetAllRoles().Select(x => new DropDown() { Id = x.Id, Name = x.Name }).ToList();
                 model.RoleId = _userRoleService.getByUserId(id).RoleId;
                 return View(model);
             }
@@ -93,7 +91,7 @@ namespace CRMS1.WebUI.Controllers
         {
             User userToDelete = _usersevice.GetUserById(id);
             _usersevice.DeleteUser(id);
-            TempData["DltMsg"] = "Employee Deleted successfully...!";
+            TempData["AlertMsg"] = "Employee Deleted successfully...!";
             return RedirectToAction("Index");
         }
     }

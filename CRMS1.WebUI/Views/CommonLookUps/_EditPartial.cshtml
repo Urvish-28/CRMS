@@ -9,13 +9,12 @@
         <div class="modal-content w-500">
             <div class="modal-header">
                 <h3 class="modal-title" id="commonLookupLabel">Edit CommonLookup</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form name="Editform">
+                <form name="Editform" id="myform">
                     @Html.HiddenFor(model => model.Id)
+                    @Html.AntiForgeryToken()
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-3">
@@ -77,32 +76,66 @@
                                 @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
                             </div>
                             <div class="col-md-9">
-                                @Html.CheckBoxFor(Model => Model.IsActive, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.CheckBoxFor(model => model.IsActive, new { htmlAttributes = new { @class = "form-control" } })
                             </div>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" onclick="closePopup()">Close</button>
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <a href="@Url.Action("Index" , "CommonLookUps")" class="btn btn-danger">Close</a>
-                <button type="button" class="btn btn-primary" onclick="createpost()">Save</button>
             </div>
         </div>
     </div>
 </div>
 
-
-<script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+<script src='@Url.Content("~/Scripts/jquery.validate.js")' type='text/javascript'></script>
+<script src='@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")' type='text/javascript'></script>
 <script>
-    function createpost() {
+        function closePopup() {
+        location.reload();
+    }
+    $('#myform').submit(function (e) {
+        e.preventDefault();
+        var $form = $(this);
+        if (!$form.valid) return false;
+        var ConfigName = $('#ConfigName').val();
+        var ConfigKey = $('#ConfigKey').val();
+        if (ConfigName != "" && (ConfigName == ConfigKey)) {
+            alert("ConfigName and ConfigKey not be Same")
+            return false;
+        }
+        $.ajax({
+            url: '@Url.Action("Edit","CommonLookUps")',
+            type: "Post",
+            data: $form.serialize(),
+            success: function (data) {
+                if (data == "true") {
+                    location.reload();
+                }
+                else if (data == "Exists") {
+                    alert("Data Already Exists");
+                }
+            }
+        });
+    });
+
+
+@*    function createpost() {
         var modal = $('#editmodal');
         var form = $('form[name="Editform"]');
-        debugger;
+        form.submit(function (e) {
+            var $form = $(this);
+            if (!$form.valid) {
+                e.preventDefault();
+            }
+        })
         var data = form.serialize();
         $.post("/CommonLookUps/Edit", data, function (res) {
             if (res) {
-                location.reload();
+
             }
         })
-    }
+    }*@
 </script>

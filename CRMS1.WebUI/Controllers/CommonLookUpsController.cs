@@ -31,23 +31,23 @@ namespace CRMS1.WebUI.Controllers
         [HttpPost]
         public ActionResult Create(CommonLookupsViewModel model)
         {
-            var existingmodel = _commonLookupService.GetAll().Where(x => x.ConfigKey == model.ConfigKey && x.ConfigName == model.ConfigName).Count();
+            bool isExist = _commonLookupService.IsAlreadyExist(model, false);
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return Content("false");
             }
             else
             {
-                if (existingmodel > 0 || model.ConfigKey == model.ConfigName)
+                if (isExist)
                 {
-                    TempData["Alert"] = "Already Exists";
+                    return Content("Exists");
                 }
                 else
                 {
                     _commonLookupService.AddCommonLookup(model);
-                    return RedirectToAction("Index");
+                    TempData["Alert"] = "Create Successfully!!";
+                    return Content("true");
                 }
-                return RedirectToAction("Index");
             }
         }
         public ActionResult Edit(Guid id)
@@ -59,41 +59,37 @@ namespace CRMS1.WebUI.Controllers
             }
             else
             {
-                CommonLookupsViewModel model = new CommonLookupsViewModel();
-                model.Id = obj.Id;
-                model.ConfigName = obj.ConfigName;
-                model.ConfigKey = obj.ConfigKey;
-                model.ConfigValue = obj.ConfigValue;
-                model.DisplayOrder = obj.DisplayOrder;
-                model.IsActive = obj.IsActive;
+                var model = _commonLookupService.BindCommonLookupModel(obj);
                 return PartialView("_EditPartial", model);
             }
         }
         [HttpPost]
         public ActionResult Edit(CommonLookupsViewModel model)
         {
+            var existingmodel = _commonLookupService.IsAlreadyExist(model);
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return Content("false");
             }
             else
             {
-                if (model.ConfigKey == model.ConfigName)
+                if (existingmodel)
                 {
-                    TempData["Alert"] = "Already Exists";
+                    return Content("Exists");
                 }
                 else
                 {
                     _commonLookupService.UpdateCommonLookup(model);
-                    return RedirectToAction("Index");
+                    TempData["Alert"] = "Edit Successfully!!";
+                    return Content("true");
                 }
-                return RedirectToAction("Index");
             }
         }
         public ActionResult Delete(Guid id)
         {
             CommonLookups commonLookupsdelete = _commonLookupService.GetById(id);
             _commonLookupService.DeleteCommonLookup(id);
+            TempData["Alert"] = "Delete Successfully!!";
             return RedirectToAction("Index");
         }
     }

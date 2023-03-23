@@ -16,6 +16,10 @@ namespace CRMS1.Services
         void DeleteCommonLookup(Guid id);
         IEnumerable<CommonLookups> GetAll();
         CommonLookups GetById(Guid id);
+
+        CommonLookups BindCommonLookupModel(CommonLookupsViewModel model);
+        CommonLookupsViewModel BindCommonLookupModel(CommonLookups model);
+        bool IsAlreadyExist(CommonLookupsViewModel model, bool IsCreated = false);
     }
     public class CommonLookupService : ICommonLookupService
     {
@@ -29,27 +33,16 @@ namespace CRMS1.Services
         public void AddCommonLookup(CommonLookupsViewModel model)
         {
             CommonLookups obj = new CommonLookups();
-            obj.ConfigKey = model.ConfigKey;
-            obj.ConfigName = model.ConfigName;
-            obj.ConfigValue = model.ConfigValue;
-            obj.DisplayOrder = model.DisplayOrder;
-            obj.Description = model.Description;
-            obj.IsActive = model.IsActive;
+            obj = BindCommonLookupModel(model);
             _repository.Insert(obj);
             _repository.Commit();
         }
         public void UpdateCommonLookup(CommonLookupsViewModel model)
         {
-            
-            CommonLookups obj = GetById(model.Id);
-            obj.ConfigKey = model.ConfigKey;
-            obj.ConfigName = model.ConfigName;
-            obj.ConfigValue = model.ConfigValue;
-            obj.DisplayOrder = model.DisplayOrder;
-            obj.Description = model.Description;
-            obj.IsActive = model.IsActive;
 
-            _repository.Update(obj);
+            CommonLookups objectToUpdate = GetById(model.Id);
+            objectToUpdate = BindCommonLookupModel(model);
+            _repository.Update(objectToUpdate);
             _repository.Commit();
         }
         public void DeleteCommonLookup(Guid id)
@@ -66,6 +59,51 @@ namespace CRMS1.Services
         public CommonLookups GetById(Guid id)
         {
             return _repository.Find(id);
+        }
+        public CommonLookups BindCommonLookupModel(CommonLookupsViewModel model)
+        {
+            CommonLookups obj = GetById(model.Id);
+            if (obj == null)
+            {
+                obj = new CommonLookups();
+            }
+            obj.Id = model.Id;
+            obj.ConfigKey = model.ConfigKey;
+            obj.ConfigName = model.ConfigName;
+            obj.ConfigValue = model.ConfigValue;
+            obj.DisplayOrder = model.DisplayOrder;
+            obj.Description = model.Description;
+            obj.IsActive = model.IsActive;
+            return obj;
+        }
+        public CommonLookupsViewModel BindCommonLookupModel(CommonLookups model)
+        {
+            CommonLookupsViewModel obj = new CommonLookupsViewModel();
+            obj.Id = model.Id;
+            obj.ConfigKey = model.ConfigKey;
+            obj.ConfigName = model.ConfigName;
+            obj.ConfigValue = model.ConfigValue;
+            obj.DisplayOrder = model.DisplayOrder;
+            obj.Description = model.Description;
+            obj.IsActive = model.IsActive;
+            return obj;
+        }
+
+        public bool IsAlreadyExist(CommonLookupsViewModel model , bool IsCreated = false)
+        {
+
+            var records = GetAll().Where(x => (x.ConfigName == model.ConfigName &&
+                                               x.ConfigKey == model.ConfigKey) &&
+                                               (IsCreated || x.Id !=model.Id)
+                                              ).ToList();                          
+            if(records.Count() > 0)                                                 
+            {
+                return true;
+            }
+            else                                                                   
+            {
+                return false;
+            }
         }
     }
 }

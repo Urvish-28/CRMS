@@ -44,15 +44,8 @@ namespace CRMS1.WebUI.Controllers
             }
             else
             {
-                //context.Insert(roles);
-                //context.Commit();
-                Roles obj = new Roles();        // mapping of View model to data model
-                obj.Name = model.Name;
-                obj.Code = model.Code;
-                obj.CreatedOn = DateTime.Now;
-                //obj.CreatedBy = SessionHelper.UserId;
-                _roleService.CreateRole(obj);
-                TempData["AlertMsg"] = "Role added successfully...!";
+                _roleService.CreateRole(model);
+                TempData["AlertMsg"] = "Role is added successfully...!";
                 return RedirectToAction("Index");
             }
         }
@@ -66,10 +59,7 @@ namespace CRMS1.WebUI.Controllers
             }
             else
             {
-                RoleViewModel model = new RoleViewModel();
-                model.Id = obj.Id;
-                model.Name = obj.Name;
-                model.Code = obj.Code;
+                var model = _roleService.BindRoleModel(obj);
                 return View(model);
             }
         }
@@ -88,10 +78,7 @@ namespace CRMS1.WebUI.Controllers
                 {
                     return View(model);
                 }
-                roleToEdit.Name = model.Name;
-                roleToEdit.Code = model.Code;
-                roleToEdit.UpdatedOn = DateTime.Now;
-                _roleService.UpdateRole(roleToEdit);
+                _roleService.UpdateRole(model);
                 TempData["AlertMsg"] = "Role Edited successfully...!";
                 return RedirectToAction("Index");
             }
