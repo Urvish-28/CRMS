@@ -1,6 +1,7 @@
 using CRMS1.Core.Models;
 using CRMS1.Core.ViewModels;
 using CRMS1.Services;
+using CRMS1.SQL.Repositories.Login;
 using CRMS1.SQL.Repositories.Role;
 using CRMS1.SQL.Repositories.Room;
 using CRMS1.SQL.Repositories.SqlRepository;
@@ -50,6 +51,7 @@ namespace CRMS1.WebUI
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
+            container.RegisterType<ILoginRepository, LoginRepository>();
             container.RegisterType<IRoleRepository, RoleRepository>();
             container.RegisterType<IUsersRepository, UsersRepository>();
             container.RegisterType<IUserRoleRepository, UserRoleRepository>();
@@ -58,6 +60,7 @@ namespace CRMS1.WebUI
 
 
 
+            container.RegisterType<ILoginService, LoginService>();
             container.RegisterType<IRoleService, RoleService>();
             container.RegisterType<IUserService, UserService>();
             container.RegisterType<IUserRoleService, UserRoleService>();

@@ -18,6 +18,7 @@ namespace CRMS1.Services
         ConferenceRoom GetRoomById(Guid id);
         ConferenceRoom BindConferenceRoomModel(RoomViewModel model);
         RoomViewModel BindConferenceRoomModel(ConferenceRoom model);
+        bool IsAlreadyExist(RoomViewModel model, bool IsCreated = false);
     }
     public class RoomService : IRoomService
     {
@@ -75,6 +76,20 @@ namespace CRMS1.Services
             obj.Capacity = model.Capacity;
             obj.RoomName = model.Name;
             return obj;
+        }
+
+        public bool IsAlreadyExist(RoomViewModel model, bool IsCreated = false)
+        {
+            var records = GetAllRoom().Where(x => (x.Name.ToLower() == model.RoomName.ToLower()) && (IsCreated || x.Id != model.Id)).ToList();
+
+            if (records.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

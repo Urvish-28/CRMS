@@ -92,8 +92,8 @@ namespace CRMS1.Services
         public bool IsAlreadyExist(CommonLookupsViewModel model , bool IsCreated = false)
         {
 
-            var records = GetAll().Where(x => (x.ConfigName == model.ConfigName &&
-                                               x.ConfigKey == model.ConfigKey) &&
+            var records = GetAll().Where(x => (x.ConfigName.ToLower() == model.ConfigName.ToLower() &&
+                                               x.ConfigKey.ToLower() == model.ConfigKey.ToLower()) &&
                                                (IsCreated || x.Id !=model.Id)
                                               ).ToList();                          
             if(records.Count() > 0)                                                 

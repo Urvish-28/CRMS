@@ -30,15 +30,24 @@ namespace CRMS1.WebUI.Controllers
         [HttpPost]
         public ActionResult Create(RoomViewModel model)
         {
+            bool IsExist = _roomservice.IsAlreadyExist(model);
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
             else
             {
-                _roomservice.CreateRoom(model);
-                TempData["AlertMsg"] = "Conference Room added successfully...!";
-                return RedirectToAction("Index");
+                if (IsExist == true)
+                {
+                    TempData["AlertMsg"] = "ConferenceRoom Already Exists";
+                    return View(model);
+                }
+                else
+                {
+                    _roomservice.CreateRoom(model);
+                    TempData["AlertMsg"] = "Conference Room added successfully...!";
+                    return RedirectToAction("Index");
+                }
             }
         }
         public ActionResult Edit(Guid id)
@@ -58,15 +67,24 @@ namespace CRMS1.WebUI.Controllers
         [HttpPost]
         public ActionResult Edit(RoomViewModel model)
         {
+            bool IsExist = _roomservice.IsAlreadyExist(model);
             if (!ModelState.IsValid)
             {
                 return HttpNotFound();
             }
             else
             {
-                _roomservice.UpdateRoom(model);
-                TempData["AlertMsg"] = "Conference Room Edited successfully...!";
-                return RedirectToAction("Index");
+                if (IsExist)
+                {
+                    TempData["AlertMsg"] = "ConferenceRoom Already Exists";
+                    return View(model);
+                }
+                else
+                {
+                    _roomservice.UpdateRoom(model);
+                    TempData["AlertMsg"] = "Conference Room Edited successfully...!";
+                    return RedirectToAction("Index");
+                }
             }
         }
         public ActionResult Delete(Guid id)

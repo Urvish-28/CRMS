@@ -23,6 +23,13 @@ namespace CRMS1.Core.ViewModels
         [Display(Name ="Role")]
         public Guid RoleId { get; set; }
         public List<DropDown> RoleDropdown { get; set; }
+        [Required]
+        public string UserName { get; set; }
+        [Required]
+        [RegularExpression(@"^(\d{10})$", ErrorMessage = "Please Enter Valid Mobile Number")]
+        public string MobileNo { get; set; }
+        [Required]
+        public string Gender { get; set; }
     }
     public class DropDown
     {
@@ -31,8 +38,11 @@ namespace CRMS1.Core.ViewModels
     }
     public class IndexViewModel : BaseEntity
     {
-        public string Username { get; set; }
+        public string Name { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }
+        public string UserName { get; set; }
+        public string MobileNo { get; set; }
+        public string Gender { get; set; }
     }
 }

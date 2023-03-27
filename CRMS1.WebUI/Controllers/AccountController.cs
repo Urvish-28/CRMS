@@ -1,5 +1,6 @@
 ﻿using CRMS1.Core.Models;
 using CRMS1.Core.ViewModels;
+using CRMS1.Services;
 using CRMS1.SQL;
 using CRMS1.SQL.Repositories.Login;
 using System;
@@ -14,10 +15,10 @@ namespace CRMS1.WebUI.Controllers
 {
     public class AccountController : Controller
     {
-        LoginRepository repository;
-        public AccountController()
+        private readonly ILoginService _loginService;
+        public AccountController(ILoginService loginService)
         {
-            repository = new LoginRepository();
+            _loginService = loginService;
         }
 
         // GET: Account
@@ -30,7 +31,7 @@ namespace CRMS1.WebUI.Controllers
         [HttpPost]
         public ActionResult Login(LoginViewModel model, string returnUrl)
         {
-            var user = repository.Login(model);
+            var user = _loginService.Login(model);
 
             if (!ModelState.IsValid)
             {

@@ -4,12 +4,28 @@
     ViewBag.Title = "Create";
 }
 
+<script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        $('#already').fadeOut(3000);
+    })
+</script>
+<h2>Add Employee</h2>
+
+@if (@TempData["AlertMsg"] != null)
+{
+    <div id="already" class="alert alert-danger">
+        <strong>Wrong !</strong> @TempData["AlertMsg"]
+    </div>
+}
+
+
 <h2>Create</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })

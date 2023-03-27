@@ -20,6 +20,7 @@ namespace CRMS1.Services
         void DeleteRole(Guid id);
         Roles BindRoleModel(RoleViewModel model);
         RoleViewModel BindRoleModel(Roles model);
+        bool IsAlreadyExist(RoleViewModel model, bool IsCreated = false);
     }
     public class RoleService : IRoleService
     {
@@ -78,6 +79,19 @@ namespace CRMS1.Services
             obj.Name = model.Name;
             obj.Code = model.Code;
             return obj;
+        }
+        public bool IsAlreadyExist(RoleViewModel model, bool IsCreated = false)
+        {
+            var records = GetAllRoles().Where(x => (x.Name.ToLower() == model.Name.ToLower()) && (IsCreated || x.Id != model.Id)).ToList();
+
+            if (records.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

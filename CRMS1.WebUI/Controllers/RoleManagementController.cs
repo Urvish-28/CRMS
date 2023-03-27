@@ -38,20 +38,30 @@ namespace CRMS1.WebUI.Controllers
         [HttpPost]
         public ActionResult Create(RoleViewModel model)
         {
+            bool IsExist = _roleService.IsAlreadyExist(model);
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
             else
             {
-                _roleService.CreateRole(model);
-                TempData["AlertMsg"] = "Role is added successfully...!";
-                return RedirectToAction("Index");
+                if (IsExist)
+                {
+                    TempData["AlertMsg"] = "Role Already Exists";
+                    return View(model);
+                }
+                else
+                {
+                    _roleService.CreateRole(model);
+                    TempData["AlertMsg"] = "Role is added successfully...!";
+                    return RedirectToAction("Index");
+                }
             }
         }
 
         public ActionResult Edit(Guid Id)
         {
+
             Roles obj = _roleService.GetRoleById(Id);
             if (obj == null)
             {
@@ -67,20 +77,24 @@ namespace CRMS1.WebUI.Controllers
         [HttpPost]
         public ActionResult Edit(RoleViewModel model)
         {
-            Roles roleToEdit = _roleService.GetRoleById(model.Id);
-            if (roleToEdit == null)
+            bool IsExist = _roleService.IsAlreadyExist(model, false);
+            if (!ModelState.IsValid)
             {
-                return HttpNotFound();
+                return View(model);
             }
             else
             {
-                if (!ModelState.IsValid)
+                if (IsExist)
                 {
+                    TempData["AlertMsg"] = "Employee Already Exists";
                     return View(model);
                 }
-                _roleService.UpdateRole(model);
-                TempData["AlertMsg"] = "Role Edited successfully...!";
-                return RedirectToAction("Index");
+                else
+                {
+                    _roleService.UpdateRole(model);
+                    TempData["AlertMsg"] = "Role Edited successfully...!";
+                    return RedirectToAction("Index");
+                }
             }
         }
 
@@ -88,14 +102,6 @@ namespace CRMS1.WebUI.Controllers
         {
             Roles rolesToDelete = _roleService.GetRoleById(id);
             _roleService.DeleteRole(id);
-            /*     if (rolesToDelete == null)
-                 {
-                     return HttpNotFound();
-                 }
-                 else
-                 {
-                     return View(rolesToDelete);
-                 }      */
             return RedirectToAction("Index");
         }
     }

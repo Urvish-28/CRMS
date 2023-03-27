@@ -20,6 +20,8 @@ namespace CRMS1.Services
         IEnumerable<IndexViewModel> GetUserList();
         User BindUserModel(UserViewModel model);
         UserViewModel BindUserModel(User model);
+        string PasswordEncode(String Password);
+        bool IsAlreadyExist(UserViewModel model, bool IsCreated = false);
     }
     public class UserService : IUserService
     {
@@ -93,8 +95,11 @@ namespace CRMS1.Services
                            select new IndexViewModel()
                            {
                                Id = u.Id,
-                               Username = u.Name,
+                               Name = u.Name,
                                Email = u.Email,
+                               UserName = u.UserName,
+                               Gender = u.Gender,
+                               MobileNo = u.MobileNo,
                                Role = r.Name
                            };
             return userlist;
@@ -115,6 +120,10 @@ namespace CRMS1.Services
             obj.Name = model.Name;
             obj.Email = model.Email;
             obj.Password = model.Password;
+            obj.UserName = model.UserName;
+            obj.MobileNo = model.MobileNo;
+            obj.Gender = model.Gender;
+            obj.Password = PasswordEncode(obj.Password);
             return obj;
         }
 
@@ -124,9 +133,58 @@ namespace CRMS1.Services
             obj.Name = model.Name;
             obj.Email = model.Email;
             obj.Password = model.Password;
+            obj.UserName = model.UserName;
+            obj.MobileNo = model.MobileNo;
+            obj.Gender = model.Gender;
             obj.CreatedOn = DateTime.Now;
             obj.UpdatedOn = DateTime.Now;
             return obj;
+        }
+        public string PasswordEncode(String Password)
+        {
+            try
+            {
+                byte[] EncDataByte = new byte[Password.Length];
+                EncDataByte = System.Text.Encoding.UTF8.GetBytes(Password);
+                string EnCryptedPassword = Convert.ToBase64String(EncDataByte);
+                return EnCryptedPassword;
+            }
+            catch(Exception exception)
+            {
+                throw new Exception("Error in Encode: " + exception.Message);
+            }
+        }
+        /*        public string PasswordDecode(String EnCryptedPassword)
+                {
+                    try
+                    {
+                        System.Text.UTF8Encoding encoder = new System.Text.UTF8Encoding();
+                        System.Text.Decoder UTF8Decode = encoder.GetDecoder();
+                        byte[] DecodeByte = Convert.FromBase64String(EnCryptedPassword);
+                        int CharCount = UTF8Decode.GetCharCount(DecodeByte, 0, DecodeByte.Length);
+                        Char[] DecodeChar = new char[CharCount];
+                        UTF8Decode.GetChars(DecodeByte, 0, DecodeByte.Length, DecodeChar, 0);
+                        string DeCryptedPassword = new string(DecodeChar);
+                        return DeCryptedPassword;
+                    }
+                    catch (Exception exception)
+                    {
+                        throw new Exception("Error in Decode: " + exception.Message);
+                    }
+                }*/
+        public bool IsAlreadyExist(UserViewModel model, bool IsCreated = false)
+        {
+            var records = GetAllUsers().Where(x => (x.Email == model.Email &&
+                                                    x.MobileNo == model.MobileNo) && (IsCreated || x.Id != model.Id)).ToList();
+
+            if(records.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

@@ -42,6 +42,7 @@ namespace CRMS1.WebUI.Controllers
         [HttpPost]
         public ActionResult Create(UserViewModel model)
         {
+            bool IsExist = _usersevice.IsAlreadyExist(model);
             if (!ModelState.IsValid)
             {
                 model.RoleDropdown = _roleService.GetAllRoles()
@@ -50,9 +51,20 @@ namespace CRMS1.WebUI.Controllers
             }
             else
             {
-                _usersevice.AddUser(model);
-                TempData["AlertMsg"] = "Employee added successfully...!";
-                return RedirectToAction("Index");
+                if (IsExist)
+                {
+                    model.RoleDropdown = _roleService.GetAllRoles()
+                    .Select(x => new DropDown() { Id = x.Id, Name = x.Name }).ToList();
+                    TempData["AlertMsg"] = "Employee Already Exists";
+                    return View(model);
+                }
+                else
+                {
+                    _usersevice.AddUser(model);
+                    TempData["AlertMsg"] = "Employee added successfully...!";
+                    return RedirectToAction("Index");
+                }
+
             }
         }
         public ActionResult Edit(Guid id)
@@ -75,6 +87,7 @@ namespace CRMS1.WebUI.Controllers
         [HttpPost]
         public ActionResult Edit(UserViewModel model)
         {
+            bool IsExist = _usersevice.IsAlreadyExist(model,false);
             model.RoleDropdown = _roleService.GetAllRoles().Select(x => new DropDown() { Id = x.Id, Name = x.Name }).ToList();
             if (!ModelState.IsValid)
             {
@@ -82,9 +95,17 @@ namespace CRMS1.WebUI.Controllers
             }
             else
             {
-                _usersevice.UpdateUser(model);
-                TempData["AlertMsg"] = "Employee Details Edited successfully...!";
-                return RedirectToAction("Index");
+                if (IsExist)
+                {
+                    TempData["AlertMsg"] = "Employee Already Exists";
+                    return View(model);
+                }
+                else
+                {
+                    _usersevice.UpdateUser(model);
+                    TempData["AlertMsg"] = "Employee Details Edited successfully...!";
+                    return RedirectToAction("Index");
+                }
             }
         }
         public ActionResult Delete(Guid id)
