@@ -83,7 +83,7 @@
              var id = $(data).attr('id')
         if (confirm("Are You Sure You Want To Delete?") == true) {
             $.ajax({
-                url: '@Url.Action("Delete", "CommonLookUps")',
+                url: '@Url.Action("Delete", "CommonLookUps")',  
                 data: { 'id': id},
                 type: "post",
                 success: function (savingStatus) {

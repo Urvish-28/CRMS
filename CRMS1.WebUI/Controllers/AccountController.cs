@@ -10,15 +10,18 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace CRMS1.WebUI.Controllers
 {
     public class AccountController : Controller
     {
         private readonly ILoginService _loginService;
-        public AccountController(ILoginService loginService)
+        private readonly IUserService _userService;
+        public AccountController(ILoginService loginService, IUserService userService)
         {
             _loginService = loginService;
+            _userService = userService;
         }
 
         // GET: Account
@@ -41,6 +44,9 @@ namespace CRMS1.WebUI.Controllers
             {
                 if (user != null)
                 {
+                    Session["Name"] = _userService.GetAllUsers().Where(b => b.Email == model.Email).Select(x => x.UserName).FirstOrDefault();
+                    Session["UserId"] = _userService.GetAllUsers().Where(b => b.Email == model.Email).Select(x => x.Id).FirstOrDefault();
+                    FormsAuthentication.SetAuthCookie(model.Email, false);
                     return RedirectToAction("DashBoard");
                 }
                 else
@@ -58,6 +64,8 @@ namespace CRMS1.WebUI.Controllers
 
         public ActionResult LogOut()
         {
+            FormsAuthentication.SignOut();
+            
             return RedirectToAction("Login", "Account");
         }
     }

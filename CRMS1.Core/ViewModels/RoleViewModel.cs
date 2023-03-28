@@ -13,6 +13,8 @@ namespace CRMS1.Core.ViewModels
         [Required]
         public string Name { get; set; }
         [Required]
+        [RegularExpression(@"[A-Z]*$",
+         ErrorMessage = "Only uppercase Characters are allowed.")]
         public string Code { get; set; }
     }
 }

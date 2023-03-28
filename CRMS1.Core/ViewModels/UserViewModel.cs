@@ -18,6 +18,7 @@ namespace CRMS1.Core.ViewModels
         public string Email { get; set; }
         [Required]
         [DataType("Password")]
+        [StringLength(8)]
         public string Password { get; set; }
         [Required]
         [Display(Name ="Role")]

@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace CRMS1.WebUI.Controllers
 {
+    [Authorize]
     public class RoleManagementController : Controller
     {
         private readonly IRoleService _roleService;
@@ -52,6 +53,7 @@ namespace CRMS1.WebUI.Controllers
                 }
                 else
                 {
+                    model.CreatedBy = (Guid)Session["UserId"];
                     _roleService.CreateRole(model);
                     TempData["AlertMsg"] = "Role is added successfully...!";
                     return RedirectToAction("Index");
@@ -91,6 +93,7 @@ namespace CRMS1.WebUI.Controllers
                 }
                 else
                 {
+                    model.UpdatedBy = (Guid)Session["UserId"];
                     _roleService.UpdateRole(model);
                     TempData["AlertMsg"] = "Role Edited successfully...!";
                     return RedirectToAction("Index");

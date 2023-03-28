@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace CRMS1.WebUI.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserService _usersevice;
@@ -60,6 +61,7 @@ namespace CRMS1.WebUI.Controllers
                 }
                 else
                 {
+                     model.CreatedBy = (Guid)Session["UserId"];
                     _usersevice.AddUser(model);
                     TempData["AlertMsg"] = "Employee added successfully...!";
                     return RedirectToAction("Index");
@@ -102,6 +104,7 @@ namespace CRMS1.WebUI.Controllers
                 }
                 else
                 {
+                    model.UpdatedBy = (Guid)Session["UserId"];
                     _usersevice.UpdateUser(model);
                     TempData["AlertMsg"] = "Employee Details Edited successfully...!";
                     return RedirectToAction("Index");

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace CRMS1.WebUI.Controllers
 {
+    [Authorize]
     public class RoomController : Controller
     {
         private readonly IRoomService _roomservice;
@@ -44,6 +45,7 @@ namespace CRMS1.WebUI.Controllers
                 }
                 else
                 {
+                    model.CreatedBy = (Guid)Session["UserId"];
                     _roomservice.CreateRoom(model);
                     TempData["AlertMsg"] = "Conference Room added successfully...!";
                     return RedirectToAction("Index");
@@ -81,6 +83,7 @@ namespace CRMS1.WebUI.Controllers
                 }
                 else
                 {
+                    model.UpdatedBy = (Guid)Session["UserId"];
                     _roomservice.UpdateRoom(model);
                     TempData["AlertMsg"] = "Conference Room Edited successfully...!";
                     return RedirectToAction("Index");

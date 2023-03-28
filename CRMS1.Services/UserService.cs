@@ -112,18 +112,20 @@ namespace CRMS1.Services
             {
                 obj = new User();
                 obj.CreatedOn = DateTime.Now;
+                obj.CreatedBy = model.CreatedBy;
+                obj.Password = model.Password;
+                obj.Password = PasswordEncode(obj.Password);
             }
             else
             {
                 obj.UpdatedOn = DateTime.Now;
+                obj.UpdatedBy = model.UpdatedBy;
             }
             obj.Name = model.Name;
             obj.Email = model.Email;
-            obj.Password = model.Password;
             obj.UserName = model.UserName;
             obj.MobileNo = model.MobileNo;
             obj.Gender = model.Gender;
-            obj.Password = PasswordEncode(obj.Password);
             return obj;
         }
 

@@ -66,6 +66,13 @@ namespace CRMS1.Services
             if (obj == null)
             {
                 obj = new CommonLookups();
+                obj.CreatedOn = DateTime.Now;
+                obj.CreatedBy = model.CreatedBy;
+            }
+            else
+            {
+                obj.UpdatedOn = DateTime.Now;
+                obj.UpdatedBy = model.UpdatedBy;
             }
             obj.Id = model.Id;
             obj.ConfigKey = model.ConfigKey;

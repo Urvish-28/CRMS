@@ -31,16 +31,14 @@ namespace CRMS1.Services
         public void CreateRoom(RoomViewModel model)
         {
             ConferenceRoom obj = new ConferenceRoom();
-            obj.Capacity = model.Capacity;
-            obj.Name = model.RoomName;
+            obj = BindConferenceRoomModel(model);
             _roomRepository.Insert(obj);
             _roomRepository.Commit();
         }
         public void UpdateRoom(RoomViewModel model)
         {
             ConferenceRoom obj = GetRoomById(model.Id);
-            obj.Capacity = model.Capacity;
-            obj.Name = model.RoomName;
+            obj = BindConferenceRoomModel(model);
             _roomRepository.Update(obj);
             _roomRepository.Commit();
         }
@@ -65,6 +63,13 @@ namespace CRMS1.Services
             if(obj == null)
             {
                 obj = new ConferenceRoom();
+                obj.CreatedBy = model.CreatedBy;
+                obj.CreatedOn = DateTime.Now;
+            }
+            else
+            {
+                obj.UpdatedBy = model.UpdatedBy;
+                obj.UpdatedOn = DateTime.Now;
             }
             obj.Capacity = model.Capacity;
             obj.Name = model.RoomName;

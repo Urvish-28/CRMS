@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace CRMS1.WebUI.Controllers
 {
+    [Authorize]
     public class CommonLookUpsController : Controller
     {
         private readonly ICommonLookupService _commonLookupService;
@@ -31,19 +32,20 @@ namespace CRMS1.WebUI.Controllers
         [HttpPost]
         public ActionResult Create(CommonLookupsViewModel model)
         {
-            bool isExist = _commonLookupService.IsAlreadyExist(model, false);
             if (!ModelState.IsValid)
             {
                 return Content("false");
             }
             else
             {
+                bool isExist = _commonLookupService.IsAlreadyExist(model, false);
                 if (isExist)
                 {
                     return Content("Exists");
                 }
                 else
                 {
+                    model.CreatedBy = (Guid)Session["UserId"];
                     _commonLookupService.AddCommonLookup(model);
                     TempData["Alert"] = "Create Successfully!!";
                     return Content("true");
@@ -65,7 +67,7 @@ namespace CRMS1.WebUI.Controllers
         }
         [HttpPost]
         public ActionResult Edit(CommonLookupsViewModel model)
-        {
+            {
             var existingmodel = _commonLookupService.IsAlreadyExist(model);
             if (!ModelState.IsValid)
             {
@@ -79,6 +81,7 @@ namespace CRMS1.WebUI.Controllers
                 }
                 else
                 {
+                    //model.UpdatedBy = (Guid)Session["UserId"];
                     _commonLookupService.UpdateCommonLookup(model);
                     TempData["Alert"] = "Edit Successfully!!";
                     return Content("true");
