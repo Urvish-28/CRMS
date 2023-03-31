@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace CRMS1.Core.ViewModels
 {
-    public class CommonLookupsViewModel : BaseEntity
+    public class CommonLookupsViewModel 
     {
+        [ScaffoldColumn(false)]
+        public Guid Id { get; set; }
         [Required(ErrorMessage ="please enter ConfigName")]
         public string ConfigName { get; set; }
         [Required(ErrorMessage = "please enter ConfigKey")]
@@ -18,5 +20,10 @@ namespace CRMS1.Core.ViewModels
         public string ConfigValue { get; set; }
         public int? DisplayOrder { get; set; }
         public string Description { get; set; }
+        public bool IsActive { get; set; }
+        public CommonLookupsViewModel()
+        {
+            Id = Guid.NewGuid();
+        }
     }
 }

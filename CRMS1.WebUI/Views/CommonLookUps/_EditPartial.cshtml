@@ -136,18 +136,11 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-3">
-                                @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
-                            </div>
-                            <div class="col-md-9">
-                                <label class="switch">
-                                    <input type="checkbox" id="toggle" name="IsActive">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                            </div>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="toggle" name="IsActive" value="IsActive">
+                            <label class="custom-control-label" for="toggle">IsActive</label>
                         </div>
+                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" onclick="closePopup()">Close</button>
                         <button type="submit" class="btn btn-success" >Save</button>
@@ -164,7 +157,6 @@
 <script src='@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")' type='text/javascript'></script>
 <script>
     function editOnChange() {
-        debugger;
         if ($("#toggle").prop('checked')) {
             $("#toggle").attr('checked', true);
             $('#toggle').val(true);

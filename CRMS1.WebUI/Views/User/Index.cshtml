@@ -5,29 +5,10 @@
 }
 <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
 <script>
-    function myFunction(data) {
-
-             var id = $(data).attr('id')
-        if (confirm("Are You Sure You Want To Delete?") == true) {
-            $.ajax({
-                url: '@Url.Action("Delete","User")',
-                data: { 'id': id},
-                type: "post",
-                success: function (savingStatus) {
-                    location.reload();
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-
-                }
-            });
-
-        } else {
-
-        }
-    }
-
     $(document).ready(function () {
         $('#success').fadeOut(3000);
+        $('#grid').data('KendoGrid').datasource.read();
+        $('#grid').data('KendoGrid').refresh();
     })
 </script>
 
@@ -43,61 +24,24 @@
         <strong>Success !</strong> @TempData["AlertMsg"]
     </div>
 }
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MobileNo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Gender)
-        </th>
-        @*        <th>
-            @Html.DisplayNameFor(model => model.Password)
-        </th>*@
-        <th>
-            @Html.DisplayNameFor(model => model.Role)
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
+@(
+    Html.Kendo().Grid(Model).Name("grid")
+    .Columns(columns =>
     {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.UserName)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Name)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Email)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.MobileNo)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Gender)
-    </td>
-    @*        <td>
-            @Html.DisplayFor(modelItem => item.Password)
-        </td>*@
-    <td>
-        @Html.DisplayFor(modelItem => item.Role)
-    </td>
-    <td>
-        @Html.ActionLink("Edit", "Edit", "User", new { id = item.Id }, new { @class = "btn btn-warning" }) |
-        @*       @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
-        <button id="@item.Id" class="btn btn-danger" onClick="myFunction(this)">Delete</button>
-    </td>
-</tr>
-    }
-</table>
+        columns.Bound(expression: c => c.UserName);
+        columns.Bound(expression: c => c.Name);
+        columns.Bound(expression: c => c.Email);
+        columns.Bound(expression: c => c.MobileNo);
+        columns.Bound(expression: c => c.Gender);
+        columns.Bound(expression: c => c.Role);
+        columns.Bound(c => c.Id).HeaderHtmlAttributes(new { @class = "center_text" }).ClientTemplate("<div class='k_action_table'>" + ("<a title='Edit' href='" + Url.Action("Edit", "User") + "/#=Id#' " + "> Edit </a>") + " ||" +
+                      "<a href='" + Url.Action("Delete", "User") + "/#=Id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'>  Delete </a>").Width(200).Title("Action"); ;
+    }).HtmlAttributes(new { Style = ""})
+    .Sortable()
+    .Scrollable(h=>h.Height("auto"))
+    .Filterable()
+    .Pageable(p=>p.Refresh(true).PageSizes(true))
+    .DataSource(datasource => datasource.Ajax().Read(read => read.Action("UserGrid", "User"))
+        .PageSize(5).Model(model => model.Id(expression:p => p.Id)))
+    )

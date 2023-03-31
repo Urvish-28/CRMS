@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI;
 
 namespace CRMS1.Services
 {
@@ -14,14 +15,14 @@ namespace CRMS1.Services
         void AddCommonLookup(CommonLookupsViewModel model);
         void UpdateCommonLookup(CommonLookupsViewModel model);
         void DeleteCommonLookup(Guid id);
-        IEnumerable<CommonLookups> GetAll();
+        List<CommonLookupsViewModel> GetAll();
         CommonLookups GetById(Guid id);
 
         CommonLookups BindCommonLookupModel(CommonLookupsViewModel model);
         CommonLookupsViewModel BindCommonLookupModel(CommonLookups model);
         bool IsAlreadyExist(CommonLookupsViewModel model, bool IsCreated = false);
     }
-    public class CommonLookupService : ICommonLookupService
+    public class CommonLookupService  :Page, ICommonLookupService 
     {
         private readonly IRepository<CommonLookups> _repository;
 
@@ -43,7 +44,7 @@ namespace CRMS1.Services
             CommonLookups objectToUpdate = GetById(model.Id);
             objectToUpdate = BindCommonLookupModel(model);
             _repository.Update(objectToUpdate);
-            _repository.Commit();
+           // _repository.Commit();
         }
         public void DeleteCommonLookup(Guid id)
         {
@@ -52,9 +53,23 @@ namespace CRMS1.Services
             _repository.Update(obj);
             _repository.Commit();
         }
-        public IEnumerable<CommonLookups> GetAll()
+        public List<CommonLookupsViewModel> GetAll()
         {
-            return _repository.Collection().Where(x => x.IsDelete == false);
+            IEnumerable<CommonLookups> model= _repository.Collection().Where(x => x.IsDelete == false);
+            List<CommonLookupsViewModel> obj = new List<CommonLookupsViewModel>();
+            foreach(var item in model)
+            {
+                CommonLookupsViewModel viewModel = new CommonLookupsViewModel();
+                viewModel.Id = item.Id;
+                viewModel.ConfigName = item.ConfigName;
+                viewModel.ConfigKey = item.ConfigKey;
+                viewModel.ConfigValue = item.ConfigValue;
+                viewModel.DisplayOrder = item.DisplayOrder;
+                viewModel.IsActive = item.IsActive;
+                viewModel.Description = item.Description;
+                obj.Add(viewModel);
+            }
+            return obj;
         }
         public CommonLookups GetById(Guid id)
         {
@@ -67,12 +82,12 @@ namespace CRMS1.Services
             {
                 obj = new CommonLookups();
                 obj.CreatedOn = DateTime.Now;
-                obj.CreatedBy = model.CreatedBy;
+                obj.CreatedBy = (Guid)Session["UserId"];
             }
             else
             {
                 obj.UpdatedOn = DateTime.Now;
-                obj.UpdatedBy = model.UpdatedBy;
+                obj.UpdatedBy = (Guid)Session["UserId"];
             }
             obj.Id = model.Id;
             obj.ConfigKey = model.ConfigKey;

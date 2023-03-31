@@ -6,27 +6,10 @@
 
 <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
 <script>
-    function myFunction(data) {
-
-        var id = $(data).attr('id')
-        if (confirm("Are You Sure You Want To Delete?") == true) {
-            $.ajax({
-                url: '@Url.Action("Delete","RoleManagement")',
-                data: { 'id': id},
-                type: "post",
-                success: function (savingStatus) {
-                    location.reload();
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-
-                }
-            });
-        } else {
-
-        }
-    }
     $(document).ready(function () {
         $('#success').fadeOut(3000);
+        $('#grid').data('KendoGrid').datasource.read();
+        $('#grid').data('KendoGrid').refresh();
     })
 </script>
 
@@ -34,7 +17,7 @@
 <h2>Role</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create", "RoleManagement" , new { @class = "btn btn-primary" })
+    @Html.ActionLink("Create New", "Create", "RoleManagement", new { @class = "btn btn-primary" })
 </p>
 @if (@TempData["AlertMsg"] != null)
 {
@@ -42,32 +25,21 @@
         <strong>Success !</strong> @TempData["AlertMsg"]
     </div>
 }
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Code)
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
+
+@(
+    Html.Kendo().Grid(Model).Name("grid")
+    .Columns(columns =>
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Code)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", "RoleManagement", new { id = item.Id }, new { @class = "btn btn-warning" }) |
-                <button id="@item.Id" class="btn btn-danger" onClick="myFunction(this)">Delete</button>
-                @*   @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
-            </td>
-        </tr>
-    }
-
-</table>
+        columns.Bound(expression: c => c.Name);
+        columns.Bound(expression: c => c.Code);
+        columns.Bound(c => c.Id).HeaderHtmlAttributes(new { @class = "center_text" }).ClientTemplate("<div class='k_action_table'>" + ("<a title='Edit' href='" + Url.Action("Edit", "RoleManagement") + "/#=Id#' " + "> Edit </a>") + " ||" +
+                      "<a href='" + Url.Action("Delete", "RoleManagement") + "/#=Id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'>  Delete </a>").Width(200).Title("Action"); ;
+    }).HtmlAttributes(new { Style = ""})
+    .Sortable()
+    .Scrollable(h => h.Height("auto"))
+    .Filterable()
+    .Pageable(p=>p.Refresh(true).PageSizes(true))
+    .DataSource(datasource => datasource.Ajax().Read(read => read.Action("RoleGrid", "RoleManagement"))
+        .PageSize(5).Model(model => model.Id(expression:p => p.Id)))
+    )

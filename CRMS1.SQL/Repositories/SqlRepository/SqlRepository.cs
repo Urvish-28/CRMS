@@ -40,6 +40,7 @@ namespace CRMS1.SQL.Repositories.SqlRepository
         {
             dbset.Attach(t);
             context.Entry(t).State = EntityState.Modified;
+            Commit();
         }
         public void Delete(Guid Id)
         {

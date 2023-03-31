@@ -1,32 +1,17 @@
 ﻿@model IEnumerable<CRMS1.Core.Models.ConferenceRoom>
-
+@using Kendo.Mvc.UI
+@using CRMS1.Core.ViewModels
+@using CRMS1.Core.Models
 @{
     ViewBag.Title = "Index";
 }
 
 <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
 <script>
-    function myFunction(data) {
-
-        var id = $(data).attr('id')
-        if (confirm("Are You Sure You Want To Delete?") == true) {
-            $.ajax({
-                url: '@Url.Action("Delete","Room")',
-                data: { 'id': id},
-                type: "post",
-                success: function (savingStatus) {
-                    location.reload();
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-
-                }
-            });
-        } else {
-
-        }
-    }
     $(document).ready(function () {
         $('#success').fadeOut(3000);
+        $('#grid').data('KendoGrid').datasource.read();
+        $('#grid').data('KendoGrid').refresh();
     })
 </script>
 
@@ -39,34 +24,35 @@
     </div>
 }
 <p>
-    @Html.ActionLink("Create New", "Create", "Room" , new { @class = "btn btn-primary" })
+    @Html.ActionLink("Create New", "Create", "Room", new { @class = "btn btn-primary" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Capacity)
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
+
+@(
+    Html.Kendo().Grid(Model).Name("grid")
+    .Columns(columns =>
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Capacity)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", "Room", new { id = item.Id }, new { @class = "btn btn-warning" }) |
-                <button id="@item.Id" class="btn btn-danger" onClick="myFunction(this)">Delete</button>
-                @*   @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
-            </td>
-        </tr>
-    }
+        columns.Bound(expression: c => c.Name);
+        columns.Bound(expression: c => c.Capacity);
+        columns.Bound(c => c.Id).HeaderHtmlAttributes(new { @class = "center_text" }).ClientTemplate("<div class='k_action_table'>" + ("<a title='Edit' href='" + Url.Action("Edit", "Room") + "/#=Id#' " + "> Edit </a>") + " ||" +
+                      "<a href='" + Url.Action("Delete", "Room") + "/#=Id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'>  Delete </a>").Width(200).Title("Action"); ;
+    }).HtmlAttributes(new { Style = ""})
+    .Sortable()
+    .Scrollable(h=>h.Height("auto"))
+    .Filterable()
+    .Pageable(p=>p.Refresh(true).PageSizes(true))
+    .DataSource(datasource => datasource.Ajax().Read(read => read.Action("ConferenceRoomGrid", "Room"))
+        .PageSize(5).Model(model => model.Id(expression:p => p.Id)))
+    )
 
-</table>
+@*columns.Template(c => Html.ActionLink("Edit", "Room", new { id = c.Id }));
+    columns.Bound(p => p.Id).ClientTemplate(
+
+            "<a href='" + Url.Action("Edit", "Room") + "/#=id#'>  Edit  </a>" + " |" +
+           "/#@if ()#" +
+         "<a href='" + Url.Action("Delete", "Room") + "/#=id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'>  Delete </a>").Width(200).Title("Action");
+*@
+@* columns.Template(t => { }).Title(string.Empty).Width(90)
+    .ClientTemplate(@"<a href='" + Url.Action("Edit", "Room") + "?Id=#= Id#' class='btn btn-warning btn-xs' title='Modify this item'>Edit</a>");
+        columns.Template(t => { }).Title(string.Empty).Width(90)
+    .ClientTemplate(@"<a href='" + Url.Action("Delete", "Room") + "?Id=#= Id#' class='btn btn-danger btn-xs' title='Delete this item'>Delete</a>");*@

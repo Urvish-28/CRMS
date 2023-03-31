@@ -1,6 +1,9 @@
 ﻿using CRMS1.Core.Models;
 using CRMS1.Core.ViewModels;
 using CRMS1.Services;
+using CRMS1.SQL;
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -95,6 +98,11 @@ namespace CRMS1.WebUI.Controllers
             ConferenceRoom userToDelete = _roomservice.GetRoomById(id);
             _roomservice.DeleteRoom(id);
             return RedirectToAction("Index");
+        }
+        public ActionResult ConferenceRoomGrid([DataSourceRequest] DataSourceRequest request)
+        {
+            IEnumerable<ConferenceRoom> list = _roomservice.GetAllRoom().ToList();
+            return Json(list.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
     }
 }

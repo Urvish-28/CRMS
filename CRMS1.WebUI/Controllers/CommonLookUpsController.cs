@@ -1,6 +1,8 @@
 ﻿using CRMS1.Core.Models;
 using CRMS1.Core.ViewModels;
 using CRMS1.Services;
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +23,7 @@ namespace CRMS1.WebUI.Controllers
         // GET: CommonLookUps
         public ActionResult Index()
         {
-            List<CommonLookups> commonLookups = _commonLookupService.GetAll().ToList();
+            List<CommonLookupsViewModel> commonLookups = _commonLookupService.GetAll();
             return View(commonLookups);
         }
         public ActionResult Create()
@@ -45,7 +47,6 @@ namespace CRMS1.WebUI.Controllers
                 }
                 else
                 {
-                    model.CreatedBy = (Guid)Session["UserId"];
                     _commonLookupService.AddCommonLookup(model);
                     TempData["Alert"] = "Create Successfully!!";
                     return Content("true");
@@ -81,7 +82,6 @@ namespace CRMS1.WebUI.Controllers
                 }
                 else
                 {
-                    //model.UpdatedBy = (Guid)Session["UserId"];
                     _commonLookupService.UpdateCommonLookup(model);
                     TempData["Alert"] = "Edit Successfully!!";
                     return Content("true");
@@ -94,6 +94,11 @@ namespace CRMS1.WebUI.Controllers
             _commonLookupService.DeleteCommonLookup(id);
             TempData["Alert"] = "Delete Successfully!!";
             return RedirectToAction("Index");
+        }
+        public ActionResult CommonLookupGrid([DataSourceRequest] DataSourceRequest request)
+        {
+            IEnumerable<CommonLookupsViewModel> list = _commonLookupService.GetAll();
+            return Json(list.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
     }
 }

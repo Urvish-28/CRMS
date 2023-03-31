@@ -2,6 +2,8 @@
 using CRMS1.Core.ViewModels;
 using CRMS1.Services;
 using CRMS1.SQL;
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -106,6 +108,11 @@ namespace CRMS1.WebUI.Controllers
             Roles rolesToDelete = _roleService.GetRoleById(id);
             _roleService.DeleteRole(id);
             return RedirectToAction("Index");
+        }
+        public ActionResult RoleGrid([DataSourceRequest] DataSourceRequest request)
+        {
+            IEnumerable<Roles> list = _roleService.GetAllRoles().ToList();
+            return Json(list.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
     }
 }

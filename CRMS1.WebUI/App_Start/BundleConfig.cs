@@ -25,6 +25,14 @@ namespace CRMS1.WebUI
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+            bundles.Add(new ScriptBundle("~/bundles/kendoJs").Include(
+                            "~/Scripts/kendo/2017.2.621/kendo.all.min.js",
+                            "~/Scripts/kendo/2017.2.621/jszip.min.js",
+                            "~/Scripts/kendo/2017.2.621/kendo.aspnetmvc.min.js"));
+            bundles.Add(new StyleBundle("~/bundles/kendoCss").Include(
+                            "~/Content/kendo/2017.2.621/kendo.common.min.css",
+                            "~/Content/kendo/2017.2.621/kendo.metro.min.css"));
+            bundles.IgnoreList.Clear();
         }
     }
 }

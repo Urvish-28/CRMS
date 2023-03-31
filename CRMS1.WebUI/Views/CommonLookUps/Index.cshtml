@@ -1,5 +1,4 @@
-﻿@model IEnumerable<CRMS1.Core.Models.CommonLookups>
-
+﻿@model List<CRMS1.Core.ViewModels.CommonLookupsViewModel>
 @{
     ViewBag.Title = "Index";
 }
@@ -18,58 +17,33 @@
 }
 <br />
 
-<table class="table table-bordered">
-    <tr class="btn-dark">
-        <th>
-            @Html.DisplayNameFor(model => model.ConfigName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ConfigKey)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ConfigValue)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DisplayOrder)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsActive)
-        </th>
-        <th>Action</th>
-    </tr>
-
-    @foreach (var item in Model)
+@(
+        Html.Kendo().Grid(Model).Name("grid")
+    .Columns(columns =>
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ConfigName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ConfigKey)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ConfigValue)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DisplayOrder)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
-                <button id="@item.Id" type="button" class="btn btn-sm btn-warning" onclick="editcommonlookup(this)">Edit</button>
-                <button id="@item.Id" class="btn btn-danger" onClick="myFunction(this)">Delete</button>
-            </td>
-        </tr>
-    }
+        columns.Bound(expression: c => c.ConfigName);
+        columns.Bound(expression: c => c.ConfigKey);
+        columns.Bound(expression: c => c.ConfigValue);
+        columns.Bound(expression: c => c.DisplayOrder);
+        columns.Bound(expression: c => c.Description);
+        columns.Bound(expression: c => c.IsActive);
+        columns.Command(c =>
+        {
+            c.Edit();
+            c.Destroy();
+        }).Width(200);
+    })
+    .Editable(edit => edit.Mode(GridEditMode.PopUp))
+    .Sortable()
+    .Scrollable(h=>h.Height("auto"))
+    .Filterable()
+    .Pageable(p=>p.Refresh(true).PageSizes(true))
+    .DataSource(datasource => datasource.Ajax().Read(read => read.Action("CommonLookupGrid", "CommonLookUps"))
+    .Update(edit=>edit.Action("Edit" , "CommonLookUps"))
+    .Destroy(dlt=>dlt.Action("Delete" , "CommonLookUps"))
+    .PageSize(5).Model(model => model.Id(expression:p => p.Id)))
+    )
 
-</table>
 
 <div id="createPopupModalForm">
     <div class="modal" id="addmodal"></div>
@@ -78,23 +52,6 @@
 
 <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
 <script>
-    function myFunction(data) {
-
-             var id = $(data).attr('id')
-        if (confirm("Are You Sure You Want To Delete?") == true) {
-            $.ajax({
-                url: '@Url.Action("Delete", "CommonLookUps")',  
-                data: { 'id': id},
-                type: "post",
-                success: function (savingStatus) {
-                    location.reload();
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                }
-            });
-        } else {
-        }
-    }
 
     function createcommonlookup() {
         $.ajax({
@@ -108,7 +65,7 @@
     }
 
     function editcommonlookup(data) {
-
+        debugger;
         var id = $(data).attr('id')
         $.ajax({
             url: '@Url.Action("Edit","CommonLookUps")',
@@ -122,5 +79,62 @@
     }
     $(document).ready(function () {
         $('#alert').fadeOut(3000);
+        $('#grid').data('KendoGrid').datasource.read();
+        $('#grid').data('KendoGrid').refresh();
     })
 </script>
+
+
+@*
+    <table class="table table-bordered">
+        <tr class="btn-dark">
+            <th>
+                @Html.DisplayNameFor(model => model.ConfigName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConfigKey)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConfigValue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DisplayOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th>Action</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ConfigName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ConfigKey)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ConfigValue)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DisplayOrder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td>
+                    <button id="@item.Id" type="button" class="btn btn-sm btn-warning" onclick="editcommonlookup(this)">Edit</button>
+                    <button id="@item.Id" class="btn btn-danger" onClick="myFunction(this)">Delete</button>
+                </td>
+            </tr>
+        }
+
+    </table> *@

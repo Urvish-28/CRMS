@@ -1,6 +1,8 @@
 ﻿using CRMS1.Core.Models;
 using CRMS1.Core.ViewModels;
 using CRMS1.Services;
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -117,6 +119,11 @@ namespace CRMS1.WebUI.Controllers
             _usersevice.DeleteUser(id);
             TempData["AlertMsg"] = "Employee Deleted successfully...!";
             return RedirectToAction("Index");
+        }
+        public ActionResult UserGrid([DataSourceRequest] DataSourceRequest request)
+        {
+            IEnumerable<IndexViewModel> list = _usersevice.GetUserList().ToList();
+            return Json(list.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
     }
 }
