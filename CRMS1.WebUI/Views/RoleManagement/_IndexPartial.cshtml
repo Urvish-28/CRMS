@@ -1,5 +1,12 @@
 ﻿
 
+@if (@TempData["RoleAlert"] != null)
+{
+    <div id="success" class="alert alert-success">
+        <strong>Success !</strong> @TempData["RoleAlert"]
+    </div>
+}
+
 @(
     Html.Kendo().Grid<CRMS1.Core.Models.Roles>().Name("Rolegrid")
     .Columns(columns =>

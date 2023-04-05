@@ -50,14 +50,14 @@ namespace CRMS1.WebUI.Controllers
             {
                 if (IsExist)
                 {
-                    TempData["AlertMsg"] = "Role Already Exists";
+                    TempData["RoleAlert"] = "Role Already Exists";
                     return View(model);
                 }
                 else
                 {
                     model.CreatedBy = (Guid)Session["UserId"];
                     _roleService.CreateRole(model);
-                    TempData["AlertMsg"] = "Role is added successfully...!";
+                    TempData["RoleAlert"] = "Role is added successfully...!";
                    /* return RedirectToAction("Index");*/
                     return new RedirectResult(Url.Action("Dashboard", "Account", new { selectedTabId = 1 }));
                 }
@@ -91,14 +91,14 @@ namespace CRMS1.WebUI.Controllers
             {
                 if (IsExist)
                 {
-                    TempData["AlertMsg"] = "Employee Already Exists";
+                    TempData["RoleAlert"] = "Employee Already Exists";
                     return View(model);
                 }
                 else
                 {
                     model.UpdatedBy = (Guid)Session["UserId"];
                     _roleService.UpdateRole(model);
-                    TempData["AlertMsg"] = "Role Edited successfully...!";
+                    TempData["RoleAlert"] = "Role Edited successfully...!";
                     return new RedirectResult(Url.Action("Dashboard", "Account", new { selectedTabId = 1 }));
                 }
             }

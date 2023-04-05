@@ -48,7 +48,7 @@ namespace CRMS1.WebUI.Controllers
                 else
                 {
                     _commonLookupService.AddCommonLookup(model);
-                    TempData["Alert"] = "Create Successfully!!";
+                    TempData["CMAlert"] = "Create Successfully!!";
                     return Content("true");
                 }
             }
@@ -83,7 +83,7 @@ namespace CRMS1.WebUI.Controllers
                 else
                 {
                     _commonLookupService.UpdateCommonLookup(model);
-                    TempData["Alert"] = "Edit Successfully!!";
+                    TempData["CMAlert"] = "Edit Successfully!!";
                     return Content("true");
                 }
             }

@@ -58,15 +58,15 @@ namespace CRMS1.WebUI.Controllers
                 {
                     model.RoleDropdown = _roleService.GetAllRoles()
                     .Select(x => new DropDown() { Id = x.Id, Name = x.Name }).ToList();
-                    TempData["AlertMsg"] = "Employee Already Exists";
+                    TempData["UserAlert"] = "Employee Already Exists";
                     return View(model);
                 }
                 else
                 {
                      model.CreatedBy = (Guid)Session["UserId"];
                     _usersevice.AddUser(model);
-                    TempData["AlertMsg"] = "Employee added successfully...!";
-                    return RedirectToAction("Index");
+                    TempData["UserAlert"] = "Employee added successfully...!";
+                    return new RedirectResult(Url.Action("Dashboard", "Account", new { selectedTabId = 0 }));
                 }
 
             }
@@ -109,7 +109,7 @@ namespace CRMS1.WebUI.Controllers
                     model.UpdatedBy = (Guid)Session["UserId"];
                     _usersevice.UpdateUser(model);
                     TempData["AlertMsg"] = "Employee Details Edited successfully...!";
-                    return RedirectToAction("Index");
+                    return new RedirectResult(Url.Action("Dashboard", "Account", new { selectedTabId = 0 }));
                 }
             }
         }

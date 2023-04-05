@@ -43,14 +43,14 @@ namespace CRMS1.WebUI.Controllers
             {
                 if (IsExist == true)
                 {
-                    TempData["AlertMsg"] = "ConferenceRoom Already Exists";
+                    TempData["RoomAlert"] = "ConferenceRoom Already Exists";
                     return View(model);
                 }
                 else
                 {
                     model.CreatedBy = (Guid)Session["UserId"];
                     _roomservice.CreateRoom(model);
-                    TempData["AlertMsg"] = "Conference Room added successfully...!";
+                    TempData["RoomAlert"] = "Conference Room added successfully...!";
                     return RedirectToAction("Index");
                 }
             }
@@ -81,14 +81,14 @@ namespace CRMS1.WebUI.Controllers
             {
                 if (IsExist)
                 {
-                    TempData["AlertMsg"] = "ConferenceRoom Already Exists";
+                    TempData["RoomAlert"] = "ConferenceRoom Already Exists";
                     return View(model);
                 }
                 else
                 {
                     model.UpdatedBy = (Guid)Session["UserId"];
                     _roomservice.UpdateRoom(model);
-                    TempData["AlertMsg"] = "Conference Room Edited successfully...!";
+                    TempData["RoomAlert"] = "Conference Room Edited successfully...!";
                     return RedirectToAction("Index");
                 }
             }

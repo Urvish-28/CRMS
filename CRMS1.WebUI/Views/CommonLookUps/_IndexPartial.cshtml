@@ -1,4 +1,12 @@
-﻿@(
+﻿
+@if (@TempData["CMAlert"] != null)
+{
+    <div id="alert" class="alert alert-success">
+        <strong>Success !</strong> @TempData["CMAlert"]
+    </div>
+}
+
+@(
         Html.Kendo().Grid<CRMS1.Core.ViewModels.CommonLookupsViewModel>().Name("CommonLookupgrid")
     .Columns(columns =>
     {

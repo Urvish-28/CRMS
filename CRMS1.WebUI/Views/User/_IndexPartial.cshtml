@@ -1,4 +1,12 @@
-﻿@(
+﻿
+@if (@TempData["UserAlert"] != null)
+{
+    <div id="success" class="alert alert-success">
+        <strong>Success !</strong> @TempData["UserAlert"]
+    </div>
+}
+
+@(
     Html.Kendo().Grid<CRMS1.Core.ViewModels.IndexViewModel>().Name("Usergrid")
     .Columns(columns =>
     {

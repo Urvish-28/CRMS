@@ -10,10 +10,10 @@
 <p>
     @Html.ActionLink("Create New", "Create", "User", new { @class = "btn btn-primary" })
 </p>
-@if (@TempData["AlertMsg"] != null)
+@if (@TempData["UserAlert"] != null)
 {
     <div id="success" class="alert alert-success">
-        <strong>Success !</strong> @TempData["AlertMsg"]
+        <strong>Success !</strong> @TempData["UserAlert"]
     </div>
 }
 

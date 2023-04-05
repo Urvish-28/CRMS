@@ -9,10 +9,10 @@
     })
 </script>
 
-@if (@TempData["AlertMsg"] != null)
+@if (@TempData["UserAlert"] != null)
 {
     <div id="already" class="alert alert-danger">
-        <strong>Wrong !</strong> @TempData["AlertMsg"]
+        <strong>Wrong !</strong> @TempData["UserAlert"]
     </div>
 }
 
