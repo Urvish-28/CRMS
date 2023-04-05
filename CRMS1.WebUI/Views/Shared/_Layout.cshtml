@@ -4,50 +4,93 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - CRMS </title>
-    @*  @Styles.Render("~/Content/css") *@
+    @Styles.Render("~/Content/css") 
     @Scripts.Render("~/bundles/modernizr")
-    @*    <script src="~/Scripts/kendo/2017.2.621/jquery.min.js"></script>*@
-    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    @*  <script src="~/Scripts/kendo/2017.2.621/jquery.min.js"></script>*@
+        <link href="~/Content/css/style.css" rel="stylesheet" />
+     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
     <script src="~/Scripts/kendo/2017.2.621/kendo.all.min.js"></script>
     <script src="~/Scripts/kendo/2017.2.621/kendo.aspnetmvc.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-info">
-        <a class="navbar-brand" href="#">CRMS</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
-        <div class=" navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="@Url.Action("DashBoard","Account")">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Index","CommonLookUps")">CommonLookup</a>
-                </li>
-                @*  <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index","RoleManagement")">Role</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index","Room")">Conference Room</a>
-                    </li>*@
-            </ul>
-            <div>
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active navbar-right">
-                        <a class="nav-link">Hello @Session["Name"]</a>
-                    </li>
-                    <li class="nav-item active navbar-right">
-                        <a href="@Url.Action("LogOut","Account")" class="btn btn-danger">Logout</a>
-                    </li>
-                </ul>
+    <div class="header">
+        <div class="container">
+            <div class="align-center align-between">
+                <div class="align-center">
+                    <div class="logoDiv"> <a href="#"> <img src="~/Content/image/logo.svg" alt="CRB Logo"> </a> </div>
+
+                    <div class="menuDiv">
+                        <ul class="align-center">
+                            <li> <a href="#"> Home </a> </li>
+                            <li> <a href="@Url.Action("Index" , "Room")"> Conference </a> </li>
+                            <li> <a href="@Url.Action("DashBoard","Account")"> Systems  </a> </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="userInfo">
+                    <div class="align-center">
+                        <div class="userProfile">
+
+                        </div>
+                        <div class="userName align-center">
+                            <span>Hello @Session["Name"] </span>
+                            <i> <img src="~/Content/image/down-arrow.svg" alt="Dropdown Icon"> </i>
+                            <div class="userInfoDiv">
+                                <div class="userInfoBox">
+                                    <a href="#">Profile</a>
+                                    <a href="#">Settings</a>
+                                    <a href="@Url.Action("Logout" , "Account")">logout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
-    </nav>
+
+    </div>
+
+    @*
+        <nav class="navbar navbar-expand-lg navbar-light bg-info">
+            <a class="navbar-brand" href="#">CRMS</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class=" navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="@Url.Action("DashBoard","Account")">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index","CommonLookUps")">CommonLookup</a>
+                    </li>
+                    @*  <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index","RoleManagement")">Role</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index","Room")">Conference Room</a>
+                        </li>
+                </ul>
+                <div>
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active navbar-right">
+                            <a class="nav-link">Hello @Session["Name"]</a>
+                        </li>
+                        <li class="nav-item active navbar-right">
+                            <a href="@Url.Action("LogOut","Account")" class="btn btn-danger">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav> *@
 
     <div class="container body-content">
+        <br/>
         @RenderBody()
         <hr />
         <footer>

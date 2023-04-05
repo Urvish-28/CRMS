@@ -6,61 +6,59 @@
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-us">
 <head>
     <title>@ViewBag.Title</title>
-    <!-- Custom styles for this template -->
-    <!-- Bootstrap core CSS -->
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/Site.css" rel="stylesheet" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CRB Login</title>
+    <link rel="stylesheet" href="~/Content/css/login.css">
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     <script src='@Url.Content("~/Scripts/jquery.validate.js")' type='text/javascript'></script>
     <script src='@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")' type='text/javascript'></script>
+
 
 </head>
 <body>
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-        <section class="login-section">
-            <div class="login-from">
-                <div class="login-logo mb-4 text-center">
-                    <a href=""><img src="~/Content/Images/crms.png" width="200"></a>
+        <div class="loginDiv">
+            <div class="loginBox">
+                <div class="loginLogo">
+                    <img src="~/Content/image/logo.svg" alt="CRB Logo">
                 </div>
-                <h1 class="h4 mb-3">Sign In</h1>
-                <form method="post">
-                    <div class="form-group">
-                        <label class="label-title">Email Id</label>
-                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group">
-                        <label class="label-title">Password</label>
-                        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                    </div>
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <div class="form-group text-right">
-                        <a class="forgotPassword" href="@Url.Action("", "")">Forgot Password?</a>
-                    </div>
-                    @*  <div class="form-group">
-                            <div class="col-md-10">
-                                @Html.CheckBoxFor(model => model.RememberMe)
-                                @Html.LabelFor(model => model.RememberMe, htmlAttributes: new { @class = "control-label col-md-4" })
-                                @Html.ValidationMessageFor(model => model.RememberMe, "", new { @class = "text-danger" })
-                            </div>
-                        </div>*@
-                    <div class="mt-4">
-                        <button class="w-100 btn btn-lg btn-success" id="btnlogin" type="submit">Sign In</button>
-                    </div>
 
-                </form>
+                <div class="formSection">
+                    <div class="inputBox">
+                        <label>Username</label>
+                        @* <input type="text" placeholder="Email" />*@
+                        @Html.TextBoxFor(model => model.Email, new { placeholder = "Email", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "errorMsg" })
+                    </div>
+                    <div class="inputBox">
+                        <label>Password</label>
+                        @*<input type="password" placeholder="Password" />*@
+                        @Html.PasswordFor(model => model.Password, new { placeholder = "Password", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "errorMsg" })
+                    </div>
+                    <div class="inputBox">
+                        @Html.ValidationSummary(true, "", new { @class = "errorMsg" })
+                    </div>
+                    <!-- <div class="inputBox forgotPsw">
+                        <a href="#">Forgot Password</a>
+                    </div> -->
+                    <div class="inputBox btnInput">
+                        @*   <a href="index.html" class="loginBtn">Login</a>*@
+                        <button class="loginBtn" type="submit">Login</button>
+                    </div>
+                </div>
+
             </div>
-        </section>
+        </div>
     }
 </body>
 </html>
-
-
-

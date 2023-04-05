@@ -3,24 +3,242 @@
     ViewBag.Title = "DashBoard";
 }
 
-<h1>Admin DashBoard</h1>
 
-@*<h5 class="col-lg-10" style="text-align:right"> <button>
-    @Html.ActionLink("LogOut", "LogOut", "Account")
-</button>
-</h5>*@
+<!-- Section -->
+<div class="section">
+    <div class="container">
+        <div class="topTitleHead pb20">
+            <h1> Systems</h1>
+        </div>
 
-<div class="col-md-6">
-    <h4>User Management</h4>
-    <div class="list-group">
-        @Html.ActionLink("Add Employee", "Index", "User", null, new { @class = "list-group-item" })
-        @Html.ActionLink("Add Role", "Index", "RoleManagement", null, new { @class = "list-group-item" })
+        <!----- Tabs ---->
+        <div class="tab">
+            <ul class="align-center">
+                <li> <a class="tablinks" onclick="openSystems(event, 'UserManagement')"> User Management </a></li>
+                <li> <a class="tablinks" onclick="openSystems(event, 'RoleManagement')"> Role Management</a> </li>
+                <li> <a class="tablinks" onclick="openSystems(event, 'Settings')">Settings </a> </li>
+                <li> <a class="tablinks" onclick="openSystems(event, 'Activitylogs')">Activity logs </a> </li>
+                <li> <a class="tablinks" onclick="openSystems(event, 'Errorlogs')">Error logs </a> </li>
+            </ul>
+        </div>
+
+        <div class="tabContentDetails">
+            <div id="UserManagement" class="tabcontent" style="display: block">
+                <div class="align-center align-between pb20">
+                    <h2>User Management</h2>
+                    <div class="btnDiv">
+                        <a href="@Url.Action("Create" , "User")">+ Add New User</a>
+                    </div>
+                </div>
+                @Html.Partial("~/Views/User/_IndexPartial.cshtml")
+            </div>
+        </div>
+        <div id="RoleManagement" class="tabcontent">
+            <div class="align-center align-between pb20">
+                <h2>Role Management</h2>
+                <div class="btnDiv">
+                    <a href="@Url.Action("Create","Rolemanagement")">+ Add New Role</a>
+                </div>
+            </div>
+            <div class="tableDiv">
+                @Html.Partial("~/Views/RoleManagement/_IndexPartial.cshtml")
+            </div>
+        </div>
+        <div id="Settings" class="tabcontent">
+            <div class="align-center align-between pb20">
+                <h2>Settings</h2>
+                <div class="btnDiv">
+                    <a onclick="createcommonlookup()">+ Add Setting</a>
+                </div>
+            </div>
+            <div class="tableDiv">
+                @Html.Partial("~/Views/CommonLookUps/_IndexPartial.cshtml")
+            </div>
+        </div>
+        <div id="Activitylogs" class="tabcontent">
+            <div class="align-center align-between pb20">
+                <h2>Activity logs</h2>
+            </div>
+            <div class="tableDiv">
+                <table>
+                    <thead>
+                        <tr>
+                            <th> User Name </th>
+                            <th> Url</th>
+                            <th> Http Method </th>
+                            <th> Http  Status </th>
+                            <th> Excution Time </th>
+                            <th class="text-center" style="width: 12%;"> Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td> -  </td>
+                            <td> - </td>
+                            <td> - </td>
+                            <td>
+                                <div class="statusDiv Processing"> Processing  </div>
+                            </td>
+                            <td> - </td>
+                            <td>
+                                <div class="actionIcon">
+                                    <a href="#"> <i> <img src="~/Content/image/edit.svg" alt="Edit icon"> </i> </a>
+                                    <a href="#"> <i> <img src="~/Content/image/key.svg" alt="Key icon"> </i> </a>
+                                    <a href="#"> <i> <img src="~/Content/image/trash.svg" alt="Delete icon"> </i> </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> -  </td>
+                            <td> - </td>
+                            <td> - </td>
+                            <td>
+                                <div class="statusDiv Failed"> Failed  </div>
+                            </td>
+                            <td> - </td>
+                            <td>
+                                <div class="actionIcon">
+                                    <a href="#"> <i> <img src="~/Content/image/edit.svg" alt="Edit icon"> </i> </a>
+                                    <a href="#"> <i> <img src="~/Content/image/key.svg" alt="Key icon"> </i> </a>
+                                    <a href="#"> <i> <img src="~/Content/image/trash.svg" alt="Delete icon"> </i> </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> -  </td>
+                            <td> - </td>
+                            <td> - </td>
+                            <td>
+                                <div class="statusDiv Processed"> Processed  </div>
+                            </td>
+                            <td> - </td>
+                            <td>
+                                <div class="actionIcon">
+                                    <a href="#"> <i> <img src="~/Content/image/edit.svg" alt="Edit icon"> </i> </a>
+                                    <a href="#"> <i> <img src="~/Content/image/key.svg" alt="Key icon"> </i> </a>
+                                    <a href="#"> <i> <img src="~/Content/image/trash.svg" alt="Delete icon"> </i> </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> -  </td>
+                            <td> - </td>
+                            <td> - </td>
+                            <td>
+                                <div class="statusDiv New"> New  </div>
+                            </td>
+                            <td> - </td>
+                            <td>
+                                <div class="actionIcon">
+                                    <a href="#"> <i> <img src="~/Content/image/edit.svg" alt="Edit icon"> </i> </a>
+                                    <a href="#"> <i> <img src="~/Content/image/key.svg" alt="Key icon"> </i> </a>
+                                    <a href="#"> <i> <img src="~/Content/image/trash.svg" alt="Delete icon"> </i> </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="Errorlogs" class="tabcontent">
+            <div class="align-center align-between pb20">
+                <h2>Error logs</h2>
+            </div>
+            <div class="tableDiv">
+                <table>
+                    <thead>
+                        <tr>
+                            <th> User Name </th>
+                            <th> Url</th>
+                            <th> Http Method </th>
+                            <th> Http  Status </th>
+                            <th> Excution Time </th>
+                            <th class="text-center" style="width: 12%;"> Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td> -  </td>
+                            <td> - </td>
+                            <td> - </td>
+                            <td>
+                                <div class="statusDiv Failed"> Failed  </div>
+                            </td>
+                            <td> - </td>
+                            <td>
+                                <div class="actionIcon">
+                                    <a href="#"> <i> <img src="~/Content/image/edit.svg" alt="Edit icon"> </i> </a>
+                                    <a href="#"> <i> <img src="~/Content/image/key.svg" alt="Key icon"> </i> </a>
+                                    <a href="#"> <i> <img src="~/Content/image/trash.svg" alt="Delete icon"> </i> </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+<script>
+    function openSystems(evt, SystemsName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(SystemsName).style.display = "block";
+        evt.currentTarget.className += " active";
 
-<div class="col-md-6">
-    <h4>Room Management</h4>
-    <div class="list-group">
-        @Html.ActionLink("Add Conference Room", "Index", "Room", null, new { @class = "list-group-item" })
-    </div>
-</div>
+@*        switch (SystemsName) {
+            case 'RoleManagement':
+        var url = $('#RoleManagement').data('url');
+        $.get(url, function (data) {
+            $("#RoleManagement").html(data).load($(this).data('url'));
+        });
+        break;
+
+            case 'CommonLookUp':
+        var url = $('#CommonLookUp').data('url');
+        $.get(url, function (data) {
+            $("#CommonLookUp").html(data).load($(this).data('url'));
+        });
+        break;
+            default:
+        }*@
+    }
+
+    function createcommonlookup() {
+        $.ajax({
+            url: '@Url.Action("Create","CommonLookUps")',
+            type: "Get",
+            success: function (data) {
+                $("#createPopupModalForm").html(data);
+                $("#addmodal").modal('show');
+            }
+        });
+    }
+
+    $(document).ready(function ()
+    {
+        var activeTabId = parseInt('@ViewBag.DashBoard');;
+        var tabcontent = document.getElementsByClassName("tabcontent");
+        var tablinks = document.getElementsByClassName("tablinks");
+        if (activeTabId == 0)
+        {
+            tablinks[0].className = 'tablinks active';
+            tabcontent[0].style.display = "block";
+        }
+        else
+        {
+            tablinks[0].className = 'tablinks';
+            tabcontent[0].style.display = "none";
+
+            tablinks[activeTabId].className = 'tablinks active';
+            tabcontent[activeTabId].style.display = "block";
+        }
+    });
+</script>

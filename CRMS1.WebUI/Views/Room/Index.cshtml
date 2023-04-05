@@ -1,19 +1,10 @@
 ﻿@model IEnumerable<CRMS1.Core.Models.ConferenceRoom>
 @using Kendo.Mvc.UI
-@using CRMS1.Core.ViewModels
-@using CRMS1.Core.Models
+
 @{
     ViewBag.Title = "Index";
 }
 
-<script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
-<script>
-    $(document).ready(function () {
-        $('#success').fadeOut(3000);
-        $('#grid').data('KendoGrid').datasource.read();
-        $('#grid').data('KendoGrid').refresh();
-    })
-</script>
 
 <br />
 <h2>Conference Room</h2>
@@ -43,16 +34,43 @@
     .Pageable(p=>p.Refresh(true).PageSizes(true))
     .DataSource(datasource => datasource.Ajax().Read(read => read.Action("ConferenceRoomGrid", "Room"))
         .PageSize(5).Model(model => model.Id(expression:p => p.Id)))
+    .ToolBar(toolbar =>
+        {
+            toolbar.Template(@<text>
+                <div class="toolbar">
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </text>);
+        })
     )
 
-@*columns.Template(c => Html.ActionLink("Edit", "Room", new { id = c.Id }));
-    columns.Bound(p => p.Id).ClientTemplate(
+<script>
+    $(document).ready(function () {
+        //Alert Msg
+        $('#success').fadeOut(3000);
 
-            "<a href='" + Url.Action("Edit", "Room") + "/#=id#'>  Edit  </a>" + " |" +
-           "/#@if ()#" +
-         "<a href='" + Url.Action("Delete", "Room") + "/#=id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'>  Delete </a>").Width(200).Title("Action");
-*@
-@* columns.Template(t => { }).Title(string.Empty).Width(90)
-    .ClientTemplate(@"<a href='" + Url.Action("Edit", "Room") + "?Id=#= Id#' class='btn btn-warning btn-xs' title='Modify this item'>Edit</a>");
-        columns.Template(t => { }).Title(string.Empty).Width(90)
-    .ClientTemplate(@"<a href='" + Url.Action("Delete", "Room") + "?Id=#= Id#' class='btn btn-danger btn-xs' title='Delete this item'>Delete</a>");*@
+        //Search
+        $("#FieldFilter").keyup(function () {
+
+            var value = $("#FieldFilter").val();
+            grid = $("#grid").data("kendoGrid");
+
+            if (value) {
+                grid.dataSource.filter({ field: "Name", operator: "contains", value: value });
+            } else {
+                grid.dataSource.filter({});
+            }
+        });
+    })
+</script>

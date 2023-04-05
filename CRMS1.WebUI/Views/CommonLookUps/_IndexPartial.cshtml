@@ -1,24 +1,5 @@
-﻿@model List<CRMS1.Core.ViewModels.CommonLookupsViewModel>
-@{
-    ViewBag.Title = "Index";
-}
-<h2>CommonLookUp</h2>
-
-<div>
-    <button id="hello" type="button" class="btn btn-sm btn-primary" onclick="createcommonlookup()">
-        Create
-    </button>
-</div>
-@if (@TempData["Alert"] != null)
-{
-    <div id="alert" class="alert alert-success">
-        <strong>Success !</strong> @TempData["Alert"]
-    </div>
-}
-<br />
-
-@(
-        Html.Kendo().Grid<CRMS1.Core.ViewModels.CommonLookupsViewModel>().Name("grid")
+﻿@(
+        Html.Kendo().Grid<CRMS1.Core.ViewModels.CommonLookupsViewModel>().Name("CommonLookupgrid")
     .Columns(columns =>
     {
         columns.Bound(expression: c => c.ConfigName);
@@ -117,7 +98,7 @@
         $("#FieldFilter").keyup(function () {
 
             var value = $("#FieldFilter").val();
-            grid = $("#grid").data("kendoGrid");
+            grid = $("#CommonLookupgrid").data("kendoGrid");
 
             if (value) {
                 grid.dataSource.filter({ field: "ConfigName", operator: "contains", value: value });

@@ -57,15 +57,16 @@ namespace CRMS1.WebUI.Controllers
             }
         }
 
-        public ActionResult DashBoard()
+        public ActionResult DashBoard(int selectedTabId = 0)
         {
+            ViewBag.DashBoard = selectedTabId;
             return View();
         }
 
         public ActionResult LogOut()
         {
             FormsAuthentication.SignOut();
-            
+
             return RedirectToAction("Login", "Account");
         }
     }

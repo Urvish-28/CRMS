@@ -1,25 +1,7 @@
-﻿@model IEnumerable<CRMS1.Core.Models.Roles>
-
-@{
-    ViewBag.Title = "Index";
-}
-
-<br />
-<h2>Role</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create", "RoleManagement", new { @class = "btn btn-primary" })
-</p>
-@if (@TempData["AlertMsg"] != null)
-{
-    <div id="success" class="alert alert-success">
-        <strong>Success !</strong> @TempData["AlertMsg"]
-    </div>
-}
-
+﻿
 
 @(
-    Html.Kendo().Grid(Model).Name("grid")
+    Html.Kendo().Grid<CRMS1.Core.Models.Roles>().Name("Rolegrid")
     .Columns(columns =>
     {
         columns.Bound(expression: c => c.Name);
@@ -63,7 +45,7 @@
         $("#FieldFilter").keyup(function () {
 
             var value = $("#FieldFilter").val();
-            grid = $("#grid").data("kendoGrid");
+            grid = $("#Rolegrid").data("kendoGrid");
 
             if (value) {
                 grid.dataSource.filter({ field: "Name", operator: "contains", value: value });
