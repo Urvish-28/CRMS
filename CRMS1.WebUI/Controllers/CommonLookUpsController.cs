@@ -24,7 +24,7 @@ namespace CRMS1.WebUI.Controllers
         public ActionResult Index()
         {
             List<CommonLookupsViewModel> commonLookups = _commonLookupService.GetAll();
-            return View(commonLookups);
+            return PartialView("_IndexPartial",commonLookups);
         }
         public ActionResult Create()
         {

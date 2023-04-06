@@ -25,7 +25,7 @@
             @Html.AntiForgeryToken()
             <div class="formDiv">
                 <div class="topTitleHead pb20">
-                    <h1>Edit Conference Room</h1>
+                    <h1>Add New Role</h1>
                 </div>
                 <div class="formSection">
                     <div class="inputBox">
@@ -48,5 +48,5 @@
 </div>
 
 <div>
-    @Html.ActionLink("Back to List", "DashBoard", "Account", new { selectedTabId = 1 }, null)
+    <a href="javascript: history.go(-1)" class="btn btn-warning">Cancel</a>
 </div>

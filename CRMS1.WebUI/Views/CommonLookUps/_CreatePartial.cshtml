@@ -83,7 +83,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" onclick="closePopup()">Close</button>
                         <button type="submit" class="btn btn-success">Save</button>
                     </div>
                 </form>
@@ -110,7 +110,7 @@
 
     //Close Modal
     function closePopup() {
-        location.reload();
+        location.href = '@Url.Action("DashBoard" , "Account" ,new { selectedTabId = 2 })';
     }
 
     //Create:Post Bootstrap Modal

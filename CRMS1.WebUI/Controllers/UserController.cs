@@ -33,7 +33,7 @@ namespace CRMS1.WebUI.Controllers
         public ActionResult Index()
         {
             var list = _usersevice.GetUserList();
-            return View(list);
+            return PartialView("_indexPartial" , list);
         }
         public ActionResult Create()
         {
@@ -101,14 +101,14 @@ namespace CRMS1.WebUI.Controllers
             {
                 if (IsExist)
                 {
-                    TempData["AlertMsg"] = "Employee Already Exists";
+                    TempData["UserAlert"] = "Employee Already Exists";
                     return View(model);
                 }
                 else
                 {
                     model.UpdatedBy = (Guid)Session["UserId"];
                     _usersevice.UpdateUser(model);
-                    TempData["AlertMsg"] = "Employee Details Edited successfully...!";
+                    TempData["UserAlert"] = "Employee Details Edited successfully...!";
                     return new RedirectResult(Url.Action("Dashboard", "Account", new { selectedTabId = 0 }));
                 }
             }

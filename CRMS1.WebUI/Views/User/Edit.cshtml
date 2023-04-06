@@ -26,7 +26,7 @@
             @Html.HiddenFor(model => model.Id)
             @Html.HiddenFor(model => model.Password)
             <div class="topTitleHead pb20">
-                <h1> Add New User</h1>
+                <h1> Edit User</h1>
             </div>
             <div class="formSection">
                 <div class="inputBox">
@@ -87,6 +87,6 @@
     </div>
 </div>
 <div>
-    @*@Html.ActionLink("Back to List", "Index")*@
-    @Html.ActionLink("Back to List", "Dashboard", "Account")
+    <a href="javascript: history.go(-1)" class="btn btn-warning">Cancel</a>
+    @*@Html.ActionLink("Back to List", "Dashboard", "Account")*@
 </div>

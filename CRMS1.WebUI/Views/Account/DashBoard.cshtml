@@ -29,7 +29,9 @@
                         <a href="@Url.Action("Create" , "User")">+ Add New User</a>
                     </div>
                 </div>
-                @Html.Partial("~/Views/User/_IndexPartial.cshtml")
+                <div class="tableDiv" id="UserLoad">
+                   @* @Html.Partial("~/Views/User/_IndexPartial.cshtml")*@
+                </div>
             </div>
         </div>
         <div id="RoleManagement" class="tabcontent">
@@ -39,8 +41,8 @@
                     <a href="@Url.Action("Create","Rolemanagement")">+ Add New Role</a>
                 </div>
             </div>
-            <div class="tableDiv">
-                @Html.Partial("~/Views/RoleManagement/_IndexPartial.cshtml")
+            <div class="tableDiv" id="RoleLoad">
+               @* @Html.Partial("~/Views/RoleManagement/_IndexPartial.cshtml")*@
             </div>
         </div>
         <div id="Settings" class="tabcontent">
@@ -50,8 +52,8 @@
                     <a onclick="createcommonlookup()">+ Add Setting</a>
                 </div>
             </div>
-            <div class="tableDiv">
-                @Html.Partial("~/Views/CommonLookUps/_IndexPartial.cshtml")
+            <div class="tableDiv" id="CMload">
+                @*@Html.Partial("~/Views/CommonLookUps/_IndexPartial.cshtml")*@
             </div>
         </div>
         <div id="Activitylogs" class="tabcontent">
@@ -179,8 +181,25 @@
     </div>
 </div>
 <script>
-    function openSystems(evt, SystemsName) {
+    function SelectTab(SystemsName)
+    {
+        if (SystemsName == "UserManagement")
+        {
+            $('#UserLoad').load('@Url.Action("Index" , "User")');
+        }
+        else if (SystemsName == "RoleManagement")
+        {
+            $('#RoleLoad').load('@Url.Action("Index" , "RoleManagement")');
+        }
+        else if (SystemsName == "Settings")
+        {
+            $('#CMload').load('@Url.Action("Index" , "CommonLookUps")')
+        }
+    }
+    function openSystems(evt, SystemsName)
+    {
         var i, tabcontent, tablinks;
+        SelectTab(SystemsName);
         tabcontent = document.getElementsByClassName("tabcontent");
         for (i = 0; i < tabcontent.length; i++) {
             tabcontent[i].style.display = "none";
@@ -191,23 +210,6 @@
         }
         document.getElementById(SystemsName).style.display = "block";
         evt.currentTarget.className += " active";
-
-@*        switch (SystemsName) {
-            case 'RoleManagement':
-        var url = $('#RoleManagement').data('url');
-        $.get(url, function (data) {
-            $("#RoleManagement").html(data).load($(this).data('url'));
-        });
-        break;
-
-            case 'CommonLookUp':
-        var url = $('#CommonLookUp').data('url');
-        $.get(url, function (data) {
-            $("#CommonLookUp").html(data).load($(this).data('url'));
-        });
-        break;
-            default:
-        }*@
     }
 
     function createcommonlookup() {
@@ -223,11 +225,11 @@
 
     $(document).ready(function ()
     {
-        var activeTabId = parseInt('@ViewBag.DashBoard');;
+        var activeTabId = parseInt('@ViewBag.DashBoard');
         var tabcontent = document.getElementsByClassName("tabcontent");
         var tablinks = document.getElementsByClassName("tablinks");
-        if (activeTabId == 0)
-        {
+        if (window.performance.getEntriesByType("navigation")[0].type == 'reload' || activeTabId == 0) {
+            SelectTab("UserManagement");
             tablinks[0].className = 'tablinks active';
             tabcontent[0].style.display = "block";
         }
@@ -235,9 +237,15 @@
         {
             tablinks[0].className = 'tablinks';
             tabcontent[0].style.display = "none";
-
+            if (activeTabId == 1) {
+                SelectTab("RoleManagement")
+            }
+            else if (activeTabId == 2) {
+                SelectTab("Settings")
+            }
             tablinks[activeTabId].className = 'tablinks active';
             tabcontent[activeTabId].style.display = "block";
         }
+
     });
 </script>

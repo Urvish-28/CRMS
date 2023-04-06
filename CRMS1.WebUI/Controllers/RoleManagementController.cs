@@ -29,7 +29,7 @@ namespace CRMS1.WebUI.Controllers
         public ActionResult Index()
         {
             List<Roles> roles = _roleService.GetAllRoles().ToList();
-            return View(roles);
+            return PartialView("_IndexPartial",roles);
         }
 
         public ActionResult Create()

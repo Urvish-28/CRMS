@@ -1,61 +1,4 @@
-﻿
-@if (@TempData["CMAlert"] != null)
-{
-    <div id="alert" class="alert alert-success">
-        <strong>Success !</strong> @TempData["CMAlert"]
-    </div>
-}
-
-@(
-        Html.Kendo().Grid<CRMS1.Core.ViewModels.CommonLookupsViewModel>().Name("CommonLookupgrid")
-    .Columns(columns =>
-    {
-        columns.Bound(expression: c => c.ConfigName);
-        columns.Bound(expression: c => c.ConfigKey);
-        columns.Bound(expression: c => c.ConfigValue);
-        columns.Bound(expression: c => c.DisplayOrder);
-        columns.Bound(expression: c => c.Description);
-        columns.Bound(expression: c => c.IsActive);
-        columns.Command(c =>
-        {
-            c.Custom("Edit").Click("editcommonlookup");
-            c.Custom("Delete").Click("confirmDelete");
-        }).Width(200).Title("Action");
-    })
-    .Editable(edit => edit.Mode(GridEditMode.PopUp))
-    .Sortable()
-    .Scrollable(h=>h.Height("auto"))
-    .Filterable()
-    .Pageable(p=>p.Refresh(true).PageSizes(true))
-    .DataSource(datasource => datasource
-    .Ajax().Read(read => read.Action("CommonLookupGrid", "CommonLookUps"))
-    .PageSize(5).Model(model => model.Id(expression:p => p.Id)))
-    .ToolBar(toolbar =>
-        {
-            toolbar.Template(@<text>
-                <div class="toolbar">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="input-group">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </text>);
-        })
-    )
-
-<div id="createPopupModalForm">
-    <div class="modal" id="addmodal"></div>
-    <div class="modal" id="editmodal"></div>
-</div>
-
-<script>
+﻿<script>
     //Create Bootstrap Modal
     function createcommonlookup() {
         $.ajax({
@@ -117,3 +60,60 @@
         });
     });
 </script>
+
+@if (@TempData["CMAlert"] != null)
+{
+    <div id="alert" class="alert alert-success">
+        <strong>Success !</strong> @TempData["CMAlert"]
+    </div>
+}
+
+@(
+        Html.Kendo().Grid<CRMS1.Core.ViewModels.CommonLookupsViewModel>().Name("CommonLookupgrid")
+    .Columns(columns =>
+    {
+        columns.Bound(expression: c => c.ConfigName);
+        columns.Bound(expression: c => c.ConfigKey);
+        columns.Bound(expression: c => c.ConfigValue);
+        columns.Bound(expression: c => c.DisplayOrder);
+        columns.Bound(expression: c => c.Description);
+        columns.Bound(expression: c => c.IsActive);
+        columns.Command(c =>
+        {
+            c.Custom("Edit").Click("editcommonlookup");
+            c.Custom("Delete").Click("confirmDelete");
+        }).Width(200).Title("Action");
+    })
+    .Editable(edit => edit.Mode(GridEditMode.PopUp))
+    .Sortable()
+    .Scrollable(h=>h.Height("auto"))
+    .Filterable()
+    .Pageable(p=>p.Refresh(true).PageSizes(true))
+    .DataSource(datasource => datasource
+    .Ajax().Read(read => read.Action("CommonLookupGrid", "CommonLookUps"))
+    .PageSize(5).Model(model => model.Id(expression:p => p.Id)))
+    .ToolBar(toolbar =>
+        {
+            toolbar.Template(@<text>
+                <div class="toolbar">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </text>);
+        })
+    )
+
+<div id="createPopupModalForm">
+    <div class="modal" id="addmodal"></div>
+    <div class="modal" id="editmodal"></div>
+</div>
+
