@@ -22,6 +22,8 @@ namespace CRMS1.Services
         UserViewModel BindUserModel(User model);
         string PasswordEncode(String Password);
         bool IsAlreadyExist(UserViewModel model, bool IsCreated = false);
+        void UpdatePassword(ChangePasswordViewModel model);
+        bool Checkpassword(ChangePasswordViewModel model);
     }
     public class UserService : IUserService
     {
@@ -187,6 +189,25 @@ namespace CRMS1.Services
             {
                 return false;
             }
+        }
+        public void UpdatePassword(ChangePasswordViewModel model)
+        {
+            User obj = GetUserById(model.Id);
+            obj.Password = model.ConfirmPassword;
+            obj.Password = PasswordEncode(obj.Password);
+            _usersRepository.Update(obj);
+            _usersRepository.Commit();
+
+        }
+        public bool Checkpassword(ChangePasswordViewModel model)
+        {
+            model.Password = PasswordEncode(model.Password);
+            var password = GetAllUsers().Where(x => x.Password == model.Password).ToList();
+            if(password.Count > 0)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -18,10 +18,12 @@ namespace CRMS1.WebUI.Controllers
     {
         private readonly ILoginService _loginService;
         private readonly IUserService _userService;
-        public AccountController(ILoginService loginService, IUserService userService)
+        private readonly IFormMstService _formService;
+        public AccountController(ILoginService loginService, IUserService userService, IFormMstService formMstService)
         {
             _loginService = loginService;
             _userService = userService;
+            _formService = formMstService;
         }
 
         // GET: Account
@@ -46,6 +48,8 @@ namespace CRMS1.WebUI.Controllers
                 {
                     Session["Name"] = _userService.GetAllUsers().Where(b => b.Email == model.Email).Select(x => x.UserName).FirstOrDefault();
                     Session["UserId"] = _userService.GetAllUsers().Where(b => b.Email == model.Email).Select(x => x.Id).FirstOrDefault();
+                    IEnumerable<FormMst> list = _formService.GetAllFormMst();
+                    Session["FormTabs"] = list;
                     FormsAuthentication.SetAuthCookie(model.Email, false);
                     return RedirectToAction("DashBoard");
                 }
@@ -65,8 +69,8 @@ namespace CRMS1.WebUI.Controllers
 
         public ActionResult LogOut()
         {
+            Session.Clear();
             FormsAuthentication.SignOut();
-
             return RedirectToAction("Login", "Account");
         }
     }

@@ -125,5 +125,31 @@ namespace CRMS1.WebUI.Controllers
             IEnumerable<IndexViewModel> list = _usersevice.GetUserList().ToList();
             return Json(list.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
+        public ActionResult ChangePassword()
+        {
+            ChangePasswordViewModel model = new ChangePasswordViewModel();
+            model.Id = (Guid)Session["UserID"];
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+            bool password = _usersevice.Checkpassword(model);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else
+            {
+                if (password)
+                {
+                    _usersevice.UpdatePassword(model);
+                    TempData["password"] = "Password Change Successfull";
+                    return View(model);
+                }
+                TempData["oldPassword"] = "Old Password is not Correct!!";
+                return View(model);
+            }
+        }
     }
 }

@@ -4,11 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - CRMS </title>
-    @Styles.Render("~/Content/css") 
+    @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @*  <script src="~/Scripts/kendo/2017.2.621/jquery.min.js"></script>*@
-        <link href="~/Content/css/style.css" rel="stylesheet" />
-     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
     <script src="~/Scripts/kendo/2017.2.621/kendo.all.min.js"></script>
     <script src="~/Scripts/kendo/2017.2.621/kendo.aspnetmvc.min.js"></script>
@@ -23,9 +23,17 @@
 
                     <div class="menuDiv">
                         <ul class="align-center">
-                            <li> <a href="#"> Home </a> </li>
-                            <li> <a href="@Url.Action("Index" , "Room")"> Conference </a> </li>
-                            <li> <a href="@Url.Action("DashBoard","Account")"> Systems  </a> </li>
+@*                            <li> <a href="#"> Home </a> </li>*@
+@*                            <li> <a href="@Url.Action("Index" , "Room")"> Conference </a> </li>
+                            <li> <a href="@Url.Action("DashBoard","Account")"> Systems  </a> </li>*@
+                            <li> <a href="@Url.Action("Index","FormMst")"> Forms </a></li>
+                            @foreach (var item in (IEnumerable<CRMS1.Core.Models.FormMst>)Session["FormTabs"])
+                            {
+                                if (item.ParentFormId == null)
+                                {
+                                    <li> <a href="/@item.NavigateURL"> @item.Name </a> </li>
+                                }
+                             }
                         </ul>
                     </div>
                 </div>
@@ -41,7 +49,8 @@
                             <div class="userInfoDiv">
                                 <div class="userInfoBox">
                                     <a href="#">Profile</a>
-                                    <a href="#">Settings</a>
+                                    @*<a href="#">Settings</a>*@
+                                    <a href="@Url.Action("ChangePassword","User")">Change Password</a>
                                     <a href="@Url.Action("Logout" , "Account")">logout</a>
                                 </div>
                             </div>
@@ -90,7 +99,7 @@
         </nav> *@
 
     <div class="container body-content">
-        <br/>
+        <br />
         @RenderBody()
         <hr />
         <footer>

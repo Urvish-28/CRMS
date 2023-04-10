@@ -57,6 +57,7 @@ namespace CRMS1.WebUI
             container.RegisterType<IUserRoleRepository, UserRoleRepository>();
             container.RegisterType<IRoomRepository, RoomRepository>();
             container.RegisterType<IRepository<CommonLookups>, SqlRepository<CommonLookups>>();
+            container.RegisterType<IRepository<FormMst>, SqlRepository<FormMst>>();
 
 
 
@@ -66,6 +67,7 @@ namespace CRMS1.WebUI
             container.RegisterType<IUserRoleService, UserRoleService>();
             container.RegisterType<IRoomService, RoomService>();
             container.RegisterType<ICommonLookupService, CommonLookupService>();
+            container.RegisterType<IFormMstService, FormMstService>();
         }
     }
 }

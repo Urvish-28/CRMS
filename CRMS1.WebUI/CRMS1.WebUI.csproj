@@ -186,6 +186,7 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CommonLookUpsController.cs" />
+    <Compile Include="Controllers\FormMstController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RoleManagementController.cs" />
     <Compile Include="Controllers\RoomController.cs" />
@@ -1303,6 +1304,10 @@
     <Content Include="Views\RoleManagement\_IndexPartial.cshtml" />
     <Content Include="Views\User\_IndexPartial.cshtml" />
     <Content Include="Views\CommonLookUps\_IndexPartial.cshtml" />
+    <Content Include="Views\User\ChangePassword.cshtml" />
+    <Content Include="Views\FormMst\Index.cshtml" />
+    <Content Include="Views\FormMst\Create.cshtml" />
+    <Content Include="Views\FormMst\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
