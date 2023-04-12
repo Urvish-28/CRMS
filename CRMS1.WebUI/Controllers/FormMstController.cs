@@ -110,5 +110,10 @@ namespace CRMS1.WebUI.Controllers
             IEnumerable<FormMstViewModel> list = _formService.FormMstList().ToList();
             return Json(list.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
+        public JsonResult FormList()
+        {
+            IEnumerable<FormMstViewModel> formMsts = _formService.FormMstList();
+            return Json(formMsts, JsonRequestBehavior.AllowGet);
+        }
     }
 }

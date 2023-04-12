@@ -21,5 +21,6 @@ namespace CRMS1.SQL
         public DbSet<ConferenceRoom> ConferenceRoom { get; set; }
         public DbSet<CommonLookups> CommonLookups { get; set; }
         public DbSet<FormMst> FormMst { get; set; }
+        public DbSet<FormRoleMapping> FormRoleMapping { get; set; }
     }
 }

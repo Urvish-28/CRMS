@@ -22,18 +22,19 @@
                     <div class="logoDiv"> <a href="#"> <img src="~/Content/image/logo.svg" alt="CRB Logo"> </a> </div>
 
                     <div class="menuDiv">
-                        <ul class="align-center">
-@*                            <li> <a href="#"> Home </a> </li>*@
-@*                            <li> <a href="@Url.Action("Index" , "Room")"> Conference </a> </li>
-                            <li> <a href="@Url.Action("DashBoard","Account")"> Systems  </a> </li>*@
-                            <li> <a href="@Url.Action("Index","FormMst")"> Forms </a></li>
-                            @foreach (var item in (IEnumerable<CRMS1.Core.Models.FormMst>)Session["FormTabs"])
-                            {
-                                if (item.ParentFormId == null)
+                        <ul class="align-center myDiv" id="List">
+@*                             <li> <a href="#"> Home </a> </li>
+                                <li> <a href="@Url.Action("Index" , "Room")"> Conference </a> </li>
+                                <li> <a href="@Url.Action("DashBoard","Account")"> Systems  </a> </li>
+                            <li> <a href="@Url.Action("Index","FormMst")"> Forms </a></li>*@
+                            @*  @foreach (var item in (IEnumerable<CRMS1.Core.Models.FormMst>)Session["FormTabs"])
                                 {
-                                    <li> <a href="/@item.NavigateURL"> @item.Name </a> </li>
-                                }
-                             }
+                                    if (item.ParentFormId == null)
+                                    {
+                                        <li> <a href="/@item.NavigateURL"> @item.Name </a> </li>
+                                    }
+                                }*@
+                            @*<li class="dropdown"></li>*@
                         </ul>
                     </div>
                 </div>
@@ -41,7 +42,6 @@
                 <div class="userInfo">
                     <div class="align-center">
                         <div class="userProfile">
-
                         </div>
                         <div class="userName align-center">
                             <span>Hello @Session["Name"] </span>
@@ -56,48 +56,10 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-
     </div>
-
-    @*
-        <nav class="navbar navbar-expand-lg navbar-light bg-info">
-            <a class="navbar-brand" href="#">CRMS</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class=" navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="@Url.Action("DashBoard","Account")">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index","CommonLookUps")">CommonLookup</a>
-                    </li>
-                    @*  <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index","RoleManagement")">Role</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Index","Room")">Conference Room</a>
-                        </li>
-                </ul>
-                <div>
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active navbar-right">
-                            <a class="nav-link">Hello @Session["Name"]</a>
-                        </li>
-                        <li class="nav-item active navbar-right">
-                            <a href="@Url.Action("LogOut","Account")" class="btn btn-danger">Logout</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav> *@
-
     <div class="container body-content">
         <br />
         @RenderBody()
@@ -117,3 +79,111 @@
 </body>
 </html>
 
+<style>
+    .dropdown .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: #f8f8f8;
+        padding: 10px;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
+        color: white;
+        font-size: 16px;
+        text-align: justify;
+        padding: 10px 10px;
+        text-decoration: none;
+    }
+
+    .dropdown .dropdown-menu:after {
+        height: 16px;
+        width: 16px;
+        background: #ffffff;
+        position: absolute;
+        content: "";
+        top: -7px;
+        right: 3px;
+        transform: rotate(45deg);
+        border-radius: 3px;
+    }
+</style>
+
+<script>
+    function Hover() {
+        $(".dropdown").hover(
+            function () {
+                $(this).find(".dropdown-menu").stop(true, true).fadeIn("fast");
+            },
+            function () {
+                $(this).find(".dropdown-menu").stop(true, true).fadeOut("fast");
+            }
+        );
+    }
+
+
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("FormList", "FormMst")',
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                var result = data.filter(x => x.ParentFormId == null);
+                $.each(result, function (index, item) {
+                    var dropdown = data.filter(x => x.ParentFormId == item.Id);
+                    if (dropdown.length == 0) {
+                        $("<li><a href='" + item.NavigateURL + "'>" + item.Name + "</a></li>").appendTo("#List");
+                    }
+                    else {
+                      //var li = $("<a class='popout' href='#'>" + item.Name + "</a>").appendTo(".dropdown");
+                        var li = $('<li class="dropdown"><a onmouseover="Hover()" class="popout" href="#"> ' + item.Name + '<i><img style="padding: 0 4px 0 4px" src="/Content/image/down-arrow.svg"></i></a></li>)').appendTo("#List");
+                        var ul = $("<ul class='level2 dropdown-menu userInfoDiv'></ul>").appendTo(li);
+                        var result = data.filter(x => x.ParentFormId == item.Id);
+                        $.each(result, function (i, child) {
+                            $("<li><a href='" + child.NavigateURL + "'>" + child.Name + "</a></li>").appendTo(ul);
+                        });
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        });
+    });
+</script>
+
+
+@*
+    <nav class="navbar navbar-expand-lg navbar-light bg-info">
+        <a class="navbar-brand" href="#">CRMS</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class=" navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="@Url.Action("DashBoard","Account")">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Index","CommonLookUps")">CommonLookup</a>
+                </li>
+                @*  <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index","RoleManagement")">Role</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index","Room")">Conference Room</a>
+                    </li>
+            </ul>
+            <div>
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active navbar-right">
+                        <a class="nav-link">Hello @Session["Name"]</a>
+                    </li>
+                    <li class="nav-item active navbar-right">
+                        <a href="@Url.Action("LogOut","Account")" class="btn btn-danger">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav> *@

@@ -187,6 +187,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CommonLookUpsController.cs" />
     <Compile Include="Controllers\FormMstController.cs" />
+    <Compile Include="Controllers\FormRoleMappingController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RoleManagementController.cs" />
     <Compile Include="Controllers\RoomController.cs" />
@@ -1313,6 +1314,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\Images\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\FormRoleMapping\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

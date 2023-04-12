@@ -12,6 +12,7 @@
 
 <h2>FormMst</h2>
 <br />
+
 @if (@TempData["formMst"] != null)
 {
     <div id="success" class="alert alert-success">
@@ -21,7 +22,7 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-    @(
+@(
     Html.Kendo().Grid(Model).Name("grid")
     .Columns(columns =>
     {

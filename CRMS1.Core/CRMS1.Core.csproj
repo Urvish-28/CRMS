@@ -45,6 +45,7 @@
     <Compile Include="Models\BaseEntity.cs" />
     <Compile Include="Models\CommonLookups.cs" />
     <Compile Include="Models\FormMst.cs" />
+    <Compile Include="Models\FormRoleMapping.cs" />
     <Compile Include="Models\Roles.cs" />
     <Compile Include="Models\ConferenceRoom.cs" />
     <Compile Include="Models\User.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModels\CommonLookupsViewModel.cs" />
     <Compile Include="ViewModels\FormMstViewModel.cs" />
+    <Compile Include="ViewModels\FormRoleMappingVM.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\RoleViewModel.cs" />
     <Compile Include="ViewModels\RoomViewModel.cs" />

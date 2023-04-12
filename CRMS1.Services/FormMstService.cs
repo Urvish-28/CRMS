@@ -51,8 +51,6 @@ namespace CRMS1.Services
         public void DeleteFormMst(Guid id)
         {
             FormMst obj = GetById(id);
-            IEnumerable<FormMst> list = GetAllFormMst();
-            Session["FormTabs"] = list;
             _repository.Delete(id);
             _repository.Commit();
         }
@@ -87,6 +85,7 @@ namespace CRMS1.Services
             obj.ParentFormId = model.ParentFormId;
             obj.FormAccessCode = model.FormAccessCode;
             obj.DisplayOrder = model.DisplayOrder;
+            obj.IsActive = model.IsActive;
             return obj;
 
         }
@@ -100,6 +99,7 @@ namespace CRMS1.Services
             obj.ParentFormId = model.ParentFormId;
             obj.FormAccessCode = model.FormAccessCode;
             obj.DisplayOrder = model.DisplayOrder;
+            obj.IsActive = model.IsActive;
             return obj;
         }
         public bool IsAlreadyExist(FormMstViewModel model, bool IsCreated = false)
@@ -128,7 +128,8 @@ namespace CRMS1.Services
                                               select fParent.Name).FirstOrDefault(),
                             FormAccessCode = f.FormAccessCode,
                             DisplayOrder = f.DisplayOrder,
-                            IsActive = f.IsActive
+                            IsActive = f.IsActive,
+                            ParentFormId=f.ParentFormId
                         }).ToList();
 
 

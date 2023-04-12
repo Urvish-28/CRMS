@@ -15,7 +15,6 @@ namespace CRMS1.Services
         UserRoles getByUserId(Guid userId);
         void DeleteUserRole(Guid id);
         IEnumerable<UserRoles> GetAllUserRoles();
-        UserRoles GetUserRoleById(Guid id);
 
     }
     public class UserRoleService : IUserRoleService
@@ -24,7 +23,7 @@ namespace CRMS1.Services
 
         public UserRoleService(IUserRoleRepository userRoleRepository)
         {
-            this._userRoleRepository = userRoleRepository;
+            _userRoleRepository = userRoleRepository;
         }
 
         public void createUserRole(UserRoles model)
@@ -55,10 +54,6 @@ namespace CRMS1.Services
         public IEnumerable<UserRoles> GetAllUserRoles()
         {
             return _userRoleRepository.Collection().Where(x => x.IsDelete == false);
-        }
-        public UserRoles GetUserRoleById(Guid id)
-        {
-            return _userRoleRepository.Find(id);
         }
     }
 }
