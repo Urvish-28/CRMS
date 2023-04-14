@@ -17,6 +17,8 @@ namespace CRMS1.SQL.Repositories.SqlRepository
         void Delete(Guid Id);
         T Find(Guid Id);
         IQueryable<T> Collection();
+        void InsertBulk(IEnumerable<T> t);
+        void DeleteBulk(IEnumerable<T> t);
     }
     public class SqlRepository<T> : IRepository<T> where T : BaseEntity 
     {
@@ -35,6 +37,12 @@ namespace CRMS1.SQL.Repositories.SqlRepository
         public void Insert(T t)
         {
             dbset.Add(t);
+            Commit();
+        }
+        public void InsertBulk(IEnumerable<T> t)
+        {
+            dbset.AddRange(t);
+            Commit();
         }
         public void Update(T t)
         {
@@ -56,6 +64,11 @@ namespace CRMS1.SQL.Repositories.SqlRepository
         public IQueryable<T> Collection()
         {
             return dbset;
+        }
+        public void DeleteBulk(IEnumerable<T> t)
+        {
+            dbset.RemoveRange(t);
+            Commit();
         }
     }
 }

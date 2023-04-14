@@ -25,8 +25,8 @@
     {
         columns.Bound(expression: c => c.Name);
         columns.Bound(expression: c => c.Capacity);
-        columns.Bound(c => c.Id).HeaderHtmlAttributes(new { @class = "center_text" }).ClientTemplate("<div class='k_action_table'>" + ("<a title='Edit' href='" + Url.Action("Edit", "Room") + "/#=Id#' " + "> Edit </a>") + " ||" +
-                      "<a href='" + Url.Action("Delete", "Room") + "/#=Id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'>  Delete </a>").Width(200).Title("Action"); ;
+        columns.Bound(c => c.Id).HeaderHtmlAttributes(new { @class = "center_text" }).ClientTemplate("<div class='k_action_table'>" + ("<a title='Edit' href='" + Url.Action("Edit", "Room") + "/#=Id#' " + "> <i class='fa fa-pencil'></i> </a>") + " | " +
+                      "<a href='" + Url.Action("Delete", "Room") + "/#=Id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'>  <i class='fa fa-trash'></i> </a>").Width(200).Title("Action"); ;
     }).HtmlAttributes(new { Style = ""})
     .Sortable()
     .Scrollable(h=>h.Height("auto"))

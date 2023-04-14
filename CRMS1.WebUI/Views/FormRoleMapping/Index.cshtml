@@ -1,0 +1,147 @@
+﻿@model IEnumerable<CRMS1.Core.ViewModels.FormRoleMappingVM>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<br />
+<table id="tableId" class="table">
+    @Html.Hidden("RoleId", Model.FirstOrDefault().RoleId)
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.AllRights)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FormName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AllowInsert)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AllowView)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AllowUpdate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AllowDelete)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr class="align-justify-center" id="tr_@item.FormId" style="background-color:aliceblue">
+            @if (item.AllowDelete && item.AllowInsert && item.AllowUpdate && item.AllowView)
+            {
+                <td>
+                    <input type="checkbox" class="Selectall" id="Allrights_@item.FormId" checked="checked" @*@(item.AllRights == false ? "" : "checked='checked'")*@ onclick="SelectAll(this)" />
+                </td>
+            }
+            else
+            {
+                <td>
+                    <input type="checkbox" class="Selectall" id="Allrights_@item.FormId" @*@(item.AllRights == false ? "" : "checked='checked'")*@ onclick="SelectAll(this)" />
+                </td>
+            }
+            <td>
+                @Html.HiddenFor(modelItem => item.FormId)
+                @Html.DisplayFor(modelItem => item.FormName)
+            </td>
+            <td>
+                <input type="checkbox" value="@item.AllowInsert" @(item.AllowInsert == false ? "" : "checked='checked'") class="Checkbox" onclick="UnSelect('@item.FormId')" id="Insert_@item.FormId" />
+            </td>
+            <td>
+                <input type="checkbox" value="@item.AllowView" @(item.AllowView == false ? "" : "checked='checked'") class="Checkbox" onclick="UnSelect('@item.FormId')" id="View_@item.FormId" />
+            </td>
+            <td>
+                <input type="checkbox" value="@item.AllowUpdate" @(item.AllowUpdate == false ? "" : "checked='checked'") class="Checkbox" onclick="UnSelect('@item.FormId')" id="Update_@item.FormId" />
+            </td>
+            <td>
+                <input type="checkbox" value="@item.AllowDelete" @(item.AllowDelete == false ? "" : "checked='checked'") class="Checkbox" onclick="UnSelect('@item.FormId')" id="Delete_@item.FormId" />
+            </td>
+        </tr>
+    }
+</table>
+<a href="javascript: history.go(-1)" class="btn btn-warning">Cancel</a>
+<a id="Savebtn" class="btn btn-success" onclick="Redirect()">Save</a>
+
+
+<script>
+    function Redirect() {
+        location.href = '@Url.Action("DashBoard" , "Account" ,new { selectedTabId = 1 })';
+    }
+
+    function SelectAll(a) {
+        a.closet
+        $("#tr_" + a.id + ".Checkbox").each(function () {
+            this.checked = true;
+        });
+    }
+
+    $(".Selectall").click(function () {
+        if (this.checked) {
+            $(this).closest("tr").find(".Checkbox").each(function () {
+                this.checked = true;
+            });
+        }
+        else {
+            $(this).closest("tr").find(".Checkbox").each(function () {
+                this.checked = false;
+            });
+        }
+    });
+
+    function UnSelect(a) {
+        if ($("#Insert_" + a).prop("checked") == true && $("#View_" + a).prop("checked") == true && $("#Update_" + a).prop("checked") == true && $("#Delete_" + a).prop("checked") == true) {
+            $("#Allrights_" + a).prop("checked", true);
+        }
+        else {
+            $("#Allrights_" + a).prop("checked", false);
+        }
+    }
+
+    $('#Savebtn').click(function () {
+        var FormId = new Array();
+        var Insert = new Array();
+        var View = new Array();
+        var Update = new Array();
+        var Delete = new Array();
+        var AllRights = new Array();
+
+        var table = $("#tableId").find("tbody>tr>td>input");
+
+        var count = 0;
+
+        for (var i = 0; i < table.length; i = i + 6) {
+            AllRights[count] = table[i].checked;
+            FormId[count] = table[i + 1].value;
+            Insert[count] = table[i + 2].checked;
+            View[count] =   table[i + 3].checked;
+            Update[count] = table[i + 4].checked;
+            Delete[count] = table[i + 5].checked;
+            count++;
+        }
+
+        var Role = [];
+        var Id = $("#RoleId").val();
+        for (var i = 0; i < FormId.length; i++) {
+            Role.push({
+                RoleId: Id,
+                FormId: FormId[i],
+                AllRights: AllRights[i],
+                AllowInsert: Insert[i],
+                AllowView: View[i],
+                AllowUpdate: Update[i],
+                AllowDelete: Delete[i],
+            });
+        }
+
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("AddPermission" , "FormRoleMapping")',
+            data: JSON.stringify(Role),
+            contentType: "application/json; charset=utf-8"
+        })
+    });
+</script>

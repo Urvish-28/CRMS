@@ -108,7 +108,7 @@ namespace CRMS1.WebUI.Controllers
         {
             Roles rolesToDelete = _roleService.GetRoleById(id);
             _roleService.DeleteRole(id);
-            return RedirectToAction("Index");
+            return new RedirectResult(Url.Action("Dashboard", "Account", new { selectedTabId = 1 }));
         }
         public ActionResult RoleGrid([DataSourceRequest] DataSourceRequest request)
         {

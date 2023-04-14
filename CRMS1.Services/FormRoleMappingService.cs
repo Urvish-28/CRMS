@@ -14,18 +14,18 @@ namespace CRMS1.Services
     {
         IEnumerable<FormRoleMapping> GetAll();
         FormRoleMapping GetById(Guid id);
-        FormRoleMapping BindFormRole(FormRoleMappingVM model);
-        FormRoleMappingVM BindFormRole(FormRoleMapping model);
-        void AddFormRole(FormRoleMappingVM model);
-        void UpdateFormRole(FormRoleMappingVM model);
+        void AddFormRole(IEnumerable<FormRoleMapping> model);
         void DeleteFormRole(Guid id);
+        IEnumerable<FormRoleMappingVM> GetAllForm(Guid id);
     }
-    public class FormRoleMappingService :Page, IFormRoleMappingService
+    public class FormRoleMappingService : Page, IFormRoleMappingService
     {
         private readonly IRepository<FormRoleMapping> _repository;
-        public FormRoleMappingService(IRepository<FormRoleMapping> repository)
+        private readonly IFormMstService _formMstService;
+        public FormRoleMappingService(IRepository<FormRoleMapping> repository, IFormMstService formMstService)
         {
             _repository = repository;
+            _formMstService = formMstService;
         }
         public IEnumerable<FormRoleMapping> GetAll()
         {
@@ -35,57 +35,22 @@ namespace CRMS1.Services
         {
             return _repository.Find(id);
         }
-        public FormRoleMapping BindFormRole(FormRoleMappingVM model)
+        public void AddFormRole(IEnumerable<FormRoleMapping> records)
         {
-            FormRoleMapping obj = GetById(model.Id);
-            if(obj == null)
+            Guid Id = (Guid)records.FirstOrDefault().RoleId;
+            var recordsByRoleId = GetAll().Where(x => x.Id == Id).Select(x => x.RoleId);
+            if (recordsByRoleId == null)
             {
-                obj = new FormRoleMapping();
-                obj.CreatedBy = (Guid)Session["UserId"];
+                _repository.InsertBulk(records);
+                _repository.Commit();
             }
             else
             {
-                obj.UpdatedOn = DateTime.Now;
-                obj.UpdatedBy = (Guid)Session["UserId"];
+                var DeleteList = GetAll().Where(x => x.RoleId == Id);
+                _repository.DeleteBulk(DeleteList);
+                _repository.InsertBulk(records);
+                _repository.Commit();
             }
-            obj.Id = model.Id;
-            obj.AllowDelete = model.AllowDelete;
-            obj.AllowInsert = model.AllowInsert;
-            obj.AllowUpdate = model.AllowUpdate;
-            obj.AllowView = model.AllowView;
-            obj.FormId = model.FormId;
-            obj.RoleId = model.RoleId;
-            return obj;
-        }
-        public FormRoleMappingVM BindFormRole(FormRoleMapping model)
-        {
-            FormRoleMappingVM obj = new FormRoleMappingVM();
-            obj.Id = model.Id;
-            obj.AllowDelete = model.AllowDelete;
-            obj.AllowInsert = model.AllowInsert;
-            obj.AllowUpdate = model.AllowUpdate;
-            obj.AllowView = model.AllowView;
-            obj.FormId = model.FormId;
-            obj.RoleId = model.RoleId;
-            obj.CreatedOn = DateTime.Now;
-            obj.UpdatedOn = DateTime.Now;
-            return obj;
-        }
-
-        public void AddFormRole(FormRoleMappingVM model)
-        {
-            FormRoleMapping obj = new FormRoleMapping();
-            obj = BindFormRole(model);
-            _repository.Insert(obj);
-            _repository.Commit();
-        }
-
-        public void UpdateFormRole(FormRoleMappingVM model)
-        {
-            FormRoleMapping obj = GetById(model.Id);
-            obj = BindFormRole(model);
-            _repository.Update(obj);
-            _repository.Commit();
         }
 
         public void DeleteFormRole(Guid id)
@@ -95,5 +60,25 @@ namespace CRMS1.Services
             _repository.Commit();
         }
 
+        public IEnumerable<FormRoleMappingVM> GetAllForm(Guid Id)
+        {
+            var db_forms = _formMstService.GetAllFormMst();
+            var db_formrolemappings = GetAll().Where(x=>x.RoleId == Id);
+            var formRoleMappingList = (from f in db_forms
+                                       join fr in db_formrolemappings
+                                       on f.Id equals fr.FormId into formrole
+                                       from frm in formrole.DefaultIfEmpty()
+                                       select new FormRoleMappingVM()
+                                       {
+                                           FormName = f.Name,
+                                           FormId = f.Id,
+                                           RoleId = Id,
+                                           AllowView = frm == null ? false : frm.AllowView,
+                                           AllowInsert = frm == null ? false : frm.AllowInsert,
+                                           AllowUpdate = frm == null ? false : frm.AllowUpdate,
+                                           AllowDelete = frm == null ? false : frm.AllowDelete
+                                       }).ToList();
+            return formRoleMappingList;
+        }
     }
 }

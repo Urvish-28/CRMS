@@ -19,6 +19,8 @@ namespace CRMS1.Core.ViewModels
         public Guid? CreatedBy { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public Guid? UpdatedBy { get; set; }
+        public string FormName { get; set; }
+        public bool AllRights { get; set; }
         public FormRoleMappingVM()
         {
             this.Id = Guid.NewGuid();
