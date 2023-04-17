@@ -118,7 +118,7 @@ namespace CRMS1.WebUI.Controllers
             User userToDelete = _usersevice.GetUserById(id);
             _usersevice.DeleteUser(id);
             TempData["AlertMsg"] = "Employee Deleted successfully...!";
-            return RedirectToAction("Index");
+            return new RedirectResult(Url.Action("Dashboard", "Account", new { selectedTabId = 0 }));
         }
         public ActionResult UserGrid([DataSourceRequest] DataSourceRequest request)
         {

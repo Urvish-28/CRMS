@@ -24,10 +24,10 @@
 
                     <div class="menuDiv">
                         <ul class="align-center myDiv" id="List">
-@*                             <li> <a href="#"> Home </a> </li>
+                            @*  <li> <a href="#"> Home </a> </li>
                                 <li> <a href="@Url.Action("Index" , "Room")"> Conference </a> </li>
                                 <li> <a href="@Url.Action("DashBoard","Account")"> Systems  </a> </li>
-                            <li> <a href="@Url.Action("Index","FormMst")"> Forms </a></li>*@
+                                <li> <a href="@Url.Action("Index","FormMst")"> Forms </a></li>*@
                             @*  @foreach (var item in (IEnumerable<CRMS1.Core.Models.FormMst>)Session["FormTabs"])
                                 {
                                     if (item.ParentFormId == null)
@@ -49,7 +49,7 @@
                             <i> <img src="~/Content/image/down-arrow.svg" alt="Dropdown Icon"> </i>
                             <div class="userInfoDiv">
                                 <div class="userInfoBox">
-                                    <a href="#">Profile</a>
+                                    <a href="@Url.Action("AccessDenied" , "Account")">Profile</a>
                                     @*<a href="#">Settings</a>*@
                                     <a href="@Url.Action("ChangePassword","User")">Change Password</a>
                                     <a href="@Url.Action("Logout" , "Account")">logout</a>

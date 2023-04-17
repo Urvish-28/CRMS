@@ -93,7 +93,7 @@ namespace CRMS1.WebUI.Controllers
             CommonLookups commonLookupsdelete = _commonLookupService.GetById(id);
             _commonLookupService.DeleteCommonLookup(id);
             TempData["Alert"] = "Delete Successfully!!";
-            return RedirectToAction("Index");
+            return new RedirectResult(Url.Action("Dashboard", "Account", new { selectedTabId = 2 }));
         }
         public ActionResult CommonLookupGrid([DataSourceRequest] DataSourceRequest request)
         {

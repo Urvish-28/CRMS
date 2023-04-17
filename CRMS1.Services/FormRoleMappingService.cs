@@ -17,6 +17,7 @@ namespace CRMS1.Services
         void AddFormRole(IEnumerable<FormRoleMapping> model);
         void DeleteFormRole(Guid id);
         IEnumerable<FormRoleMappingVM> GetAllForm(Guid id);
+        List<FormRoleMapping> Permission(Guid RoleId);
     }
     public class FormRoleMappingService : Page, IFormRoleMappingService
     {
@@ -79,6 +80,11 @@ namespace CRMS1.Services
                                            AllowDelete = frm == null ? false : frm.AllowDelete
                                        }).ToList();
             return formRoleMappingList;
+        }
+        public List<FormRoleMapping> Permission(Guid RoleId)
+        {
+            List<FormRoleMapping> list = GetAll().Where(x => x.RoleId == RoleId).ToList();
+            return list;
         }
     }
 }

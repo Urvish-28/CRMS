@@ -1310,6 +1310,7 @@
     <Content Include="Views\FormMst\Create.cshtml" />
     <Content Include="Views\FormMst\Edit.cshtml" />
     <Content Include="Views\FormRoleMapping\Index.cshtml" />
+    <Content Include="Views\Account\AccessDenied.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

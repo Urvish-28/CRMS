@@ -18,12 +18,20 @@ namespace CRMS1.WebUI.Controllers
     {
         private readonly ILoginService _loginService;
         private readonly IUserService _userService;
+        private readonly IUserRoleService _userroleService;
         private readonly IFormMstService _formService;
-        public AccountController(ILoginService loginService, IUserService userService, IFormMstService formMstService)
+        private readonly IFormRoleMappingService _formRoleService;
+        public AccountController(ILoginService loginService, 
+                                 IUserService userService, 
+                                 IFormMstService formMstService , 
+                                 IUserRoleService userroleService , 
+                                 IFormRoleMappingService formRoleService)
         {
             _loginService = loginService;
             _userService = userService;
             _formService = formMstService;
+            _userroleService = userroleService;
+            _formRoleService = formRoleService;
         }
 
         // GET: Account
@@ -48,8 +56,11 @@ namespace CRMS1.WebUI.Controllers
                 {
                     Session["Name"] = _userService.GetAllUsers().Where(b => b.Email == model.Email).Select(x => x.UserName).FirstOrDefault();
                     Session["UserId"] = _userService.GetAllUsers().Where(b => b.Email == model.Email).Select(x => x.Id).FirstOrDefault();
-                    IEnumerable<FormMst> list = _formService.GetAllFormMst();
-                    Session["FormTabs"] = list;
+
+                    var userRoleId = _userroleService.GetAllUserRoles().Where(x => x.UserId == user.Id).Select(x => x.RoleId).FirstOrDefault();
+                    IEnumerable<FormRoleMapping> formRoleMappingList = _formRoleService.Permission(userRoleId).ToList();
+                    Session["Permission"] = formRoleMappingList;
+
                     FormsAuthentication.SetAuthCookie(model.Email, false);
                     return RedirectToAction("DashBoard");
                 }
@@ -72,6 +83,10 @@ namespace CRMS1.WebUI.Controllers
             Session.Clear();
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "Account");
+        }
+        public ActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

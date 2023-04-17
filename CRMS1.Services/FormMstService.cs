@@ -57,7 +57,6 @@ namespace CRMS1.Services
 
         public IEnumerable<FormMst> GetAllFormMst()
         {
-            Session["FormTabs"] = _repository.Collection().ToList();
             return _repository.Collection().ToList();
         }
 
