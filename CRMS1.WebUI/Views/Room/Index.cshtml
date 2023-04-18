@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<CRMS1.Core.Models.ConferenceRoom>
 @using Kendo.Mvc.UI
+@using CRMS1.Core.Models
 
 @{
     ViewBag.Title = "Index";
@@ -8,49 +9,64 @@
 
 <br />
 <h2>Conference Room</h2>
+<br />
 @if (@TempData["RoomAlert"] != null)
 {
     <div id="success" class="alert alert-success">
         <strong>Success !</strong> @TempData["RoomAlert"]
     </div>
 }
-<p>
-    @Html.ActionLink("Create New", "Create", "Room", new { @class = "btn btn-primary" })
-</p>
 
+@if (CheckRolePermission.Insert)
+{
+    <p>
+        @Html.ActionLink("Create New", "Create", "Room", new { @class = "btn btn-primary" })
+    </p>
+}
 
 @(
     Html.Kendo().Grid(Model).Name("grid")
-    .Columns(columns =>
-    {
+        .Columns(columns =>
+        {
         columns.Bound(expression: c => c.Name);
         columns.Bound(expression: c => c.Capacity);
-        columns.Bound(c => c.Id).HeaderHtmlAttributes(new { @class = "center_text" }).ClientTemplate("<div class='k_action_table'>" + ("<a title='Edit' href='" + Url.Action("Edit", "Room") + "/#=Id#' " + "> <i class='fa fa-pencil'></i> </a>") + " | " +
-                      "<a href='" + Url.Action("Delete", "Room") + "/#=Id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'>  <i class='fa fa-trash'></i> </a>").Width(200).Title("Action"); ;
-    }).HtmlAttributes(new { Style = ""})
-    .Sortable()
-    .Scrollable(h=>h.Height("auto"))
-    .Filterable()
-    .Pageable(p=>p.Refresh(true).PageSizes(true))
-    .DataSource(datasource => datasource.Ajax().Read(read => read.Action("ConferenceRoomGrid", "Room"))
-        .PageSize(5).Model(model => model.Id(expression:p => p.Id)))
-    .ToolBar(toolbar =>
+        columns.Bound(p => p.Id).ClientTemplate(
+             "#if ('" + CheckRolePermission.Update + "'=='True') {#"
+             + " <a href='" + Url.Action("Edit", "Room") + "/#=Id#'><i class='fa fa-pencil'></i></a>"
+             + "#}#"
+             + "#if ('" + CheckRolePermission.Delete + "'=='True') {#"
+             + " | <a href='" + Url.Action("Delete", "Room") + "/#=Id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-trash'></a>"
+             + "#}#"
+             ).Width(150).Title("Action").Filterable(false);
+        })
+        .HtmlAttributes(new { Style = ""})
+        .Sortable()
+        .Scrollable(h=>h.Height("auto"))
+        .Filterable()
+        .Pageable(p=>p.Refresh(true).PageSizes(true))
+        .DataSource(datasource => datasource.Ajax().Read(read => read.Action("ConferenceRoomGrid", "Room"))
+            .PageSize(5)
+            .Model(model => model.Id(expression:p => p.Id))
+        )
+        .ToolBar(toolbar =>
         {
-            toolbar.Template(@<text>
-                <div class="toolbar">
+        toolbar.Template(@<text>
+                    <div class="toolbar">
 
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="input-group">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-                                </span>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    </span>
+                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
             </text>);
         })
     )

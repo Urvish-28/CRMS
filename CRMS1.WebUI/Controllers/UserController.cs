@@ -30,11 +30,13 @@ namespace CRMS1.WebUI.Controllers
         {
         }
         // GET: User
+/*        [CRMSActionFilter("/User/Index")]*/
         public ActionResult Index()
         {
             var list = _usersevice.GetUserList();
             return PartialView("_indexPartial" , list);
         }
+        //[CRMSActionFilter("/User/Create")]
         public ActionResult Create()
         {
             UserViewModel user = new UserViewModel();
@@ -71,6 +73,7 @@ namespace CRMS1.WebUI.Controllers
 
             }
         }
+/*        [CRMSActionFilter("/User/Edit")]*/
         public ActionResult Edit(Guid id)
         {
             UserViewModel model = new UserViewModel();
@@ -113,6 +116,7 @@ namespace CRMS1.WebUI.Controllers
                 }
             }
         }
+/*        [CRMSActionFilter("/User/Delete")]*/
         public ActionResult Delete(Guid id)
         {
             User userToDelete = _usersevice.GetUserById(id);

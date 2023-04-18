@@ -1,6 +1,7 @@
 ﻿using CRMS1.Core.Models;
 using CRMS1.Core.ViewModels;
 using CRMS1.Services;
+using CRMS1.WebUI.Filters;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System;
@@ -21,11 +22,13 @@ namespace CRMS1.WebUI.Controllers
             _commonLookupService = commonLookupService;
         }
         // GET: CommonLookUps
+       // [CRMSActionFilter("/CommonLookUps/Index")]
         public ActionResult Index()
         {
             List<CommonLookupsViewModel> commonLookups = _commonLookupService.GetAll();
             return PartialView("_IndexPartial",commonLookups);
         }
+/*        [CRMSActionFilter("/CommonLookUps/Create")]*/
         public ActionResult Create()
         {
             CommonLookupsViewModel commonLookups = new CommonLookupsViewModel();
@@ -53,6 +56,7 @@ namespace CRMS1.WebUI.Controllers
                 }
             }
         }
+/*        [CRMSActionFilter("/CommonLookUps/Edit")]*/
         public ActionResult Edit(Guid id)
         {
             CommonLookups obj = _commonLookupService.GetById(id);
@@ -88,6 +92,7 @@ namespace CRMS1.WebUI.Controllers
                 }
             }
         }
+        //[CRMSActionFilter("/CommonLookUps/Delete")]
         public ActionResult Delete(Guid id)
         {
             CommonLookups commonLookupsdelete = _commonLookupService.GetById(id);

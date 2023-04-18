@@ -30,7 +30,7 @@ namespace CRMS1.Services
         private readonly IUsersRepository _usersRepository;
         private readonly IUserRoleService _userRoleService;
         private readonly IRoleService _roleService;
-        public UserService(IUsersRepository usersRepository , IUserRoleService userRoleService, IRoleService roleService)
+        public UserService(IUsersRepository usersRepository, IUserRoleService userRoleService, IRoleService roleService)
         {
             _usersRepository = usersRepository;
             _userRoleService = userRoleService;
@@ -52,7 +52,7 @@ namespace CRMS1.Services
         public void UpdateUser(UserViewModel model)
         {
             User userToUpdate = GetUserById(model.Id);
-            if(userToUpdate != null)
+            if (userToUpdate != null)
             {
                 userToUpdate = BindUserModel(model);
                 _usersRepository.Update(userToUpdate);
@@ -63,7 +63,7 @@ namespace CRMS1.Services
                 userroles.RoleId = model.RoleId;
                 _userRoleService.updateUserRole(userroles);
             }
-           
+
         }
         public void DeleteUser(Guid id)
         {
@@ -110,7 +110,7 @@ namespace CRMS1.Services
         public User BindUserModel(UserViewModel model)
         {
             User obj = GetUserById(model.Id);
-            if(obj == null)
+            if (obj == null)
             {
                 obj = new User();
                 obj.CreatedOn = DateTime.Now;
@@ -153,7 +153,7 @@ namespace CRMS1.Services
                 string EnCryptedPassword = Convert.ToBase64String(EncDataByte);
                 return EnCryptedPassword;
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 throw new Exception("Error in Encode: " + exception.Message);
             }
@@ -181,7 +181,7 @@ namespace CRMS1.Services
             var records = GetAllUsers().Where(x => (x.Email == model.Email &&
                                                     x.MobileNo == model.MobileNo) && (IsCreated || x.Id != model.Id)).ToList();
 
-            if(records.Count > 0)
+            if (records.Count > 0)
             {
                 return true;
             }
@@ -203,7 +203,7 @@ namespace CRMS1.Services
         {
             model.Password = PasswordEncode(model.Password);
             var password = GetAllUsers().Where(x => x.Password == model.Password).ToList();
-            if(password.Count > 0)
+            if (password.Count > 0)
             {
                 return true;
             }

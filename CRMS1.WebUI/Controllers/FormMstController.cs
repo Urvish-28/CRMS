@@ -1,6 +1,7 @@
 ﻿using CRMS1.Core.Models;
 using CRMS1.Core.ViewModels;
 using CRMS1.Services;
+using CRMS1.WebUI.Filters;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System;
@@ -20,11 +21,13 @@ namespace CRMS1.WebUI.Controllers
             _formService = formService;
         }
         // GET: FormMst
+        [CRMSActionFilter("FORMS", CheckRolePermission.FormAccessCode.IsView)]
         public ActionResult Index()
         {
             var list = _formService.FormMstList();
             return View(list);
         }
+        [CRMSActionFilter("FORMS", CheckRolePermission.FormAccessCode.IsInsert)]
         public ActionResult Create()
         {
             FormMstViewModel model = new FormMstViewModel();
@@ -59,6 +62,7 @@ namespace CRMS1.WebUI.Controllers
                 }
             }
         }
+        [CRMSActionFilter("FORMS", CheckRolePermission.FormAccessCode.IsUpdate)]
         public ActionResult Edit(Guid id)
         {
             FormMst obj = _formService.GetById(id);
@@ -99,6 +103,7 @@ namespace CRMS1.WebUI.Controllers
                 }
             }
         }
+        [CRMSActionFilter("FORMS", CheckRolePermission.FormAccessCode.IsDelete)]
         public ActionResult Delete(Guid id)
         {
             FormMst obj = _formService.GetById(id);

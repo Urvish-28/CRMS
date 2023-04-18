@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<CRMS1.Core.ViewModels.FormMstViewModel>
+@using CRMS1.Core.Models
 
 @{
     ViewBag.Title = "Index";
@@ -19,22 +20,33 @@
         <strong>Success !</strong> @TempData["formMst"]
     </div>
 }
+@if (CheckRolePermission.Insert)
+{
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+}
+
 @(
     Html.Kendo().Grid(Model).Name("grid")
-    .Columns(columns =>
-    {
-        columns.Bound(expression: c => c.Name);
-        columns.Bound(expression: c => c.NavigateURL);
-        columns.Bound(expression: c => c.ParentFormName);
-        columns.Bound(expression: c => c.FormAccessCode);
-        columns.Bound(expression: c => c.DisplayOrder);
-        columns.Bound(expression: c => c.IsActive);
-        columns.Bound(c => c.Id).HeaderHtmlAttributes(new { @class = "center_text" }).ClientTemplate("<div class='k_action_table'>" + ("<a title='Edit' href='" + Url.Action("Edit", "FormMst") + "/#=Id#' " + "> <i class='fa fa-pencil'></i> </a>") + " | " +
-                      "<a href='" + Url.Action("Delete", "FormMst") + "/#=Id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'>  <i class='fa fa-trash'></i> </a>").Width(200).Title("Action"); ;
-    }).HtmlAttributes(new { Style = ""})
+        .Columns(columns =>
+        {
+            columns.Bound(expression: c => c.Name);
+            columns.Bound(expression: c => c.NavigateURL);
+            columns.Bound(expression: c => c.ParentFormName);
+            columns.Bound(expression: c => c.FormAccessCode);
+            columns.Bound(expression: c => c.DisplayOrder);
+            columns.Bound(expression: c => c.IsActive);
+            columns.Bound(p => p.Id).ClientTemplate(
+                "#if('"+ CheckRolePermission.Update + "'=='True') {#"
+                +"<a href='" + Url.Action("Edit", "FormMst") + "/#=Id#'><i class='fa fa-pencil'></i></a>"
+                + "#}#"
+                + "#if ('"+ CheckRolePermission.Delete + "'=='True') {#"
+                + " | <a href='" + Url.Action("Delete", "FormMst") + "/#=Id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-trash'></a>"
+                + "#}#"
+                ).Width(150).Title("Action").Filterable(false);
+        })
+    .HtmlAttributes(new { Style = ""})
     .Sortable()
     .Scrollable(h=>h.Height("auto"))
     .Filterable()
@@ -42,8 +54,8 @@
     .DataSource(datasource => datasource.Ajax().Read(read => read.Action("FormMstGrid", "FormMst"))
         .PageSize(5).Model(model => model.Id(expression:p => p.Id)))
     .ToolBar(toolbar =>
-        {
-            toolbar.Template(@<text>
+    {
+    toolbar.Template(@<text>
                 <div class="toolbar">
 
                     <div class="row">

@@ -31,7 +31,6 @@ namespace CRMS1.WebUI.Controllers
             List<Roles> roles = _roleService.GetAllRoles().ToList();
             return PartialView("_IndexPartial",roles);
         }
-
         public ActionResult Create()
         {
             RoleViewModel roles = new RoleViewModel();
@@ -58,12 +57,10 @@ namespace CRMS1.WebUI.Controllers
                     model.CreatedBy = (Guid)Session["UserId"];
                     _roleService.CreateRole(model);
                     TempData["RoleAlert"] = "Role is added successfully...!";
-                   /* return RedirectToAction("Index");*/
                     return new RedirectResult(Url.Action("Dashboard", "Account", new { selectedTabId = 1 }));
                 }
             }
         }
-
         public ActionResult Edit(Guid Id)
         {
 
@@ -103,7 +100,6 @@ namespace CRMS1.WebUI.Controllers
                 }
             }
         }
-
         public ActionResult Delete(Guid id)
         {
             Roles rolesToDelete = _roleService.GetRoleById(id);

@@ -20,26 +20,13 @@
         <div class="container">
             <div class="align-center align-between">
                 <div class="align-center">
-                    <div class="logoDiv"> <a href="#"> <img src="~/Content/image/logo.svg" alt="CRB Logo"> </a> </div>
-
+                    <div class="logoDiv"> <a href="#"> <img src="~/Content/image/logo.svg" alt="CRB Logo"> </a> 
+                    </div>
                     <div class="menuDiv">
                         <ul class="align-center myDiv" id="List">
-                            @*  <li> <a href="#"> Home </a> </li>
-                                <li> <a href="@Url.Action("Index" , "Room")"> Conference </a> </li>
-                                <li> <a href="@Url.Action("DashBoard","Account")"> Systems  </a> </li>
-                                <li> <a href="@Url.Action("Index","FormMst")"> Forms </a></li>*@
-                            @*  @foreach (var item in (IEnumerable<CRMS1.Core.Models.FormMst>)Session["FormTabs"])
-                                {
-                                    if (item.ParentFormId == null)
-                                    {
-                                        <li> <a href="/@item.NavigateURL"> @item.Name </a> </li>
-                                    }
-                                }*@
-                            @*<li class="dropdown"></li>*@
                         </ul>
                     </div>
                 </div>
-
                 <div class="userInfo">
                     <div class="align-center">
                         <div class="userProfile">
@@ -49,7 +36,7 @@
                             <i> <img src="~/Content/image/down-arrow.svg" alt="Dropdown Icon"> </i>
                             <div class="userInfoDiv">
                                 <div class="userInfoBox">
-                                    <a href="@Url.Action("AccessDenied" , "Account")">Profile</a>
+                                    <a href="#">Profile</a>
                                     @*<a href="#">Settings</a>*@
                                     <a href="@Url.Action("ChangePassword","User")">Change Password</a>
                                     <a href="@Url.Action("Logout" , "Account")">logout</a>
@@ -111,7 +98,7 @@
 </style>
 
 <script>
-    function Hover() {
+@*    function Hover() {
         $(".dropdown").hover(
             function () {
                 $(this).find(".dropdown-menu").stop(true, true).fadeIn("fast");
@@ -120,7 +107,7 @@
                 $(this).find(".dropdown-menu").stop(true, true).fadeOut("fast");
             }
         );
-    }
+    }*@
 
 
     $(document).ready(function () {
@@ -152,39 +139,3 @@
         });
     });
 </script>
-
-
-@*
-    <nav class="navbar navbar-expand-lg navbar-light bg-info">
-        <a class="navbar-brand" href="#">CRMS</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class=" navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="@Url.Action("DashBoard","Account")">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Index","CommonLookUps")">CommonLookup</a>
-                </li>
-                @*  <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index","RoleManagement")">Role</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index","Room")">Conference Room</a>
-                    </li>
-            </ul>
-            <div>
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active navbar-right">
-                        <a class="nav-link">Hello @Session["Name"]</a>
-                    </li>
-                    <li class="nav-item active navbar-right">
-                        <a href="@Url.Action("LogOut","Account")" class="btn btn-danger">Logout</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav> *@

@@ -16,10 +16,10 @@
             @Html.DisplayNameFor(model => model.FormName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AllowInsert)
+            @Html.DisplayNameFor(model => model.AllowView)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AllowView)
+            @Html.DisplayNameFor(model => model.AllowInsert)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.AllowUpdate)
@@ -49,10 +49,10 @@
                 @Html.DisplayFor(modelItem => item.FormName)
             </td>
             <td>
-                <input type="checkbox" value="@item.AllowInsert" @(item.AllowInsert == false ? "" : "checked='checked'") class="Checkbox" onclick="UnSelect('@item.FormId')" id="Insert_@item.FormId" />
+                <input type="checkbox" value="@item.AllowView" @(item.AllowView == false ? "" : "checked='checked'") class="Checkbox" onclick="UnSelect('@item.FormId')" id="Insert_@item.FormId" />
             </td>
             <td>
-                <input type="checkbox" value="@item.AllowView" @(item.AllowView == false ? "" : "checked='checked'") class="Checkbox" onclick="UnSelect('@item.FormId')" id="View_@item.FormId" />
+                <input type="checkbox" value="@item.AllowInsert" @(item.AllowInsert == false ? "" : "checked='checked'") class="Checkbox" onclick="UnSelect('@item.FormId')" id="View_@item.FormId" />
             </td>
             <td>
                 <input type="checkbox" value="@item.AllowUpdate" @(item.AllowUpdate == false ? "" : "checked='checked'") class="Checkbox" onclick="UnSelect('@item.FormId')" id="Update_@item.FormId" />
@@ -103,8 +103,8 @@
 
     $('#Savebtn').click(function () {
         var FormId = new Array();
-        var Insert = new Array();
         var View = new Array();
+        var Insert = new Array();
         var Update = new Array();
         var Delete = new Array();
         var AllRights = new Array();
@@ -116,8 +116,8 @@
         for (var i = 0; i < table.length; i = i + 6) {
             AllRights[count] = table[i].checked;
             FormId[count] = table[i + 1].value;
-            Insert[count] = table[i + 2].checked;
-            View[count] =   table[i + 3].checked;
+            View[count] =   table[i + 2].checked;
+            Insert[count] = table[i + 3].checked;
             Update[count] = table[i + 4].checked;
             Delete[count] = table[i + 5].checked;
             count++;
@@ -130,8 +130,8 @@
                 RoleId: Id,
                 FormId: FormId[i],
                 AllRights: AllRights[i],
-                AllowInsert: Insert[i],
                 AllowView: View[i],
+                AllowInsert: Insert[i],
                 AllowUpdate: Update[i],
                 AllowDelete: Delete[i],
             });

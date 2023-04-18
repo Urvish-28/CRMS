@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\BaseEntity.cs" />
+    <Compile Include="Models\CheckRolePermission.cs" />
     <Compile Include="Models\CommonLookups.cs" />
     <Compile Include="Models\FormMst.cs" />
     <Compile Include="Models\FormRoleMapping.cs" />

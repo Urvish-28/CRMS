@@ -23,6 +23,7 @@ namespace CRMS1.Core.ViewModels
         public int DisplayOrder { get; set; }
         public bool IsActive { get; set; }
         public string ParentFormName { get; set; }
+        public bool AllowView { get; set; }
         public FormMstViewModel()
         {
             this.Id = Guid.NewGuid();

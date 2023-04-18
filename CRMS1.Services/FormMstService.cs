@@ -130,24 +130,23 @@ namespace CRMS1.Services
                             IsActive = f.IsActive,
                             ParentFormId=f.ParentFormId
                         }).ToList();
-
-
-           /* var list = (from f in formMst
-                        join fParent in formMst on
-                        f.Id equals fParent.ParentFormId into Pform
-                        from fm in Pform.DefaultIfEmpty()
-                        select new FormMstViewModel()
-                        {
-                            Id = f.Id,
-                            Name = f.Name,
-                            NavigateURL = f.NavigateURL,
-                            ParentFormName = fm?.Name,
-                            FormAccessCode = f.FormAccessCode,
-                            DisplayOrder = f.DisplayOrder,
-                            IsActive = f.IsActive,
-                        }).ToList();*/
-
             return list;
+
+            /* var list = (from f in formMst
+                         join fParent in formMst on
+                         f.Id equals fParent.ParentFormId into Pform
+                         from fm in Pform.DefaultIfEmpty()
+                         select new FormMstViewModel()
+                         {
+                             Id = f.Id,
+                             Name = f.Name,
+                             NavigateURL = f.NavigateURL,
+                             ParentFormName = fm?.Name,
+                             FormAccessCode = f.FormAccessCode,
+                             DisplayOrder = f.DisplayOrder,
+                             IsActive = f.IsActive,
+                         }).ToList();*/
+
         }
     }
 }

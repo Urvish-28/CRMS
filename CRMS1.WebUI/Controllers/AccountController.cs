@@ -3,6 +3,7 @@ using CRMS1.Core.ViewModels;
 using CRMS1.Services;
 using CRMS1.SQL;
 using CRMS1.SQL.Repositories.Login;
+using CRMS1.WebUI.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,7 @@ namespace CRMS1.WebUI.Controllers
             _formRoleService = formRoleService;
         }
 
+          [AllowAnonymous]
         // GET: Account
         public ActionResult Login(string returnUrl)
         {
@@ -72,6 +74,7 @@ namespace CRMS1.WebUI.Controllers
             }
         }
 
+        [CRMSActionFilter("SYS", CheckRolePermission.FormAccessCode.IsView)]
         public ActionResult DashBoard(int selectedTabId = 0)
         {
             ViewBag.DashBoard = selectedTabId;
