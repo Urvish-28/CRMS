@@ -24,7 +24,7 @@ namespace CRMS1.WebUI.Controllers
         [CRMSActionFilter("FORMS", CheckRolePermission.FormAccessCode.IsView)]
         public ActionResult Index()
         {
-            var list = _formService.FormMstList();
+            var list = _formService.FormMstListIndex();
             return View(list);
         }
         [CRMSActionFilter("FORMS", CheckRolePermission.FormAccessCode.IsInsert)]
@@ -112,7 +112,7 @@ namespace CRMS1.WebUI.Controllers
         }
         public ActionResult FormMstGrid([DataSourceRequest] DataSourceRequest request)
         {
-            IEnumerable<FormMstViewModel> list = _formService.FormMstList().ToList();
+            IEnumerable<FormMstViewModel> list = _formService.FormMstListIndex().ToList();
             return Json(list.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
         public JsonResult FormList()

@@ -21,6 +21,7 @@ namespace CRMS1.Services
         FormMstViewModel BindFormMst(FormMst model);
         bool IsAlreadyExist(FormMstViewModel model, bool IsCreated = false);
         IEnumerable<FormMstViewModel> FormMstList();
+        IEnumerable<FormMstViewModel> FormMstListIndex();
     }
     public class FormMstService : Page, IFormMstService
     {
@@ -115,6 +116,29 @@ namespace CRMS1.Services
         }
         public IEnumerable<FormMstViewModel> FormMstList()
         {
+            var formRoleList = Session["Permission"] as List<FormRoleMapping>;
+            IEnumerable<FormMst> formMst = GetAllFormMst();
+            var list = (from f in formMst
+                        join formRole in formRoleList
+                        on f.Id equals formRole.FormId
+                        where formRole.AllowView == true
+                        select new FormMstViewModel()
+                        {
+                            Id = f.Id,
+                            Name = f.Name,
+                            NavigateURL = f.NavigateURL,
+                            ParentFormName = (from fParent in formMst
+                                              where fParent.Id == f.ParentFormId
+                                              select fParent.Name).FirstOrDefault(),
+                            FormAccessCode = f.FormAccessCode,
+                            DisplayOrder = f.DisplayOrder,
+                            IsActive = f.IsActive,
+                            ParentFormId = f.ParentFormId
+                        }).ToList();
+            return list;
+        }
+        public IEnumerable<FormMstViewModel> FormMstListIndex()
+        {
             IEnumerable<FormMst> formMst = GetAllFormMst();
             var list = (from f in formMst
                         select new FormMstViewModel()
@@ -128,25 +152,9 @@ namespace CRMS1.Services
                             FormAccessCode = f.FormAccessCode,
                             DisplayOrder = f.DisplayOrder,
                             IsActive = f.IsActive,
-                            ParentFormId=f.ParentFormId
+                            ParentFormId = f.ParentFormId
                         }).ToList();
             return list;
-
-            /* var list = (from f in formMst
-                         join fParent in formMst on
-                         f.Id equals fParent.ParentFormId into Pform
-                         from fm in Pform.DefaultIfEmpty()
-                         select new FormMstViewModel()
-                         {
-                             Id = f.Id,
-                             Name = f.Name,
-                             NavigateURL = f.NavigateURL,
-                             ParentFormName = fm?.Name,
-                             FormAccessCode = f.FormAccessCode,
-                             DisplayOrder = f.DisplayOrder,
-                             IsActive = f.IsActive,
-                         }).ToList();*/
-
         }
     }
 }

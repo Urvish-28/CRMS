@@ -13,8 +13,7 @@ namespace CRMS1.WebUI.Filters
         public string FormAccessCode;
         public readonly CheckRolePermission.FormAccessCode _Action;
 
-        public CRMSActionFilter(string _FormAccessCode,
-            CheckRolePermission.FormAccessCode Action)
+        public CRMSActionFilter(string _FormAccessCode, CheckRolePermission.FormAccessCode Action)
         {
             FormAccessCode = _FormAccessCode;
             _Action = Action;

@@ -1,4 +1,6 @@
-﻿<script>
+﻿@using CRMS1.Core.Models
+
+<script>
     //Create Bootstrap Modal
     function createcommonlookup() {
         $.ajax({
@@ -61,6 +63,16 @@
     });
 </script>
 
+<div class="align-center align-between pb20">
+    <h2>Settings</h2>
+    @if (CheckRolePermission.Insert)
+    {
+        <div class="btnDiv">
+            <a onclick="createcommonlookup()">+ Add Setting</a>
+        </div>
+    }
+</div>
+
 @if (@TempData["CMAlert"] != null)
 {
     <div id="alert" class="alert alert-success">
@@ -78,13 +90,21 @@
         columns.Bound(expression: c => c.DisplayOrder);
         columns.Bound(expression: c => c.Description);
         columns.Bound(expression: c => c.IsActive);
-        columns.Command(c =>
+        if (CheckRolePermission.Update || CheckRolePermission.Delete)
         {
-            c.Custom("Edit").Click("editcommonlookup");
-            c.Custom("Delete").Click("confirmDelete");
-        }).Width(200).Title("Action");
+            columns.Command(c =>
+            {
+                if (CheckRolePermission.Update)
+                {
+                    c.Custom("Edit").Click("editcommonlookup");
+                }
+                if (CheckRolePermission.Delete)
+                {
+                    c.Custom("Delete").Click("confirmDelete");
+                }
+            }).Width(200).Title("Action");
+        }
     })
-    .Editable(edit => edit.Mode(GridEditMode.PopUp))
     .Sortable()
     .Scrollable(h=>h.Height("auto"))
     .Filterable()
@@ -93,8 +113,8 @@
     .Ajax().Read(read => read.Action("CommonLookupGrid", "CommonLookUps"))
     .PageSize(5).Model(model => model.Id(expression:p => p.Id)))
     .ToolBar(toolbar =>
-        {
-            toolbar.Template(@<text>
+    {
+        toolbar.Template(@<text>
                 <div class="toolbar">
                     <div class="row">
                         <div class="col-md-4">

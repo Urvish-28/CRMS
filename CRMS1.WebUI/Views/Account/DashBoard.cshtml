@@ -1,4 +1,4 @@
-﻿
+﻿@using CRMS1.Core.Models
 @{
     ViewBag.Title = "DashBoard";
 }
@@ -23,37 +23,16 @@
 
         <div class="tabContentDetails">
             <div id="UserManagement" class="tabcontent" style="display: block">
-                <div class="align-center align-between pb20">
-                    <h2>User Management</h2>
-                    <div class="btnDiv">
-                        <a href="@Url.Action("Create" , "User")">+ Add New User</a>
-                    </div>
-                </div>
                 <div class="tableDiv" id="UserLoad">
-                   @* @Html.Partial("~/Views/User/_IndexPartial.cshtml")*@
                 </div>
             </div>
         </div>
         <div id="RoleManagement" class="tabcontent">
-            <div class="align-center align-between pb20">
-                <h2>Role Management</h2>
-                <div class="btnDiv">
-                    <a href="@Url.Action("Create","Rolemanagement")">+ Add New Role</a>
-                </div>
-            </div>
             <div class="tableDiv" id="RoleLoad">
-               @* @Html.Partial("~/Views/RoleManagement/_IndexPartial.cshtml")*@
             </div>
         </div>
         <div id="Settings" class="tabcontent">
-            <div class="align-center align-between pb20">
-                <h2>Settings</h2>
-                <div class="btnDiv">
-                    <a onclick="createcommonlookup()">+ Add Setting</a>
-                </div>
-            </div>
             <div class="tableDiv" id="CMload">
-                @*@Html.Partial("~/Views/CommonLookUps/_IndexPartial.cshtml")*@
             </div>
         </div>
         <div id="Activitylogs" class="tabcontent">
@@ -210,17 +189,6 @@
         }
         document.getElementById(SystemsName).style.display = "block";
         evt.currentTarget.className += " active";
-    }
-
-    function createcommonlookup() {
-        $.ajax({
-            url: '@Url.Action("Create","CommonLookUps")',
-            type: "Get",
-            success: function (data) {
-                $("#createPopupModalForm").html(data);
-                $("#addmodal").modal('show');
-            }
-        });
     }
 
     $(document).ready(function ()

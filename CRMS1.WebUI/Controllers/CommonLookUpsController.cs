@@ -22,13 +22,13 @@ namespace CRMS1.WebUI.Controllers
             _commonLookupService = commonLookupService;
         }
         // GET: CommonLookUps
-       // [CRMSActionFilter("/CommonLookUps/Index")]
+        [CRMSActionFilter("CML", CheckRolePermission.FormAccessCode.IsView)]
         public ActionResult Index()
         {
             List<CommonLookupsViewModel> commonLookups = _commonLookupService.GetAll();
             return PartialView("_IndexPartial",commonLookups);
         }
-/*        [CRMSActionFilter("/CommonLookUps/Create")]*/
+        [CRMSActionFilter("CML", CheckRolePermission.FormAccessCode.IsInsert)]
         public ActionResult Create()
         {
             CommonLookupsViewModel commonLookups = new CommonLookupsViewModel();
@@ -56,7 +56,7 @@ namespace CRMS1.WebUI.Controllers
                 }
             }
         }
-/*        [CRMSActionFilter("/CommonLookUps/Edit")]*/
+        [CRMSActionFilter("CML", CheckRolePermission.FormAccessCode.IsUpdate)]
         public ActionResult Edit(Guid id)
         {
             CommonLookups obj = _commonLookupService.GetById(id);
@@ -92,7 +92,7 @@ namespace CRMS1.WebUI.Controllers
                 }
             }
         }
-        //[CRMSActionFilter("/CommonLookUps/Delete")]
+        [CRMSActionFilter("CML", CheckRolePermission.FormAccessCode.IsDelete)]
         public ActionResult Delete(Guid id)
         {
             CommonLookups commonLookupsdelete = _commonLookupService.GetById(id);

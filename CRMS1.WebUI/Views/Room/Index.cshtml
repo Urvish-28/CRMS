@@ -28,16 +28,19 @@
     Html.Kendo().Grid(Model).Name("grid")
         .Columns(columns =>
         {
-        columns.Bound(expression: c => c.Name);
-        columns.Bound(expression: c => c.Capacity);
-        columns.Bound(p => p.Id).ClientTemplate(
-             "#if ('" + CheckRolePermission.Update + "'=='True') {#"
-             + " <a href='" + Url.Action("Edit", "Room") + "/#=Id#'><i class='fa fa-pencil'></i></a>"
-             + "#}#"
-             + "#if ('" + CheckRolePermission.Delete + "'=='True') {#"
-             + " | <a href='" + Url.Action("Delete", "Room") + "/#=Id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-trash'></a>"
-             + "#}#"
-             ).Width(150).Title("Action").Filterable(false);
+            columns.Bound(expression: c => c.Name);
+            columns.Bound(expression: c => c.Capacity);
+            if (CheckRolePermission.Update || CheckRolePermission.Delete)
+            {
+                columns.Bound(p => p.Id).ClientTemplate(
+                 "#if ('" + CheckRolePermission.Update + "'=='True') {#"
+                 + " <a href='" + Url.Action("Edit", "Room") + "/#=Id#'><i class='fa fa-pencil'></i></a>"
+                 + "#}#"
+                 + "#if ('" + CheckRolePermission.Delete + "'=='True') {#"
+                 + " | <a href='" + Url.Action("Delete", "Room") + "/#=Id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-trash'></i></a>"
+                 + "#}#"
+                 ).Width(150).Title("Action").Filterable(false);
+            }
         })
         .HtmlAttributes(new { Style = ""})
         .Sortable()

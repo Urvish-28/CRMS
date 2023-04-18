@@ -1,6 +1,7 @@
 ﻿using CRMS1.Core.Models;
 using CRMS1.Core.ViewModels;
 using CRMS1.Services;
+using CRMS1.WebUI.Filters;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System;
@@ -30,13 +31,13 @@ namespace CRMS1.WebUI.Controllers
         {
         }
         // GET: User
-/*        [CRMSActionFilter("/User/Index")]*/
+        [CRMSActionFilter("USER", CheckRolePermission.FormAccessCode.IsView)]
         public ActionResult Index()
         {
             var list = _usersevice.GetUserList();
             return PartialView("_indexPartial" , list);
         }
-        //[CRMSActionFilter("/User/Create")]
+        [CRMSActionFilter("USER", CheckRolePermission.FormAccessCode.IsInsert)]
         public ActionResult Create()
         {
             UserViewModel user = new UserViewModel();
@@ -73,7 +74,7 @@ namespace CRMS1.WebUI.Controllers
 
             }
         }
-/*        [CRMSActionFilter("/User/Edit")]*/
+        [CRMSActionFilter("USER", CheckRolePermission.FormAccessCode.IsUpdate)]
         public ActionResult Edit(Guid id)
         {
             UserViewModel model = new UserViewModel();
@@ -116,7 +117,7 @@ namespace CRMS1.WebUI.Controllers
                 }
             }
         }
-/*        [CRMSActionFilter("/User/Delete")]*/
+        [CRMSActionFilter("USER", CheckRolePermission.FormAccessCode.IsDelete)]
         public ActionResult Delete(Guid id)
         {
             User userToDelete = _usersevice.GetUserById(id);

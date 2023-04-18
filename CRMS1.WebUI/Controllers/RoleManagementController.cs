@@ -2,6 +2,7 @@
 using CRMS1.Core.ViewModels;
 using CRMS1.Services;
 using CRMS1.SQL;
+using CRMS1.WebUI.Filters;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System;
@@ -26,17 +27,18 @@ namespace CRMS1.WebUI.Controllers
         }
 
         // GET: RoleManagement
+        [CRMSActionFilter("ROLE", CheckRolePermission.FormAccessCode.IsView)]
         public ActionResult Index()
         {
             List<Roles> roles = _roleService.GetAllRoles().ToList();
             return PartialView("_IndexPartial",roles);
         }
+        [CRMSActionFilter("ROLE", CheckRolePermission.FormAccessCode.IsInsert)]
         public ActionResult Create()
         {
             RoleViewModel roles = new RoleViewModel();
             return View(roles);
         }
-
         [HttpPost]
         public ActionResult Create(RoleViewModel model)
         {
@@ -61,6 +63,7 @@ namespace CRMS1.WebUI.Controllers
                 }
             }
         }
+        [CRMSActionFilter("ROLE", CheckRolePermission.FormAccessCode.IsUpdate)]
         public ActionResult Edit(Guid Id)
         {
 
@@ -75,7 +78,6 @@ namespace CRMS1.WebUI.Controllers
                 return View(model);
             }
         }
-
         [HttpPost]
         public ActionResult Edit(RoleViewModel model)
         {
@@ -100,6 +102,7 @@ namespace CRMS1.WebUI.Controllers
                 }
             }
         }
+        [CRMSActionFilter("ROLE", CheckRolePermission.FormAccessCode.IsDelete)]
         public ActionResult Delete(Guid id)
         {
             Roles rolesToDelete = _roleService.GetRoleById(id);

@@ -98,7 +98,7 @@
 </style>
 
 <script>
-@*    function Hover() {
+    function Hover() {
         $(".dropdown").hover(
             function () {
                 $(this).find(".dropdown-menu").stop(true, true).fadeIn("fast");
@@ -107,7 +107,7 @@
                 $(this).find(".dropdown-menu").stop(true, true).fadeOut("fast");
             }
         );
-    }*@
+    }
 
 
     $(document).ready(function () {
@@ -123,13 +123,13 @@
                         $("<li><a href='" + item.NavigateURL + "'>" + item.Name + "</a></li>").appendTo("#List");
                     }
                     else {
-                      //var li = $("<a class='popout' href='#'>" + item.Name + "</a>").appendTo(".dropdown");
-                        var li = $('<li class="dropdown"><a onmouseover="Hover()" class="popout" href="#"> ' + item.Name + '<i><img style="padding: 0 4px 0 4px" src="/Content/image/down-arrow.svg"></i></a></li>)').appendTo("#List");
+                        var li = $("<li><a href='" + item.NavigateURL + "'>" + item.Name + "</a></li>").appendTo("#List");
+@*                      var li = $('<li class="dropdown"><a onmouseover="Hover()" class="popout" href="#"> ' + item.Name + '</a></li>)').appendTo("#List");
                         var ul = $("<ul class='level2 dropdown-menu userInfoDiv'></ul>").appendTo(li);
                         var result = data.filter(x => x.ParentFormId == item.Id);
                         $.each(result, function (i, child) {
                             $("<li><a href='" + child.NavigateURL + "'>" + child.Name + "</a></li>").appendTo(ul);
-                        });
+                        });*@
                     }
                 });
             },

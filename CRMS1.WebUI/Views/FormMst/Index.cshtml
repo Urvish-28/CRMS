@@ -10,7 +10,7 @@
         $('#success').fadeOut(3000);
     });
 </script>
-
+<br />
 <h2>FormMst</h2>
 <br />
 
@@ -23,10 +23,9 @@
 @if (CheckRolePermission.Insert)
 {
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", "FormMst", new { @class = "btn btn-primary" })
 </p>
 }
-
 @(
     Html.Kendo().Grid(Model).Name("grid")
         .Columns(columns =>
@@ -37,14 +36,17 @@
             columns.Bound(expression: c => c.FormAccessCode);
             columns.Bound(expression: c => c.DisplayOrder);
             columns.Bound(expression: c => c.IsActive);
-            columns.Bound(p => p.Id).ClientTemplate(
-                "#if('"+ CheckRolePermission.Update + "'=='True') {#"
-                +"<a href='" + Url.Action("Edit", "FormMst") + "/#=Id#'><i class='fa fa-pencil'></i></a>"
-                + "#}#"
-                + "#if ('"+ CheckRolePermission.Delete + "'=='True') {#"
-                + " | <a href='" + Url.Action("Delete", "FormMst") + "/#=Id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-trash'></a>"
-                + "#}#"
-                ).Width(150).Title("Action").Filterable(false);
+            if (CheckRolePermission.Update || CheckRolePermission.Delete)
+            {
+                columns.Bound(p => p.Id).ClientTemplate(
+                    "#if('" + CheckRolePermission.Update + "'=='True') {#"
+                    + "<a href='" + Url.Action("Edit", "FormMst") + "/#=Id#'><i class='fa fa-pencil'></i></a>"
+                    + "#}#"
+                    + "#if ('" + CheckRolePermission.Delete + "'=='True') {#"
+                    + " | <a href='" + Url.Action("Delete", "FormMst") + "/#=Id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-trash'></a>"
+                    + "#}#"
+                    ).Width(150).Title("Action").Filterable(false);
+            }
         })
     .HtmlAttributes(new { Style = ""})
     .Sortable()
