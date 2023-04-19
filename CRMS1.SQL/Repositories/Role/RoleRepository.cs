@@ -1,4 +1,5 @@
 ﻿using CRMS1.Core.Models;
+using CRMS1.SQL.Repositories.SqlRepository;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -10,55 +11,61 @@ namespace CRMS1.SQL.Repositories.Role
 {
     public interface IRoleRepository 
     {
-        IQueryable<Roles> Collection();
-        void Commit();
-        void Insert(Roles roles);
-        void Update(Roles roles);
-        Roles Find(Guid Id);
-        void Delete(Guid Id);
+        IEnumerable<Roles> GetRoleList();
+        Roles GetById(Guid id);
+        void AddRole(Roles obj);
+        void UpdateRole(Roles obj);
+        void DeleteRole(Guid id);
     }
     public class RoleRepository : IRoleRepository
     {
-        public CRMSEntities context;
-        internal DbSet<Roles> dbset;
-        public RoleRepository(CRMSEntities Context)
+        private readonly IRepository<Roles> _Irepository;
+        public RoleRepository(IRepository<Roles> Irepository)
         {
-            this.context = Context;
-            this.dbset = context.Set<Roles>();
+            _Irepository = Irepository;
         }
-        public IQueryable<Roles> Collection()
+        public IEnumerable<Roles> GetRoleList()
         {
-            return dbset;
+            return _Irepository.Collection().Where(x => x.IsDelete == false);
         }
-
-        public void Commit()
+        public Roles GetById(Guid id)
         {
-            context.SaveChanges();
+            return _Irepository.Find(id);
         }
-
-        public void Insert(Roles roles)
+        public void AddRole(Roles obj)
         {
-            dbset.Add(roles);
+            _Irepository.Insert(obj);
+            _Irepository.Commit();
         }
-
-        public void Update(Roles roles)
+        public void UpdateRole(Roles obj)
         {
-            dbset.Attach(roles);
-            context.Entry(roles).State = EntityState.Modified;
+            _Irepository.Update(obj);
+            _Irepository.Commit();
         }
-
-        public Roles Find(Guid Id)
+        public void DeleteRole(Guid id)
         {
-            return dbset.Find(Id);
+            Roles obj = GetById(id);
+            obj.IsDelete = true;
+            _Irepository.Update(obj);
+            _Irepository.Commit();
         }
 
-        public void Delete(Guid Id)
-        {
-            var roles = Find(Id);
-            if (context.Entry(roles).State == EntityState.Detached)
-                dbset.Attach(roles);
 
-            dbset.Remove(roles);
-        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

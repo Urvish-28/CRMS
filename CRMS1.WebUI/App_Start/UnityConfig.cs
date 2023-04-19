@@ -1,6 +1,8 @@
 using CRMS1.Core.Models;
 using CRMS1.Core.ViewModels;
 using CRMS1.Services;
+using CRMS1.SQL.Repositories.FormMsts;
+using CRMS1.SQL.Repositories.FormroleMapping;
 using CRMS1.SQL.Repositories.Login;
 using CRMS1.SQL.Repositories.Role;
 using CRMS1.SQL.Repositories.Room;
@@ -59,6 +61,11 @@ namespace CRMS1.WebUI
             container.RegisterType<IRepository<CommonLookups>, SqlRepository<CommonLookups>>();
             container.RegisterType<IRepository<FormMst>, SqlRepository<FormMst>>();
             container.RegisterType<IRepository<FormRoleMapping>, SqlRepository<FormRoleMapping>>();
+            container.RegisterType<IRepository<ConferenceRoom>, SqlRepository<ConferenceRoom>>();
+            container.RegisterType<IRepository<Roles>, SqlRepository<Roles>>();
+            container.RegisterType<IRepository<FormMst>, SqlRepository<FormMst>>();
+            container.RegisterType<IFormMstRepository, FormMstRepository>();
+            container.RegisterType<IFormRoleRepository, FormRoleRepository>();
 
 
 

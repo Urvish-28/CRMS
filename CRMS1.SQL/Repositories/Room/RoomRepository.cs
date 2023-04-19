@@ -1,4 +1,6 @@
 ﻿using CRMS1.Core.Models;
+using CRMS1.Core.ViewModels;
+using CRMS1.SQL.Repositories.SqlRepository;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -10,57 +12,45 @@ namespace CRMS1.SQL.Repositories.Room
 {
     public interface IRoomRepository
     {
-        IQueryable<ConferenceRoom> Collection();
-        void Commit();
-        void Insert(ConferenceRoom rooms);
-        void Update(ConferenceRoom rooms);
-        ConferenceRoom Find(Guid Id);
-        void Delete(Guid Id);
+        IEnumerable<ConferenceRoom> GetAllConferenceRoom();
+        ConferenceRoom GetById(Guid id);
+        void AddConferenceRoom(ConferenceRoom obj);
+        void UpdateConferenceRoom(ConferenceRoom obj);
+        void DeleteConferenceRoom(Guid id);
     }
     public class RoomRepository : IRoomRepository
     {
-        public CRMSEntities context;
-        internal DbSet<ConferenceRoom> dbset;
+        private readonly IRepository<ConferenceRoom> _Irepository;
 
-        public RoomRepository(CRMSEntities Context)
+        public RoomRepository(IRepository<ConferenceRoom> Irepository)
         {
-            this.context = Context;
-            this.dbset = context.Set<ConferenceRoom>();
+            _Irepository = Irepository;
         }
-
-        public IQueryable<ConferenceRoom> Collection()
+        public IEnumerable<ConferenceRoom> GetAllConferenceRoom()
         {
-            return dbset;
+            return _Irepository.Collection().Where(x => x.IsDelete == false);
         }
-
-        public void Commit()
+        public ConferenceRoom GetById(Guid id)
         {
-            context.SaveChanges();
+            return _Irepository.Find(id);
         }
-
-        public void Insert(ConferenceRoom rooms)
-        {
-            dbset.Add(rooms);
+        public void AddConferenceRoom(ConferenceRoom obj)
+        { 
+            _Irepository.Insert(obj);
+            _Irepository.Commit();
         }
-
-        public void Update(ConferenceRoom rooms)
+        public void UpdateConferenceRoom(ConferenceRoom obj)
         {
-            dbset.Attach(rooms);
-            context.Entry(rooms).State = EntityState.Modified;
+            obj = GetById(obj.Id);
+            _Irepository.Update(obj);
+            _Irepository.Commit();
         }
-
-        public ConferenceRoom Find(Guid Id)
+        public void DeleteConferenceRoom(Guid id)
         {
-            return dbset.Find(Id);
-        }
-
-        public void Delete(Guid Id)
-        {
-            var rooms = Find(Id);
-            if (context.Entry(rooms).State == EntityState.Detached)
-                dbset.Attach(rooms);
-
-            dbset.Remove(rooms);
+            ConferenceRoom obj = GetById(id);
+            obj.IsDelete = true;
+            _Irepository.Update(obj);
+            _Irepository.Commit();
         }
     }
 }

@@ -32,35 +32,43 @@ namespace CRMS1.Services
         {
             ConferenceRoom obj = new ConferenceRoom();
             obj = BindConferenceRoomModel(model);
-            _roomRepository.Insert(obj);
-            _roomRepository.Commit();
+            _roomRepository.AddConferenceRoom(obj);
         }
         public void UpdateRoom(RoomViewModel model)
         {
-            ConferenceRoom obj = GetRoomById(model.Id);
+            ConferenceRoom obj = new ConferenceRoom();
             obj = BindConferenceRoomModel(model);
-            _roomRepository.Update(obj);
-            _roomRepository.Commit();
+            _roomRepository.UpdateConferenceRoom(obj);
         }
         public void DeleteRoom(Guid id)
         {
-            ConferenceRoom obj = _roomRepository.Find(id);
-            obj.IsDelete = true;
-            _roomRepository.Update(obj);
-            _roomRepository.Commit();
+            _roomRepository.DeleteConferenceRoom(id);
         }
         public IEnumerable<ConferenceRoom> GetAllRoom()
         {
-            return _roomRepository.Collection().Where(x => x.IsDelete == false);
+            return _roomRepository.GetAllConferenceRoom();
         }
         public ConferenceRoom GetRoomById(Guid id)
         {
-            return _roomRepository.Find(id);
+            return _roomRepository.GetById(id);
+        }
+        public bool IsAlreadyExist(RoomViewModel model, bool IsCreated = false)
+        {
+            var records = GetAllRoom().Where(x => (x.Name.ToLower() == model.RoomName.ToLower()) && (IsCreated || x.Id != model.Id)).ToList();
+
+            if (records.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         public ConferenceRoom BindConferenceRoomModel(RoomViewModel model)
         {
             ConferenceRoom obj = GetRoomById(model.Id);
-            if(obj == null)
+            if (obj == null)
             {
                 obj = new ConferenceRoom();
                 obj.CreatedBy = model.CreatedBy;
@@ -81,20 +89,6 @@ namespace CRMS1.Services
             obj.Capacity = model.Capacity;
             obj.RoomName = model.Name;
             return obj;
-        }
-
-        public bool IsAlreadyExist(RoomViewModel model, bool IsCreated = false)
-        {
-            var records = GetAllRoom().Where(x => (x.Name.ToLower() == model.RoomName.ToLower()) && (IsCreated || x.Id != model.Id)).ToList();
-
-            if (records.Count > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
     }
 }

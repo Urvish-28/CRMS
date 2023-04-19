@@ -45,9 +45,6 @@ namespace CRMS1.SQL.Repositories.UserRole
 
         public void Update(UserRoles userroles)
         {
-
-            /*     dbset.Attach(userroles);
-                 context.Entry(userroles).State = EntityState.Modified;*/
             UserRoles userUpdate = context.UserRole.Where(b => b.UserId == userroles.UserId).FirstOrDefault();
             userUpdate.RoleId = userroles.RoleId;
             Commit();

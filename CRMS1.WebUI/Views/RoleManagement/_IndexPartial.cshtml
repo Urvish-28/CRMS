@@ -26,11 +26,14 @@
         if (CheckRolePermission.Update || CheckRolePermission.Delete)
         {
             columns.Bound(p => p.Id).ClientTemplate(
-             "#if ('" + CheckRolePermission.Update + "'=='True') {#"
-             + " <a href='" + Url.Action("Edit", "RoleManagement") + "/#=Id#'><i class='fa fa-pencil'></i></a>"
+             "#if ('" + CheckRolePermission.Insert + "'=='True' && '" + CheckRolePermission.Update + "'=='True' && '" + CheckRolePermission.Delete + "'=='True' ) {#"
+             + " <a href='" + Url.Action("Index", "FormRoleMapping") + "/#=Id#'><i class='fa fa-cog'></i></a> | "
+             + "#}#"
+             +"#if ('" + CheckRolePermission.Update + "'=='True') {#"
+             + " <a href='" + Url.Action("Edit", "RoleManagement") + "/#=Id#'><i class='fa fa-pencil'></i></a> | "
              + "#}#"
              + "#if ('" + CheckRolePermission.Delete + "'=='True') {#"
-             + " | <a href='" + Url.Action("Delete", "RoleManagement") + "/#=Id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-trash'></a>"
+             + " <a href='" + Url.Action("Delete", "RoleManagement") + "/#=Id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-trash'></a>"
              + "#}#"
              ).Width(150).Title("Action").Filterable(false);
         }

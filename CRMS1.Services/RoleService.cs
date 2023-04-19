@@ -34,31 +34,26 @@ namespace CRMS1.Services
         {
             Roles obj = new Roles();
             obj = BindRoleModel(model);
-            _roleRepository.Insert(obj);
-            _roleRepository.Commit();
+            _roleRepository.AddRole(obj);
         }
         public void UpdateRole(RoleViewModel model)
         {
             Roles obj = new Roles();
             obj = BindRoleModel(model);
-            _roleRepository.Update(obj);
-            _roleRepository.Commit();
+            _roleRepository.UpdateRole(obj);
         }
         public void DeleteRole(Guid id)
         {
-            Roles obj = _roleRepository.Find(id);
-            obj.IsDelete = true;
-            _roleRepository.Update(obj);
-            _roleRepository.Commit();
+            _roleRepository.DeleteRole(id);
         }
 
         public IEnumerable<Roles> GetAllRoles()
         {
-            return _roleRepository.Collection().Where(x => x.IsDelete == false);
+            return _roleRepository.GetRoleList();
         }
         public Roles GetRoleById(Guid id)
         {
-            return _roleRepository.Find(id);
+            return _roleRepository.GetById(id);
         }
         public Roles BindRoleModel(RoleViewModel model)
         {

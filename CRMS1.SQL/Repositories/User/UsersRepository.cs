@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CRMS1.Core.Models;
+using CRMS1.Core.ViewModels;
 
 namespace CRMS1.SQL.Repositories.Users
 {
@@ -16,6 +17,7 @@ namespace CRMS1.SQL.Repositories.Users
         void Update(User user);
         User Find(Guid Id);
         void Delete(Guid Id);
+        IEnumerable<IndexViewModel> UserList();
 
     }
     public class UsersRepository : IUsersRepository
@@ -62,6 +64,23 @@ namespace CRMS1.SQL.Repositories.Users
                 dbSet.Attach(user);
 
             dbSet.Remove(user);
+        }
+        public IEnumerable<IndexViewModel> UserList()
+        {
+            var userlist = from u in context.Users
+                           join x in context.UserRole on u.Id equals x.UserId
+                           join r in context.Roles on x.RoleId equals r.Id
+                           select new IndexViewModel()
+                           {
+                               Id = u.Id,
+                               Name = u.Name,
+                               Email = u.Email,
+                               UserName = u.UserName,
+                               Gender = u.Gender,
+                               MobileNo = u.MobileNo,
+                               Role = r.Name
+                           };
+            return userlist;
         }
     }
 }

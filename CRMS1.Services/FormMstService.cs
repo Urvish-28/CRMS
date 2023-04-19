@@ -1,5 +1,6 @@
 ﻿using CRMS1.Core.Models;
 using CRMS1.Core.ViewModels;
+using CRMS1.SQL.Repositories.FormMsts;
 using CRMS1.SQL.Repositories.SqlRepository;
 using System;
 using System.Collections.Generic;
@@ -26,8 +27,10 @@ namespace CRMS1.Services
     public class FormMstService : Page, IFormMstService
     {
         private readonly IRepository<FormMst> _repository;
-        public FormMstService(IRepository<FormMst> repository)
+        private readonly IFormMstRepository _formMstRepository;
+        public FormMstService(IRepository<FormMst> repository , IFormMstRepository formMstRepository)
         {
+            _formMstRepository = formMstRepository;
             _repository = repository;
         }
 
@@ -36,7 +39,6 @@ namespace CRMS1.Services
             FormMst obj = new FormMst();
             obj = BindFormMst(model);
             IEnumerable<FormMst> list = GetAllFormMst();
-            Session["FormTabs"] = list;
             _repository.Insert(obj);
             _repository.Commit();
         }
@@ -45,7 +47,6 @@ namespace CRMS1.Services
             FormMst obj = GetById(model.Id);
             obj = BindFormMst(model);
             IEnumerable<FormMst> list = GetAllFormMst();
-            Session["FormTabs"] = list;
             _repository.Update(obj);
             _repository.Commit();
         }
@@ -116,44 +117,12 @@ namespace CRMS1.Services
         }
         public IEnumerable<FormMstViewModel> FormMstList()
         {
-            var formRoleList = Session["Permission"] as List<FormRoleMapping>;
-            IEnumerable<FormMst> formMst = GetAllFormMst();
-            var list = (from f in formMst
-                        join formRole in formRoleList
-                        on f.Id equals formRole.FormId
-                        where formRole.AllowView == true
-                        select new FormMstViewModel()
-                        {
-                            Id = f.Id,
-                            Name = f.Name,
-                            NavigateURL = f.NavigateURL,
-                            ParentFormName = (from fParent in formMst
-                                              where fParent.Id == f.ParentFormId
-                                              select fParent.Name).FirstOrDefault(),
-                            FormAccessCode = f.FormAccessCode,
-                            DisplayOrder = f.DisplayOrder,
-                            IsActive = f.IsActive,
-                            ParentFormId = f.ParentFormId
-                        }).ToList();
+            var list = _formMstRepository.FormMstMenuList();
             return list;
         }
         public IEnumerable<FormMstViewModel> FormMstListIndex()
         {
-            IEnumerable<FormMst> formMst = GetAllFormMst();
-            var list = (from f in formMst
-                        select new FormMstViewModel()
-                        {
-                            Id = f.Id,
-                            Name = f.Name,
-                            NavigateURL = f.NavigateURL,
-                            ParentFormName = (from fParent in formMst
-                                              where fParent.Id == f.ParentFormId
-                                              select fParent.Name).FirstOrDefault(),
-                            FormAccessCode = f.FormAccessCode,
-                            DisplayOrder = f.DisplayOrder,
-                            IsActive = f.IsActive,
-                            ParentFormId = f.ParentFormId
-                        }).ToList();
+            var list = _formMstRepository.FormListIndex();
             return list;
         }
     }

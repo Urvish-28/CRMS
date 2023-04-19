@@ -1,5 +1,6 @@
 ﻿using CRMS1.Core.Models;
 using CRMS1.Core.ViewModels;
+using CRMS1.SQL.Repositories.FormroleMapping;
 using CRMS1.SQL.Repositories.SqlRepository;
 using System;
 using System.Collections.Generic;
@@ -19,14 +20,16 @@ namespace CRMS1.Services
         IEnumerable<FormRoleMappingVM> GetAllForm(Guid id);
         List<FormRoleMapping> Permission(Guid RoleId);
     }
-    public class FormRoleMappingService : Page, IFormRoleMappingService
+    public class FormRoleMappingService : IFormRoleMappingService
     {
         private readonly IRepository<FormRoleMapping> _repository;
         private readonly IFormMstService _formMstService;
-        public FormRoleMappingService(IRepository<FormRoleMapping> repository, IFormMstService formMstService)
+        private readonly IFormRoleRepository _formRoleRepository;
+        public FormRoleMappingService(IRepository<FormRoleMapping> repository, IFormMstService formMstService , IFormRoleRepository formRoleRepository)
         {
             _repository = repository;
             _formMstService = formMstService;
+            _formRoleRepository = formRoleRepository;
         }
         public IEnumerable<FormRoleMapping> GetAll()
         {
@@ -63,22 +66,7 @@ namespace CRMS1.Services
 
         public IEnumerable<FormRoleMappingVM> GetAllForm(Guid Id)
         {
-            var db_forms = _formMstService.GetAllFormMst();
-            var db_formrolemappings = GetAll().Where(x=>x.RoleId == Id);
-            var formRoleMappingList = (from f in db_forms
-                                       join fr in db_formrolemappings
-                                       on f.Id equals fr.FormId into formrole
-                                       from frm in formrole.DefaultIfEmpty()
-                                       select new FormRoleMappingVM()
-                                       {
-                                           FormName = f.Name,
-                                           FormId = f.Id,
-                                           RoleId = Id,
-                                           AllowView = frm == null ? false : frm.AllowView,
-                                           AllowInsert = frm == null ? false : frm.AllowInsert,
-                                           AllowUpdate = frm == null ? false : frm.AllowUpdate,
-                                           AllowDelete = frm == null ? false : frm.AllowDelete
-                                       }).ToList();
+            var formRoleMappingList = _formRoleRepository.GetAllForm(Id);
             return formRoleMappingList;
         }
         public List<FormRoleMapping> Permission(Guid RoleId)

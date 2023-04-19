@@ -87,24 +87,7 @@ namespace CRMS1.Services
 
         public IEnumerable<IndexViewModel> GetUserList()
         {
-            IEnumerable<User> user = GetAllUsers();
-            IEnumerable<Roles> role = _roleService.GetAllRoles();
-            IEnumerable<UserRoles> userrole = _userRoleService.GetAllUserRoles();
-
-            var userlist = from u in user
-                           join x in userrole on u.Id equals x.UserId
-                           join r in role on x.RoleId equals r.Id
-                           select new IndexViewModel()
-                           {
-                               Id = u.Id,
-                               Name = u.Name,
-                               Email = u.Email,
-                               UserName = u.UserName,
-                               Gender = u.Gender,
-                               MobileNo = u.MobileNo,
-                               Role = r.Name
-                           };
-            return userlist;
+            return _usersRepository.UserList();
         }
 
         public User BindUserModel(UserViewModel model)
@@ -179,8 +162,8 @@ namespace CRMS1.Services
         public bool IsAlreadyExist(UserViewModel model, bool IsCreated = false)
         {
             var records = GetAllUsers().Where(x => (x.Email == model.Email &&
-                                                    x.MobileNo == model.MobileNo) && (IsCreated || x.Id != model.Id)).ToList();
-
+                                                    x.MobileNo == model.MobileNo) && 
+                                                    (IsCreated || x.Id != model.Id)).ToList();
             if (records.Count > 0)
             {
                 return true;

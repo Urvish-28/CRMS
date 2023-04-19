@@ -17,14 +17,10 @@ namespace CRMS1.WebUI.Controllers
     public class RoomController : Controller
     {
         private readonly IRoomService _roomservice;
-        private readonly IFormMstService _formMstservice;
-        private readonly IFormRoleMappingService _formRoleservice;
 
-        public RoomController(IRoomService roomservice , IFormMstService formMstservice , IFormRoleMappingService formRoleservice)
+        public RoomController(IRoomService roomservice)
         {
             _roomservice = roomservice;
-            _formMstservice = formMstservice;
-            _formRoleservice = formRoleservice;
         }
         // GET: Room
         [CRMSActionFilter("ROOM", CheckRolePermission.FormAccessCode.IsView)]
