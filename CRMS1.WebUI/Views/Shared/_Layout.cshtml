@@ -8,10 +8,11 @@
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
     <script src="~/Scripts/kendo/2017.2.621/kendo.all.min.js"></script>
     <script src="~/Scripts/kendo/2017.2.621/kendo.aspnetmvc.min.js"></script>
-    <link href="~/Content/css/style.css" rel="stylesheet" />
+    @*<link href="~/Content/css/style.css" rel="stylesheet" />*@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/Content/css")
+    <link href="~/Content/css/style.css" rel="stylesheet" />
 </head>
 <body>
 
@@ -49,7 +50,7 @@
                                         }
                                         else
                                         {
-                                            <li><a  id="@item.Name"  href="@item.NavigateURL">@item.Name</a></li>
+                                            <li><a id="@item.Name" href="@item.NavigateURL">@item.Name</a></li>
                                         }
 
                                     }
@@ -134,6 +135,7 @@
         border-radius: 3px;
     }
 </style>
+
 
 <script>
 

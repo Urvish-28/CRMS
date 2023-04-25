@@ -67,8 +67,10 @@ namespace CRMS1.WebUI.Controllers
                     //Session["RoleCode"] = _roleService.GetAllRoles().Where(x => x.Id == userRoleId).Select(x => x.Code == "SADMIN").FirstOrDefault();
                     Session["RoleCode"] = (_roleService.GetRoleById(userRoleId).Code == "SADMIN");
                     Session["Permission"] = _formRoleService.Permission(userRoleId).ToList();
+                    Session["UserRoleId"] = userRoleId;
                     Session["FormListForMenu"] = _formService.FormMstList(true);
                     Session["FormListForTab"] = _formService.FormMstList();
+
                     
                     FormsAuthentication.SetAuthCookie(model.Email, false);
                     return RedirectToAction("DashBoard");

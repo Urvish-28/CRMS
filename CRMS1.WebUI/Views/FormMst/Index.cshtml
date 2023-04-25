@@ -77,7 +77,7 @@
     .Filterable()
     .Pageable(p=>p.Refresh(true).PageSizes(true))
     .DataSource(datasource => datasource.Ajax().Read(read => read.Action("FormMstGrid", "FormMst"))
-        .PageSize(5).Model(model => model.Id(expression:p => p.Id)))
+        .PageSize(10).Model(model => model.Id(expression:p => p.Id)))
     .ToolBar(toolbar =>
     {
     toolbar.Template(@<text>

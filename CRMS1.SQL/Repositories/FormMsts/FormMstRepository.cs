@@ -51,7 +51,7 @@ namespace CRMS1.SQL.Repositories.FormMsts
             bool CheckRoleCode = (bool)HttpContext.Current.Session["RoleCode"];
             if (CheckRoleCode == false)
             {
-                var allForms = context.FormMst;
+                var allForms = FormListbyRoleId();
                 var formRoleList = HttpContext.Current.Session["Permission"] as List<FormRoleMapping>;
                 var list = (from f in context.FormMst.ToList()
                             join formRole in formRoleList
@@ -71,7 +71,7 @@ namespace CRMS1.SQL.Repositories.FormMsts
                                 IsMenu = f.IsMenu,
                                 ParentFormId = f.ParentFormId,
                                 AllowView = formRole.AllowView,
-                                HasChild = (allForms.Where(x => x.ParentFormId == f.Id && x.IsMenu).Select(x => x.Id).Any())
+                                HasChild = (allForms.Where(x => x.ParentFormId == f.Id && x.IsMenu && x.AllowView).Select(x => x.Id).Any())
                             }).ToList();
                 return list;
             }
@@ -79,6 +79,27 @@ namespace CRMS1.SQL.Repositories.FormMsts
             {
                 return FormListIndex();
             }
+        }
+        public IEnumerable<FormMstViewModel> FormListbyRoleId()
+        {
+            Guid roleId = (Guid)HttpContext.Current.Session["UserRoleId"];
+            var list = (from fm in context.FormMst
+                        join formrole in context.FormRoleMapping
+                        on fm.Id equals formrole.FormId
+                        where formrole.RoleId == roleId
+                        select new FormMstViewModel()
+                        {
+                            Id = (Guid)formrole.FormId,
+                            Name = fm.Name,
+                            ParentFormId = fm.ParentFormId,
+                            NavigateURL = fm.NavigateURL,
+                            FormAccessCode = fm.FormAccessCode,
+                            DisplayOrder = fm.DisplayOrder,
+                            IsActive = fm.IsActive,
+                            AllowView = formrole.AllowView,
+                            IsMenu = fm.IsMenu
+                        }).ToList();
+            return list;
         }
     }
 }
