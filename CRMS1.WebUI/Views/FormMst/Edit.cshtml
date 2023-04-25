@@ -17,6 +17,16 @@
         else {
             $('#toggle').val(false);
         }
+
+        var isChecked = false;
+        isChecked = "@Model.IsMenu";
+        if (isChecked) {
+            $('#IsMenu').val(true);
+            $('#IsMenu').toggleClass('active');
+        }
+        else {
+            $('#IsMenu').val(false);
+        }
     });
 </script>
 
@@ -64,6 +74,14 @@
                         <label>DisplayOrder</label>
                         @Html.EditorFor(model => model.DisplayOrder, new { htmlAttributes = new { placeholder = "DisplayOrder", @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.DisplayOrder, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="inputBox">
+                        <label>IsMenu</label>
+                        <label class="switch">
+                            <input type="checkbox" id="IsMenu" name="IsMenu" class="form-control" @(Model.IsMenu ? "checked" : "") />
+                            <span class="slider round"></span>
+                        </label>
+                        @Html.ValidationMessageFor(model => model.IsMenu, "", new { @class = "text-danger" })
                     </div>
                     <div class="inputBox">
                         <label>IsActive</label>

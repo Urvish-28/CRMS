@@ -59,7 +59,8 @@ namespace CRMS1.WebUI.Controllers
                     model.CreatedBy = (Guid)Session["UserId"];
                     _roleService.CreateRole(model);
                     TempData["RoleAlert"] = "Role is added successfully...!";
-                    return new RedirectResult(Url.Action("Dashboard", "Account", new { selectedTabId = 1 }));
+                    TempData["FormName"] = "Role";
+                    return new RedirectResult(Url.Action("Dashboard", "Account"));
                 }
             }
         }
@@ -98,7 +99,8 @@ namespace CRMS1.WebUI.Controllers
                     model.UpdatedBy = (Guid)Session["UserId"];
                     _roleService.UpdateRole(model);
                     TempData["RoleAlert"] = "Role Edited successfully...!";
-                    return new RedirectResult(Url.Action("Dashboard", "Account", new { selectedTabId = 1 }));
+                    TempData["FormName"] = "Role";
+                    return new RedirectResult(Url.Action("Dashboard", "Account"));
                 }
             }
         }
@@ -107,7 +109,8 @@ namespace CRMS1.WebUI.Controllers
         {
             Roles rolesToDelete = _roleService.GetRoleById(id);
             _roleService.DeleteRole(id);
-            return new RedirectResult(Url.Action("Dashboard", "Account", new { selectedTabId = 1 }));
+            TempData["FormName"] = "Role";
+            return new RedirectResult(Url.Action("Dashboard", "Account"));
         }
         public ActionResult RoleGrid([DataSourceRequest] DataSourceRequest request)
         {

@@ -21,7 +21,7 @@ namespace CRMS1.Services
         FormMst BindFormMst(FormMstViewModel model);
         FormMstViewModel BindFormMst(FormMst model);
         bool IsAlreadyExist(FormMstViewModel model, bool IsCreated = false);
-        IEnumerable<FormMstViewModel> FormMstList();
+        IEnumerable<FormMstViewModel> FormMstList(bool isMenu = false);
         IEnumerable<FormMstViewModel> FormMstListIndex();
     }
     public class FormMstService : Page, IFormMstService
@@ -46,7 +46,6 @@ namespace CRMS1.Services
         {
             FormMst obj = GetById(model.Id);
             obj = BindFormMst(model);
-            IEnumerable<FormMst> list = GetAllFormMst();
             _repository.Update(obj);
             _repository.Commit();
         }
@@ -87,6 +86,7 @@ namespace CRMS1.Services
             obj.FormAccessCode = model.FormAccessCode;
             obj.DisplayOrder = model.DisplayOrder;
             obj.IsActive = model.IsActive;
+            obj.IsMenu = model.IsMenu;
             return obj;
 
         }
@@ -101,6 +101,7 @@ namespace CRMS1.Services
             obj.FormAccessCode = model.FormAccessCode;
             obj.DisplayOrder = model.DisplayOrder;
             obj.IsActive = model.IsActive;
+            obj.IsMenu = model.IsMenu;
             return obj;
         }
         public bool IsAlreadyExist(FormMstViewModel model, bool IsCreated = false)
@@ -115,9 +116,9 @@ namespace CRMS1.Services
             }
             return false;
         }
-        public IEnumerable<FormMstViewModel> FormMstList()
+        public IEnumerable<FormMstViewModel> FormMstList(bool isMenu)
         {
-            var list = _formMstRepository.FormMstMenuList();
+            var list = _formMstRepository.FormMstMenuList(isMenu);
             return list;
         }
         public IEnumerable<FormMstViewModel> FormMstListIndex()

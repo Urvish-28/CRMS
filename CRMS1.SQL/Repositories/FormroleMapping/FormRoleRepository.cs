@@ -11,7 +11,7 @@ namespace CRMS1.SQL.Repositories.FormroleMapping
 {
     public interface IFormRoleRepository
     {
-        IEnumerable<FormRoleMappingVM> GetAllForm(Guid Id);
+        IEnumerable<FormRoleMappingVM> GetFormRoleList(Guid Id);
     }
     public class FormRoleRepository : IFormRoleRepository
     {
@@ -22,7 +22,7 @@ namespace CRMS1.SQL.Repositories.FormroleMapping
             context = Context;
             this.dbset = context.Set<FormRoleMapping>();
         }
-        public IEnumerable<FormRoleMappingVM> GetAllForm(Guid Id)
+        public IEnumerable<FormRoleMappingVM> GetFormRoleList(Guid Id)
         {
             var formRoleMappingList = (from f in context.FormMst
                                        join fr in context.FormRoleMapping.Where(x=>x.RoleId == Id)

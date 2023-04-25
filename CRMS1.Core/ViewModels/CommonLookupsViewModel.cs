@@ -10,7 +10,6 @@ namespace CRMS1.Core.ViewModels
 {
     public class CommonLookupsViewModel 
     {
-        [ScaffoldColumn(false)]
         public Guid Id { get; set; }
         [Required(ErrorMessage ="please enter ConfigName")]
         public string ConfigName { get; set; }

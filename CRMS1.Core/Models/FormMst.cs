@@ -13,5 +13,6 @@ namespace CRMS1.Core.Models
         public Guid? ParentFormId { get; set; }
         public string FormAccessCode { get; set; }
         public int DisplayOrder { get; set; }
+        public bool IsMenu { get; set; }
     }
 }

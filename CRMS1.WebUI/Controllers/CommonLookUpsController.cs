@@ -52,7 +52,8 @@ namespace CRMS1.WebUI.Controllers
                 {
                     _commonLookupService.AddCommonLookup(model);
                     TempData["CMAlert"] = "Create Successfully!!";
-                    return Content("true");
+                    TempData["FormName"] = "Setting";
+                    return new RedirectResult(Url.Action("Dashboard", "Account"));
                 }
             }
         }
@@ -88,6 +89,7 @@ namespace CRMS1.WebUI.Controllers
                 {
                     _commonLookupService.UpdateCommonLookup(model);
                     TempData["CMAlert"] = "Edit Successfully!!";
+                    TempData["FormName"] = "Setting";
                     return Content("true");
                 }
             }
@@ -98,7 +100,8 @@ namespace CRMS1.WebUI.Controllers
             CommonLookups commonLookupsdelete = _commonLookupService.GetById(id);
             _commonLookupService.DeleteCommonLookup(id);
             TempData["Alert"] = "Delete Successfully!!";
-            return new RedirectResult(Url.Action("Dashboard", "Account", new { selectedTabId = 2 }));
+            TempData["FormName"] = "Setting";
+            return Content("true");
         }
         public ActionResult CommonLookupGrid([DataSourceRequest] DataSourceRequest request)
         {

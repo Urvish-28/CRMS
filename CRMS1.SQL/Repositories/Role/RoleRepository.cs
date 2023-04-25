@@ -26,7 +26,7 @@ namespace CRMS1.SQL.Repositories.Role
         }
         public IEnumerable<Roles> GetRoleList()
         {
-            return _Irepository.Collection().Where(x => x.IsDelete == false);
+            return _Irepository.Collection().Where(x => x.IsDelete == false /*&& x.Code != "SADMIN"*/);
         }
         public Roles GetById(Guid id)
         {

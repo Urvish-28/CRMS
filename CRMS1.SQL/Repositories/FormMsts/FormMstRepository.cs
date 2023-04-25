@@ -14,7 +14,7 @@ namespace CRMS1.SQL.Repositories.FormMsts
     public interface IFormMstRepository
     {
         IEnumerable<FormMstViewModel> FormListIndex();
-        IEnumerable<FormMstViewModel> FormMstMenuList();
+        IEnumerable<FormMstViewModel> FormMstMenuList(bool isMenu);
     }
     public class FormMstRepository : IFormMstRepository
     {
@@ -27,6 +27,7 @@ namespace CRMS1.SQL.Repositories.FormMsts
         }
         public IEnumerable<FormMstViewModel> FormListIndex()
         {
+            var allForms = context.FormMst;
             var list = (from f in context.FormMst
                         select new FormMstViewModel()
                         {
@@ -39,31 +40,45 @@ namespace CRMS1.SQL.Repositories.FormMsts
                             FormAccessCode = f.FormAccessCode,
                             DisplayOrder = f.DisplayOrder,
                             IsActive = f.IsActive,
-                            ParentFormId = f.ParentFormId
+                            IsMenu = f.IsMenu,
+                            ParentFormId = f.ParentFormId,
+                            HasChild = (allForms.Where(x => x.ParentFormId == f.Id && x.IsMenu).Select(x => x.Id).Any())
                         }).ToList();
             return list;
         }
-        public IEnumerable<FormMstViewModel> FormMstMenuList()
+        public IEnumerable<FormMstViewModel> FormMstMenuList(bool isMenu)
         {
-            var formRoleList = HttpContext.Current.Session["Permission"] as List<FormRoleMapping>;
-            var list = (from f in context.FormMst.ToList()
-                        join formRole in formRoleList
-                        on f.Id equals formRole.FormId
-                        where formRole.AllowView == true
-                        select new FormMstViewModel()
-                        {
-                            Id = f.Id,
-                            Name = f.Name,
-                            NavigateURL = f.NavigateURL,
-                            ParentFormName = (from fParent in context.FormMst
-                                              where fParent.Id == f.ParentFormId
-                                              select fParent.Name).FirstOrDefault(),
-                            FormAccessCode = f.FormAccessCode,
-                            DisplayOrder = f.DisplayOrder,
-                            IsActive = f.IsActive,
-                            ParentFormId = f.ParentFormId
-                        }).ToList();
-            return list;
+            bool CheckRoleCode = (bool)HttpContext.Current.Session["RoleCode"];
+            if (CheckRoleCode == false)
+            {
+                var allForms = context.FormMst;
+                var formRoleList = HttpContext.Current.Session["Permission"] as List<FormRoleMapping>;
+                var list = (from f in context.FormMst.ToList()
+                            join formRole in formRoleList
+                            on f.Id equals formRole.FormId
+                            where formRole.AllowView == true && f.IsMenu == isMenu
+                            select new FormMstViewModel()
+                            {
+                                Id = f.Id,
+                                Name = f.Name,
+                                NavigateURL = f.NavigateURL,
+                                ParentFormName = (from fParent in context.FormMst
+                                                  where fParent.Id == f.ParentFormId
+                                                  select fParent.Name).FirstOrDefault(),
+                                FormAccessCode = f.FormAccessCode,
+                                DisplayOrder = f.DisplayOrder,
+                                IsActive = f.IsActive,
+                                IsMenu = f.IsMenu,
+                                ParentFormId = f.ParentFormId,
+                                AllowView = formRole.AllowView,
+                                HasChild = (allForms.Where(x => x.ParentFormId == f.Id && x.IsMenu).Select(x => x.Id).Any())
+                            }).ToList();
+                return list;
+            }
+            else
+            {
+                return FormListIndex();
+            }
         }
     }
 }

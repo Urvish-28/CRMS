@@ -1,18 +1,17 @@
-﻿<!DOCTYPE html>
+﻿@using CRMS1.Core.Models
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - CRMS </title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-    @*  <script src="~/Scripts/kendo/2017.2.621/jquery.min.js"></script>*@
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-
     <script src="~/Scripts/kendo/2017.2.621/kendo.all.min.js"></script>
     <script src="~/Scripts/kendo/2017.2.621/kendo.aspnetmvc.min.js"></script>
     <link href="~/Content/css/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/css")
 </head>
 <body>
 
@@ -20,10 +19,42 @@
         <div class="container">
             <div class="align-center align-between">
                 <div class="align-center">
-                    <div class="logoDiv"> <a href="#"> <img src="~/Content/image/logo.svg" alt="CRB Logo"> </a> 
+                    <div class="logoDiv">
+                        <a href="#"> <img src="~/Content/image/logo.svg" alt="CRB Logo"> </a>
                     </div>
                     <div class="menuDiv">
                         <ul class="align-center myDiv" id="List">
+                            @if (Session["FormListForMenu"] != null)
+                            {
+                                var allForms = (IEnumerable<CRMS1.Core.ViewModels.FormMstViewModel>)Session["FormListForMenu"];
+                                foreach (var item in allForms)
+                                {
+                                    bool view = CRMS1.Core.Models.CheckRolePermission.View;
+                                    if (item.ParentFormId == null && view)
+                                    {
+                                        if (item.HasChild)
+                                        {
+                                            <li class="dropdown">
+                                                <a class="popout" href="@item.NavigateURL">@item.Name <img src="/Content/image/down-arrow.svg"></a>
+                                                <ul class="dropdown-menu">
+                                                    @foreach (var child in allForms)
+                                                    {
+                                                        if (child.ParentFormId != null && child.ParentFormId == item.Id)
+                                                        {
+                                                            <li><a href="@child.NavigateURL">@child.Name</a></li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li><a  id="@item.Name"  href="@item.NavigateURL">@item.Name</a></li>
+                                        }
+
+                                    }
+                                }
+                            }
                         </ul>
                     </div>
                 </div>
@@ -68,9 +99,15 @@
 </html>
 
 <style>
+    .menuDiv ul li {
+        margin: 0;
+        padding: 0px 40px;
+        display: block;
+    }
     .dropdown .dropdown-menu {
         display: none;
-        position: absolute;
+       @* position: absolute;*@
+        width: 1px;
         background-color: #f8f8f8;
         padding: 10px;
     }
@@ -82,6 +119,7 @@
         text-align: justify;
         padding: 10px 10px;
         text-decoration: none;
+        top: 25px;
     }
 
     .dropdown .dropdown-menu:after {
@@ -91,14 +129,15 @@
         position: absolute;
         content: "";
         top: -7px;
-        right: 3px;
+        right: 80px;
         transform: rotate(45deg);
         border-radius: 3px;
     }
 </style>
 
 <script>
-    function Hover() {
+
+@*    function Hover(data) {
         $(".dropdown").hover(
             function () {
                 $(this).find(".dropdown-menu").stop(true, true).fadeIn("fast");
@@ -107,35 +146,35 @@
                 $(this).find(".dropdown-menu").stop(true, true).fadeOut("fast");
             }
         );
-    }
+    }*@
 
-
-    $(document).ready(function () {
-        $.ajax({
-            url: '@Url.Action("FormList", "FormMst")',
-            type: "GET",
-            dataType: "json",
-            success: function (data) {
-                var result = data.filter(x => x.ParentFormId == null);
-                $.each(result, function (index, item) {
-                    var dropdown = data.filter(x => x.ParentFormId == item.Id);
-                    if (dropdown.length == 0) {
-                        $("<li><a href='" + item.NavigateURL + "'>" + item.Name + "</a></li>").appendTo("#List");
-                    }
-                    else {
-                        var li = $("<li><a href='" + item.NavigateURL + "'>" + item.Name + "</a></li>").appendTo("#List");
-@*                      var li = $('<li class="dropdown"><a onmouseover="Hover()" class="popout" href="#"> ' + item.Name + '</a></li>)').appendTo("#List");
-                        var ul = $("<ul class='level2 dropdown-menu userInfoDiv'></ul>").appendTo(li);
-                        var result = data.filter(x => x.ParentFormId == item.Id);
-                        $.each(result, function (i, child) {
-                            $("<li><a href='" + child.NavigateURL + "'>" + child.Name + "</a></li>").appendTo(ul);
-                        });*@
-                    }
-                });
-            },
-            error: function (xhr, status, error) {
-                console.log(error);
-            }
-        });
-    });
+@*
+        $(document).ready(function () {
+            $.ajax({
+                url: '@Url.Action("FormList", "FormMst")',
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    var result = data.filter(x => x.ParentFormId == null);
+                    $.each(result, function (index, item) {
+                        var dropdown = data.filter(x => x.ParentFormId == item.Id);
+                        if (dropdown.length == 0) {
+                            $("<li><a href='" + item.NavigateURL + "'>" + item.Name + "</a></li>").appendTo("#List");
+                        }
+                        else {
+                            var li = $("<li><a href='" + item.NavigateURL + "'>" + item.Name + "</a></li>").appendTo("#List");
+                            var li = $('<li class="dropdown"><a onmouseover="Hover()" class="popout" href="#"> ' + item.Name + ' <img src="/Content/image/down-arrow.svg"></a></li>)').appendTo("#List");
+                            var ul = $("<ul class='level2 dropdown-menu userInfoDiv'></ul>").appendTo(li);
+                            var result = data.filter(x => x.ParentFormId == item.Id);
+                            $.each(result, function (i, child) {
+                                $("<li><a href='" + child.NavigateURL + "'>" + child.Name + "</a></li>").appendTo(ul);
+                            });
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        });*@
 </script>

@@ -108,7 +108,7 @@ h2 { margin: 0; padding: 0; font-weight: 500; font-size: 20px; line-height: 1.3;
 .userName { cursor: pointer; }
 .userName span { color: #fff; padding: 0 6px 0 10px; display: block; font-size: 16px; line-height: 1; font-weight: 400; }
 
-.userInfoDiv { position: absolute; right: 0; top: 40px; background: #fff; width: 100%; padding: 12px 15px; border-radius: 4px; box-shadow: 0 0 11px 1px rgb(16 2 24 / 21%); display:none; }
+.userInfoDiv { position: absolute; z-index:99; right: 0; top: 40px; background: #fff; width: 100%; padding: 12px 15px; border-radius: 4px; box-shadow: 0 0 11px 1px rgb(16 2 24 / 21%); display:none; }
 .userInfoDiv a { display: block; color: #11142C; font-size: 16px; font-weight: 400; padding: 3px 0; }
 .userInfoDiv a:hover { color: #e7367b;}
 .userInfoDiv:after { height: 16px; width: 16px; background: #ffffff; position: absolute; content: ""; top: -7px; right: 12px; transform: rotate(45deg); border-radius: 3px; }

@@ -6,7 +6,7 @@
 
 <script>
     $(document).ready(function () {
-        $('#already').fadeOut(3000);
+       
     });
 </script>
 
@@ -55,12 +55,19 @@
                         @Html.ValidationMessageFor(model => model.DisplayOrder, "", new { @class = "text-danger" })
                     </div>
                     <div class="inputBox">
+                        <label>IsMenu</label>
+                        <label class="switch">
+                            <input type="checkbox" id="IsMenu" name="IsMenu">
+                            <span class="slider round"></span>
+                        </label>
+                        @Html.ValidationMessageFor(model => model.IsMenu, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="inputBox">
                         <label>IsActive</label>
                         <label class="switch">
                             <input type="checkbox" id="toggle" name="IsActive">
                             <span class="slider round"></span>
                         </label>
-                        @* @Html.EditorFor(model => model.IsActive, new { htmlAttributes = new { placeholder = "IsActive", @class = "form-control" } })*@
                         @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
                     </div>
                     <div class="inputBox">
@@ -78,6 +85,8 @@
 
 <script>
     $(document).ready(function () {
+        $('#already').fadeOut(3000);
+
         var isChecked = false;
         isChecked = "@Model.IsActive";
         if (isChecked) {
@@ -86,6 +95,16 @@
         }
         else {
             $('#toggle').val(false);
+        }
+
+        var isChecked = false;
+        isChecked = "@Model.IsMenu";
+        if (isChecked) {
+            $('#IsMenu').val(true);
+            $('#IsMenu').toggleClass('active');
+        }
+        else {
+            $('#IsMenu').val(false);
         }
     });
 </script>

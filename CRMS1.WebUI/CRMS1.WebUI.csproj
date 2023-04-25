@@ -304,6 +304,11 @@
     <Content Include="bin\roslyn\VBCSCompiler.exe.config" />
     <Content Include="Content\css\login.css" />
     <Content Include="Content\css\style.css" />
+    <Content Include="Content\Images\check.png" />
+    <Content Include="Content\Images\close.png" />
+    <Content Include="Content\Images\crms-logo.png" />
+    <Content Include="Content\Images\crms.png" />
+    <Content Include="Content\Images\favicon.ico" />
     <Content Include="Content\image\down-arrow.svg" />
     <Content Include="Content\image\edit.svg" />
     <Content Include="Content\image\eye.svg" />
@@ -1316,7 +1321,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\Images\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

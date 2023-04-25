@@ -23,12 +23,10 @@ namespace CRMS1.Services
     public class FormRoleMappingService : IFormRoleMappingService
     {
         private readonly IRepository<FormRoleMapping> _repository;
-        private readonly IFormMstService _formMstService;
         private readonly IFormRoleRepository _formRoleRepository;
-        public FormRoleMappingService(IRepository<FormRoleMapping> repository, IFormMstService formMstService , IFormRoleRepository formRoleRepository)
+        public FormRoleMappingService(IRepository<FormRoleMapping> repository, IFormRoleRepository formRoleRepository)
         {
             _repository = repository;
-            _formMstService = formMstService;
             _formRoleRepository = formRoleRepository;
         }
         public IEnumerable<FormRoleMapping> GetAll()
@@ -66,7 +64,7 @@ namespace CRMS1.Services
 
         public IEnumerable<FormRoleMappingVM> GetAllForm(Guid Id)
         {
-            var formRoleMappingList = _formRoleRepository.GetAllForm(Id);
+            var formRoleMappingList = _formRoleRepository.GetFormRoleList(Id);
             return formRoleMappingList;
         }
         public List<FormRoleMapping> Permission(Guid RoleId)

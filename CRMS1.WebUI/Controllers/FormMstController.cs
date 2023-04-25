@@ -25,6 +25,8 @@ namespace CRMS1.WebUI.Controllers
         public ActionResult Index()
         {
             var list = _formService.FormMstListIndex();
+            Session["FormListForMenu"] = _formService.FormMstList(true);
+            Session["FormListForTab"] = _formService.FormMstList();
             return View(list);
         }
         [CRMSActionFilter("FORMS", CheckRolePermission.FormAccessCode.IsInsert)]
@@ -117,8 +119,13 @@ namespace CRMS1.WebUI.Controllers
         }
         public JsonResult FormList()
         {
-            IEnumerable<FormMstViewModel> formMsts = _formService.FormMstList();
+            IEnumerable<FormMstViewModel> formMsts = _formService.FormMstList(true);
             return Json(formMsts, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult FormTabList()
+        {
+            IEnumerable<FormMstViewModel> formMstTabList = Session["FormListForTab"] as List<FormMstViewModel>;
+            return Json(formMstTabList, JsonRequestBehavior.AllowGet);
         }
     }
 }

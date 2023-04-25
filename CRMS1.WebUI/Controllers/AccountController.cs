@@ -22,17 +22,20 @@ namespace CRMS1.WebUI.Controllers
         private readonly IUserRoleService _userroleService;
         private readonly IFormMstService _formService;
         private readonly IFormRoleMappingService _formRoleService;
+        private readonly IRoleService _roleService;
         public AccountController(ILoginService loginService, 
                                  IUserService userService, 
                                  IFormMstService formMstService , 
                                  IUserRoleService userroleService , 
-                                 IFormRoleMappingService formRoleService)
+                                 IFormRoleMappingService formRoleService,
+                                 IRoleService roleService)
         {
             _loginService = loginService;
             _userService = userService;
             _formService = formMstService;
             _userroleService = userroleService;
             _formRoleService = formRoleService;
+            _roleService = roleService;
         }
 
           [AllowAnonymous]
@@ -58,11 +61,15 @@ namespace CRMS1.WebUI.Controllers
                 {
                     Session["Name"] = _userService.GetAllUsers().Where(b => b.Email == model.Email).Select(x => x.UserName).FirstOrDefault();
                     Session["UserId"] = _userService.GetAllUsers().Where(b => b.Email == model.Email).Select(x => x.Id).FirstOrDefault();
-
+                    /*Session["Name"] = currentUserObj.Name;
+                    Session["UserId"] = currentUserObj.UserId; */
                     var userRoleId = _userroleService.GetAllUserRoles().Where(x => x.UserId == user.Id).Select(x => x.RoleId).FirstOrDefault();
-                    IEnumerable<FormRoleMapping> formRoleMappingList = _formRoleService.Permission(userRoleId).ToList();
-                    Session["Permission"] = formRoleMappingList;
-
+                    //Session["RoleCode"] = _roleService.GetAllRoles().Where(x => x.Id == userRoleId).Select(x => x.Code == "SADMIN").FirstOrDefault();
+                    Session["RoleCode"] = (_roleService.GetRoleById(userRoleId).Code == "SADMIN");
+                    Session["Permission"] = _formRoleService.Permission(userRoleId).ToList();
+                    Session["FormListForMenu"] = _formService.FormMstList(true);
+                    Session["FormListForTab"] = _formService.FormMstList();
+                    
                     FormsAuthentication.SetAuthCookie(model.Email, false);
                     return RedirectToAction("DashBoard");
                 }
@@ -75,9 +82,9 @@ namespace CRMS1.WebUI.Controllers
         }
 
         [CRMSActionFilter("SYS", CheckRolePermission.FormAccessCode.IsView)]
-        public ActionResult DashBoard(int selectedTabId = 0)
+        public ActionResult DashBoard()
         {
-            ViewBag.DashBoard = selectedTabId;
+            ViewBag.DashBoard = TempData["FormName"] as string;
             return View();
         }
 

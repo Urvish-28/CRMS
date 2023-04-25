@@ -12,37 +12,50 @@ namespace CRMS1.WebUI.Filters
     {
         public static bool CheckPermission(String formAccessCode,string action)
         {
-            List<FormRoleMapping> list = HttpContext.Current.Session["Permission"] as List<FormRoleMapping>;
-            if(list != null)
+            bool RoleCode = (bool)HttpContext.Current.Session["RoleCode"];
+            if (RoleCode == false)
             {
-                using(CRMSEntities db = new CRMSEntities())
+                List<FormRoleMapping> list = HttpContext.Current.Session["Permission"] as List<FormRoleMapping>;
+                if (list != null)
                 {
-                    Guid FormId = db.FormMst.Where(x => x.FormAccessCode == formAccessCode).Select(x => x.Id).FirstOrDefault();
-                    FormRoleMapping form = list.Where(x => x.FormId == FormId).FirstOrDefault();
-                    if(form != null)
+                    using (CRMSEntities db = new CRMSEntities())
                     {
-                        if (form.AllowView == true)
+                        Guid FormId = db.FormMst.Where(x => x.FormAccessCode == formAccessCode).Select(x => x.Id).FirstOrDefault();
+                        FormRoleMapping form = list.Where(x => x.FormId == FormId).FirstOrDefault();
+                        if (form != null)
                         {
-                            CheckRolePermission.View = form.AllowView;
-                            CheckRolePermission.Insert = form.AllowInsert;
-                            CheckRolePermission.Update = form.AllowUpdate;
-                            CheckRolePermission.Delete = form.AllowDelete;
-                            if (action == CheckRolePermission.FormAccessCode.IsView.ToString())
+                            if (form.AllowView == true)
                             {
-                                return form.AllowView;
+                                CheckRolePermission.View = form.AllowView;
+                                CheckRolePermission.Insert = form.AllowInsert;
+                                CheckRolePermission.Update = form.AllowUpdate;
+                                CheckRolePermission.Delete = form.AllowDelete;
+                                if (action == CheckRolePermission.FormAccessCode.IsView.ToString())
+                                {
+                                    return form.AllowView;
+                                }
+                                else if (action == CheckRolePermission.FormAccessCode.IsInsert.ToString())
+                                {
+                                    return form.AllowInsert;
+                                }
+                                else if (action == CheckRolePermission.FormAccessCode.IsUpdate.ToString())
+                                {
+                                    return form.AllowUpdate;
+                                }
+                                else if (action == CheckRolePermission.FormAccessCode.IsDelete.ToString())
+                                {
+                                    return form.AllowDelete;
+                                }
                             }
-                            else if (action == CheckRolePermission.FormAccessCode.IsInsert.ToString())
+                            else
                             {
-                                return form.AllowInsert;
+                                CheckRolePermission.View = false;
+                                CheckRolePermission.Insert = false;
+                                CheckRolePermission.Update = false;
+                                CheckRolePermission.Delete = false;
+                                return false;
                             }
-                            else if (action == CheckRolePermission.FormAccessCode.IsUpdate.ToString())
-                            {
-                                return form.AllowUpdate;
-                            }
-                            else if (action == CheckRolePermission.FormAccessCode.IsDelete.ToString())
-                            {
-                                return form.AllowDelete;
-                            }
+                            return false;
                         }
                         else
                         {
@@ -52,23 +65,21 @@ namespace CRMS1.WebUI.Filters
                             CheckRolePermission.Delete = false;
                             return false;
                         }
-                        return false;
                     }
-                    else
-                    {
-                        CheckRolePermission.View = false;
-                        CheckRolePermission.Insert = false;
-                        CheckRolePermission.Update = false;
-                        CheckRolePermission.Delete = false;
-                        return false;
-                    }
+                }
+                else
+                {
+                    return false;
                 }
             }
             else
             {
-                return false;
+                CheckRolePermission.View = true;
+                CheckRolePermission.Insert = true;
+                CheckRolePermission.Update = true;
+                CheckRolePermission.Delete = true;
+                return true;
             }
-            
         }
     }
 }

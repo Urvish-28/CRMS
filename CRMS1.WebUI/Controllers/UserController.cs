@@ -69,7 +69,8 @@ namespace CRMS1.WebUI.Controllers
                      model.CreatedBy = (Guid)Session["UserId"];
                     _usersevice.AddUser(model);
                     TempData["UserAlert"] = "Employee added successfully...!";
-                    return new RedirectResult(Url.Action("Dashboard", "Account", new { selectedTabId = 0 }));
+                    TempData["FormName"] = "User";
+                    return new RedirectResult(Url.Action("Dashboard", "Account"));
                 }
 
             }
@@ -113,7 +114,8 @@ namespace CRMS1.WebUI.Controllers
                     model.UpdatedBy = (Guid)Session["UserId"];
                     _usersevice.UpdateUser(model);
                     TempData["UserAlert"] = "Employee Details Edited successfully...!";
-                    return new RedirectResult(Url.Action("Dashboard", "Account", new { selectedTabId = 0 }));
+                    TempData["FormName"] = "User";
+                    return new RedirectResult(Url.Action("Dashboard", "Account"));
                 }
             }
         }
@@ -123,7 +125,8 @@ namespace CRMS1.WebUI.Controllers
             User userToDelete = _usersevice.GetUserById(id);
             _usersevice.DeleteUser(id);
             TempData["AlertMsg"] = "Employee Deleted successfully...!";
-            return new RedirectResult(Url.Action("Dashboard", "Account", new { selectedTabId = 0 }));
+            TempData["FormName"] = "User";
+            return new RedirectResult(Url.Action("Dashboard", "Account"));
         }
         public ActionResult UserGrid([DataSourceRequest] DataSourceRequest request)
         {

@@ -2,7 +2,6 @@
 @{
     ViewBag.Title = "Index";
 }
-<h2>CommonLookUp</h2>
 
 <div>
     <button id="hello" type="button" class="btn btn-sm btn-primary" onclick="createcommonlookup()">
@@ -101,7 +100,9 @@
                 data: { 'id': selectedId},
                 type: "post",
                 success: function (savingStatus) {
-                    location.reload();
+                    if (savingStatus == "true") {
+                        location.reload();
+                    }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                 }

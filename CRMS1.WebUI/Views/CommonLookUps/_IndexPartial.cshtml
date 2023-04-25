@@ -13,29 +13,27 @@
         });
     }
     //Edit Bootstrap Modal
-    function editcommonlookup(e) {
-        var selectedId = this.dataItem($(e.currentTarget).closest("tr")).Id;
+    function editcommonlookup(data) {
         $.ajax({
-            url: '@Url.Action("Edit","CommonLookUps")',
+            url: '/CommonLookUps/Edit?id=' + data,
             type: "Get",
-            data: { 'id': selectedId },
-            success: function (data) {
-                $("#createPopupModalForm").html(data);
+            data: { 'id': data },
+            success: function (res) {
+                $("#createPopupModalForm").html(res);
                 $("#editmodal").modal('show');
             }
         });
     }
 
     //Delete
-    function confirmDelete(e) {
-        var selectedId = this.dataItem($(e.currentTarget).closest("tr")).Id;
+    function confirmDelete(data) {
         if (confirm("Are You Sure You Want To Delete?") == true) {
             $.ajax({
-                url: '@Url.Action("Delete","CommonLookUps")',
-                data: { 'id': selectedId},
+                url: '/CommonLookUps/Delete?id=' + data,
+                data: { 'id': data},
                 type: "post",
                 success: function (savingStatus) {
-                    location.reload();
+                    location.href = '@Url.Action("DashBoard" , "Account" ,new { selectedTabId = 2 })';
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                 }
@@ -64,11 +62,11 @@
 </script>
 
 <div class="align-center align-between pb20">
-    <h2>Settings</h2>
+    <h3>Settings</h3>
     @if (CheckRolePermission.Insert)
     {
         <div class="btnDiv">
-            <a onclick="createcommonlookup()">+ Add Setting</a>
+            <a class="btn" onclick="createcommonlookup()">+ Add Setting</a>
         </div>
     }
 </div>
@@ -89,20 +87,26 @@
         columns.Bound(expression: c => c.ConfigValue);
         columns.Bound(expression: c => c.DisplayOrder);
         columns.Bound(expression: c => c.Description);
-        columns.Bound(expression: c => c.IsActive);
+        columns.Bound(p => p.IsActive)
+            .Title("Active")
+            .Width(90)
+            .ClientTemplate(
+                        "# if (IsActive) { #" +
+                        "<div class=\"img-circle\" style=\"display: flex; justify-content: center; align-items: center;\"><img src=\"/Content/images/check.png\" alt=\"editok\" width=\"22\"></div>" +
+                        "# } else { #" +
+                        "<div class=\"\" style=\"display: flex; justify-content: center; align-items: center;\"><img src=\"/Content/images/close.png\" alt=\"edit\" width=\"22\"></div>" +
+                        "# } #"
+                        );
         if (CheckRolePermission.Update || CheckRolePermission.Delete)
         {
-            columns.Command(c =>
-            {
-                if (CheckRolePermission.Update)
-                {
-                    c.Custom("Edit").Click("editcommonlookup");
-                }
-                if (CheckRolePermission.Delete)
-                {
-                    c.Custom("Delete").Click("confirmDelete");
-                }
-            }).Width(200).Title("Action");
+            columns.Bound(p => p.Id).ClientTemplate(
+             "#if ('" + CheckRolePermission.Update + "'=='True') {#"
+             + " <a onclick='editcommonlookup(\"#=Id#\")'><img src=\"/Content/image/edit.svg\" width=\"19\"></img></a>"
+             + "#}#"
+             +"#if ('" + CheckRolePermission.Delete + "'=='True') {#"
+             + " | <a onclick='confirmDelete(\"#=Id#\")'><img src=\"/Content/image/trash.svg\"></img></i></a>"
+             + "#}#"
+             ).Width(100).Title("Action").Filterable(false);
         }
     })
     .Sortable()

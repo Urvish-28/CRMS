@@ -1,15 +1,18 @@
 ﻿@model IEnumerable<CRMS1.Core.ViewModels.FormMstViewModel>
 @using CRMS1.Core.Models
 
+<style>
+    .btnDiv {
+        width: 175px;
+        position: absolute;
+        right: 215px;
+        top: 140px;
+    }
+</style>
+
 @{
     ViewBag.Title = "Index";
 }
-<script>
-    $(document).ready(function () {
-        //Alert Msg
-        $('#success').fadeOut(3000);
-    });
-</script>
 <br />
 <h2>FormMst</h2>
 <br />
@@ -22,10 +25,11 @@
 }
 @if (CheckRolePermission.Insert)
 {
-<p>
-    @Html.ActionLink("Create New", "Create", "FormMst", new { @class = "btn btn-primary" })
-</p>
+    <div class="btnDiv">
+        <a class="btn" href="@Url.Action("Create", "FormMst")">+ Add New Form</a>
+    </div>
 }
+<br />
 @(
     Html.Kendo().Grid(Model).Name("grid")
         .Columns(columns =>
@@ -34,18 +38,37 @@
             columns.Bound(expression: c => c.NavigateURL);
             columns.Bound(expression: c => c.ParentFormName);
             columns.Bound(expression: c => c.FormAccessCode);
-            columns.Bound(expression: c => c.DisplayOrder);
-            columns.Bound(expression: c => c.IsActive);
+            columns.Bound(expression: c => c.DisplayOrder).Width(130);
+            columns.Bound(p => p.IsActive)
+              .Title("Active")
+              .Width(90)
+             .ClientTemplate(
+                    "# if (IsActive) { #" +
+                    "<div class=\"img-circle\" style=\"display: flex; justify-content: center; align-items: center;\"><img src=\"/Content/images/check.png\" alt=\"editok\" width=\"22\"></div>" +
+                    "# } else { #" +
+                    "<div class=\"\" style=\"display: flex; justify-content: center; align-items: center;\"><img src=\"/Content/images/close.png\" alt=\"edit\" width=\"22\"></div>" +
+                    "# } #"
+                    );
+            columns.Bound(p => p.IsMenu)
+              .Title("IsMenu")
+              .Width(90)
+              .ClientTemplate(
+                    "# if (IsMenu) { #" +
+                    "<div class=\"img-circle\" style=\"display: flex; justify-content: center; align-items: center;\"><img src=\"/Content/images/check.png\" alt=\"editok\" width=\"22\"></div>" +
+                    "# } else { #" +
+                    "<div class=\"\" style=\"display: flex; justify-content: center; align-items: center;\"><img src=\"/Content/images/close.png\" alt=\"edit\" width=\"22\"></div>" +
+                    "# } #"
+                    );
             if (CheckRolePermission.Update || CheckRolePermission.Delete)
             {
                 columns.Bound(p => p.Id).ClientTemplate(
                     "#if('" + CheckRolePermission.Update + "'=='True') {#"
-                    + "<a href='" + Url.Action("Edit", "FormMst") + "/#=Id#'><i class='fa fa-pencil'></i></a>"
+                    + "<a href='" + Url.Action("Edit", "FormMst") + "/#=Id#'><img src=\"/Content/image/edit.svg\" width=\"19\"></img></a>"
                     + "#}#"
                     + "#if ('" + CheckRolePermission.Delete + "'=='True') {#"
-                    + " | <a href='" + Url.Action("Delete", "FormMst") + "/#=Id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-trash'></a>"
+                    + " | <a href='" + Url.Action("Delete", "FormMst") + "/#=Id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'><img src=\"/Content/image/trash.svg\"></img></a>"
                     + "#}#"
-                    ).Width(150).Title("Action").Filterable(false);
+                    ).Width(100).Title("Action").Filterable(false);
             }
         })
     .HtmlAttributes(new { Style = ""})

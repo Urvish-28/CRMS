@@ -67,7 +67,7 @@ namespace CRMS1.SQL.Repositories.Users
         }
         public IEnumerable<IndexViewModel> UserList()
         {
-            var userlist = from u in context.Users
+            var userlist = from u in context.Users.Where(x => x.IsDelete == false)
                            join x in context.UserRole on u.Id equals x.UserId
                            join r in context.Roles on x.RoleId equals r.Id
                            select new IndexViewModel()

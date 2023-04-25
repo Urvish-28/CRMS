@@ -49,7 +49,7 @@ namespace CRMS1.Services
 
         public IEnumerable<Roles> GetAllRoles()
         {
-            return _roleRepository.GetRoleList();
+            return _roleRepository.GetRoleList().Where(x=>x.Code != "SADMIN");
         }
         public Roles GetRoleById(Guid id)
         {

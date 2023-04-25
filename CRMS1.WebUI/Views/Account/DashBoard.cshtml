@@ -3,6 +3,7 @@
     ViewBag.Title = "DashBoard";
 }
 
+
 <!-- Section -->
 <div class="section">
     <div class="container">
@@ -12,22 +13,24 @@
 
         <!----- Tabs ---->
         <div class="tab">
-            <ul class="align-center">
-                <li> <a class="tablinks" onclick="openSystems(event, 'UserManagement')"> User Management </a></li>
-                <li> <a class="tablinks" onclick="openSystems(event, 'RoleManagement')"> Role Management</a> </li>
-                <li> <a class="tablinks" onclick="openSystems(event, 'Settings')">Settings </a> </li>
-                <li> <a class="tablinks" onclick="openSystems(event, 'Activitylogs')">Activity logs </a> </li>
-                <li> <a class="tablinks" onclick="openSystems(event, 'Errorlogs')">Error logs </a> </li>
+            <ul class="align-center" id="TabName">
+                @*                <li> <a class="tablinks" onclick="openSystems(event, 'UserManagement')"> User Management </a></li>
+                    <li> <a class="tablinks" onclick="openSystems(event, 'RoleManagement')"> Role Management</a> </li>
+                    <li> <a class="tablinks" onclick="openSystems(event, 'Settings')">Settings </a> </li>
+                    <li> <a class="tablinks" onclick="openSystems(event, 'Activitylogs')">Activity logs </a> </li>
+                    <li> <a class="tablinks" onclick="openSystems(event, 'Errorlogs')">Error logs </a> </li>*@
             </ul>
         </div>
 
-        <div class="tabContentDetails">
-            <div id="UserManagement" class="tabcontent" style="display: block">
-                <div class="tableDiv" id="UserLoad">
-                </div>
+        <div id="ViewTab"></div>
+
+        <div class="tabContentDetails" id="TabContent">
+            @*            <div id="UserManagement" class="tabcontent" style="display: block">
+            <div class="tableDiv" id="UserLoad">
             </div>
-        </div>
-        <div id="RoleManagement" class="tabcontent">
+        </div>*@
+
+            @*<div id="RoleManagement" class="tabcontent">
             <div class="tableDiv" id="RoleLoad">
             </div>
         </div>
@@ -156,24 +159,15 @@
                     </tbody>
                 </table>
             </div>
+        </div>*@
         </div>
     </div>
 </div>
 <script>
     function SelectTab(SystemsName)
     {
-        if (SystemsName == "UserManagement")
-        {
-            $('#UserLoad').load('@Url.Action("Index" , "User")');
-        }
-        else if (SystemsName == "RoleManagement")
-        {
-            $('#RoleLoad').load('@Url.Action("Index" , "RoleManagement")');
-        }
-        else if (SystemsName == "Settings")
-        {
-            $('#CMload').load('@Url.Action("Index" , "CommonLookUps")')
-        }
+        var url = $('#child' + SystemsName).data('url');
+        $('#child' + SystemsName).load(url)
     }
     function openSystems(evt, SystemsName)
     {
@@ -187,11 +181,56 @@
         for (i = 0; i < tablinks.length; i++) {
             tablinks[i].className = tablinks[i].className.replace(" active", "");
         }
-        document.getElementById(SystemsName).style.display = "block";
+        document.getElementById("child"+SystemsName).style.display = "block";
         evt.currentTarget.className += " active";
     }
 
-    $(document).ready(function ()
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("FormTabList", "FormMst")',
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                var result = data.filter(x => x.ParentFormName == "System");
+                $.each(result, function (index, item) {
+                    $("<li><a id='tab" + item.Name + "' class='tablinks' onclick='openSystems(event,\"" + item.Name + "\"\)'\'>" + item.Name + "</a></li>").appendTo("#TabName");
+                });
+                $.each(result, function (index, item) {
+                    $("<div id='child" + item.Name + "' class='tabcontent' style='display:block' data-url='" + item.NavigateURL + "'></div>").appendTo("#TabContent");
+                });
+                loadtab(result[0].Name);
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        });
+    });
+
+    function loadtab(TabName) {
+        var activeTabId = '@ViewBag.DashBoard';
+        var tablinks = document.getElementsByClassName("tablinks");
+        if (activeTabId == '')
+        {
+            var tabcontent = document.getElementById("child" + TabName);
+            SelectTab(TabName);
+            tablinks[0].className = 'tablinks active';
+            tabcontent.style.display = "block";
+        }
+        else
+        {
+            var tablinks = document.getElementById("tab" + activeTabId);
+            var tabcontent = document.getElementById("child" + activeTabId);
+
+            SelectTab(activeTabId);
+            tablinks.className = 'tablinks active';
+            tabcontent.style.display = "block";
+        }
+    }
+</script>
+
+
+
+@*    $(document).ready(function ()
     {
         var activeTabId = parseInt('@ViewBag.DashBoard');
         var tabcontent = document.getElementsByClassName("tabcontent");
@@ -215,5 +254,4 @@
             tabcontent[activeTabId].style.display = "block";
         }
 
-    });
-</script>
+    });*@
