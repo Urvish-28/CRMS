@@ -22,7 +22,6 @@ namespace CRMS1.Services
             _loginRepository = loginRepository;
             _userService = userService;
         }
-
         public User Login(LoginViewModel model)
         {
            

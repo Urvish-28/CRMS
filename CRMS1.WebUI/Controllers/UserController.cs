@@ -66,7 +66,6 @@ namespace CRMS1.WebUI.Controllers
                 }
                 else
                 {
-                     model.CreatedBy = (Guid)Session["UserId"];
                     _usersevice.AddUser(model);
                     TempData["UserAlert"] = "Employee added successfully...!";
                     TempData["FormName"] = "User";
@@ -87,7 +86,6 @@ namespace CRMS1.WebUI.Controllers
             else
             {
                 model = _usersevice.BindUserModel(obj);
-
                 model.RoleDropdown = _roleService.GetAllRoles().Select(x => new DropDown() { Id = x.Id, Name = x.Name }).ToList();
                 model.RoleId = _userRoleService.getByUserId(id).RoleId;
                 return View(model);
@@ -111,7 +109,6 @@ namespace CRMS1.WebUI.Controllers
                 }
                 else
                 {
-                    model.UpdatedBy = (Guid)Session["UserId"];
                     _usersevice.UpdateUser(model);
                     TempData["UserAlert"] = "Employee Details Edited successfully...!";
                     TempData["FormName"] = "User";
@@ -122,7 +119,6 @@ namespace CRMS1.WebUI.Controllers
         [CRMSActionFilter("USER", CheckRolePermission.FormAccessCode.IsDelete)]
         public ActionResult Delete(Guid id)
         {
-            User userToDelete = _usersevice.GetUserById(id);
             _usersevice.DeleteUser(id);
             TempData["AlertMsg"] = "Employee Deleted successfully...!";
             TempData["FormName"] = "User";

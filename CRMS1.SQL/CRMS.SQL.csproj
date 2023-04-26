@@ -114,9 +114,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CRMS1.Core\CRMS1.Core.csproj">
+    <ProjectReference Include="..\CRMS1.Core\CRMS.Core.csproj">
       <Project>{A6E0E47A-8F57-4315-9CBE-2A6797738221}</Project>
-      <Name>CRMS1.Core</Name>
+      <Name>CRMS.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

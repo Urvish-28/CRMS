@@ -17,7 +17,6 @@
     </div>
 }
 
-
 <div class="section">
     <div class="container">
         @using (Html.BeginForm())
@@ -39,15 +38,14 @@
                         @Html.EditorFor(model => model.Capacity, new { htmlAttributes = new { placeholder = "Capacity", @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Capacity, "", new { @class = "text-danger" })
                     </div>
-                    <div class="inputBox">
-                        <button class="btnDiv" type="submit">Save</button>
-                    </div>
+                </div>
+                <div class="inputBox">
+                    <button class="btnDiv" type="submit">Save</button>
+                </div>
+                <div>
+                    <a href="javascript: history.go(-1)" class="btn btn-warning">Cancel</a>
                 </div>
             </div>
         }
     </div>
-</div>
-
-<div>
-    <a href="javascript: history.go(-1)" class="btn btn-warning">Cancel</a>
 </div>

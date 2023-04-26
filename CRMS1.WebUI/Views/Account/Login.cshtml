@@ -35,24 +35,18 @@
                 <div class="formSection">
                     <div class="inputBox">
                         <label>Username</label>
-                        @* <input type="text" placeholder="Email" />*@
                         @Html.TextBoxFor(model => model.Email, new { placeholder = "Email", @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Email, "", new { @class = "errorMsg" })
                     </div>
                     <div class="inputBox">
                         <label>Password</label>
-                        @*<input type="password" placeholder="Password" />*@
                         @Html.PasswordFor(model => model.Password, new { placeholder = "Password", @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Password, "", new { @class = "errorMsg" })
                     </div>
                     <div class="inputBox">
                         @Html.ValidationSummary(true, "", new { @class = "errorMsg" })
                     </div>
-                    <!-- <div class="inputBox forgotPsw">
-                        <a href="#">Forgot Password</a>
-                    </div> -->
                     <div class="inputBox btnInput">
-                        @*   <a href="index.html" class="loginBtn">Login</a>*@
                         <button class="loginBtn" type="submit">Login</button>
                     </div>
                 </div>

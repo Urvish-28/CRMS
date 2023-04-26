@@ -52,7 +52,6 @@ namespace CRMS1.WebUI.Controllers
                 }
                 else
                 {
-                    model.CreatedBy = (Guid)Session["UserId"];
                     _roomservice.CreateRoom(model);
                     TempData["RoomAlert"] = "Conference Room added successfully...!";
                     return RedirectToAction("Index");
@@ -91,7 +90,6 @@ namespace CRMS1.WebUI.Controllers
                 }
                 else
                 {
-                    model.UpdatedBy = (Guid)Session["UserId"];
                     _roomservice.UpdateRoom(model);
                     TempData["RoomAlert"] = "Conference Room Edited successfully...!";
                     return RedirectToAction("Index");

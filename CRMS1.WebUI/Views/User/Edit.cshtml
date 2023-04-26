@@ -22,71 +22,63 @@
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-        <div class="formDiv">
-            @Html.HiddenFor(model => model.Id)
-            @Html.HiddenFor(model => model.Password)
-            <div class="topTitleHead pb20">
-                <h1> Edit User</h1>
-            </div>
-            <div class="formSection">
-                <div class="inputBox">
-                    <label>UserName</label>
-                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { placeholder = "UserName", @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
-                    @*<input type="text" placeholder="Name" />*@
-                    @*<p class="errorMsg">This field is required</p>*@
+            <div class="formDiv">
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.Password)
+                <div class="topTitleHead pb20">
+                    <h1> Edit User</h1>
                 </div>
-                <div class="inputBox">
-                    <label>Name</label>
-                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { placeholder = "Name", @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                </div>
-                <div class="inputBox selectBox">
-                    <label>Role</label>
-                    @Html.DropDownListFor(model => model.RoleId, new SelectList(Model.RoleDropdown, "Id", "Name"),
-                       "Select Role", new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
-                </div>
-                <div class="inputBox">
-                    <label>Email</label>
-                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { placeholder = "Email", @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                </div>
-@*                <div class="inputBox">
-                    <label>Password</label>
-                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                </div>*@
-                <div class="inputBox">
-                    <label>Mobile Number</label>
-                    @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { placeholder = "Mobile No", @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
-                </div>
-                <div class="inputBox customRadioBtn w-100">
-                    <label>Gender</label>
-                    <div class="radioBtnSection">
-                        <div class="radioBtnDiv">
-                            Male
-                            @Html.RadioButtonFor(model => model.Gender, "Male", new { @checked = "checked" })
-                            <span class="checkmark"></span>
-                        </div>
-                        <div class="radioBtnDiv">
-                            Female
-                            @Html.RadioButtonFor(model => model.Gender,"Female" , new { htmlAttributes = new { @class = "form-control" } })
-                            <span class="checkmark"></span>
+                <div class="formSection">
+                    <div class="inputBox">
+                        <label>UserName</label>
+                        @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { placeholder = "UserName", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="inputBox">
+                        <label>Name</label>
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { placeholder = "Name", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="inputBox selectBox">
+                        <label>Role</label>
+                        @Html.DropDownListFor(model => model.RoleId, new SelectList(Model.RoleDropdown, "Id", "Name"),
+                           "Select Role", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="inputBox">
+                        <label>Email</label>
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { placeholder = "Email", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="inputBox">
+                        <label>Mobile Number</label>
+                        @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { placeholder = "Mobile No", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="inputBox customRadioBtn w-100">
+                        <label>Gender</label>
+                        <div class="radioBtnSection">
+                            <div class="radioBtnDiv">
+                                Male
+                                @Html.RadioButtonFor(model => model.Gender, "Male", new { @checked = "checked" })
+                                <span class="checkmark"></span>
+                            </div>
+                            <div class="radioBtnDiv">
+                                Female
+                                @Html.RadioButtonFor(model => model.Gender, "Female", new { htmlAttributes = new { @class = "form-control" } })
+                                <span class="checkmark"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="inputBox">
-                    <button class="btnDiv" type="submit">Save</button>
+                    <div class="inputBox">
+                        <button class="btnDiv" type="submit">Save</button>
+                    </div>
+                    <div>
+                        <a href="javascript: history.go(-1)" id="cancel" class="btnDiv">Cancel</a>
+                    </div>
                 </div>
             </div>
-        </div>
         }
     </div>
 </div>
-<div>
-    <a href="javascript: history.go(-1)" class="btn btn-warning">Cancel</a>
-    @*@Html.ActionLink("Back to List", "Dashboard", "Account")*@
-</div>
+

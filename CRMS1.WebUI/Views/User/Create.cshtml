@@ -16,8 +16,6 @@
     </div>
 }
 
-
-
 <div class="section">
     <div class="container">
         @using (Html.BeginForm())
@@ -35,7 +33,7 @@
                     </div>
                     <div class="inputBox">
                         <label>Name</label>
-                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { placeholder = "Name" , @class = "form-control" } })
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { placeholder = "Name", @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                     </div>
                     <div class="inputBox selectBox">
@@ -74,16 +72,14 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="inputBox">
                         <button class="btnDiv" type="submit">Create</button>
+                    </div>
+                    <div>
+                        <a href="javascript: history.go(-1)" id="cancel" class="btnDiv">Cancel</a>
                     </div>
                 </div>
             </div>
         }
     </div>
-</div>
-<div>
-    <a href="javascript: history.go(-1)" class="btn btn-warning">Cancel</a>
-    @*  @Html.ActionLink("Back to List", "Dashboard", "Account")*@
 </div>

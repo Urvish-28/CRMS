@@ -7,15 +7,15 @@
 }
 <style>
     .btnDiv {
-        width: 190px;
-@*        position: absolute;
+        width: 205px;
+        position: absolute;
         right: 215px;
-        top: 140px;*@
+        top: 140px;
     }
 </style>
 
 <br />
-<h2>Conference Room</h2>
+<h1>Conference Room</h1>
 <br />
 @if (@TempData["RoomAlert"] != null)
 {
@@ -27,7 +27,7 @@
 @if (CheckRolePermission.Insert)
 {
     <div class="btnDiv">
-        <a class="btn" href="@Url.Action("Create", "FormMst")">+ Add Conference Room</a>
+        <a class="btn" href="@Url.Action("Create", "Room")">+ Add Conference Room</a>
     </div>
 }
 <br />

@@ -59,12 +59,9 @@ namespace CRMS1.WebUI.Controllers
             {
                 if (user != null)
                 {
-                    Session["Name"] = _userService.GetAllUsers().Where(b => b.Email == model.Email).Select(x => x.UserName).FirstOrDefault();
-                    Session["UserId"] = _userService.GetAllUsers().Where(b => b.Email == model.Email).Select(x => x.Id).FirstOrDefault();
-                    /*Session["Name"] = currentUserObj.Name;
-                    Session["UserId"] = currentUserObj.UserId; */
-                    var userRoleId = _userroleService.GetAllUserRoles().Where(x => x.UserId == user.Id).Select(x => x.RoleId).FirstOrDefault();
-                    //Session["RoleCode"] = _roleService.GetAllRoles().Where(x => x.Id == userRoleId).Select(x => x.Code == "SADMIN").FirstOrDefault();
+                    Session["Name"] = _userService.GetUserByEmail(model.Email).UserName;
+                    Session["UserId"] = _userService.GetUserByEmail(model.Email).Id;
+                    var userRoleId = _userroleService.getByUserId(user.Id).RoleId;
                     Session["RoleCode"] = (_roleService.GetRoleById(userRoleId).Code == "SADMIN");
                     Session["Permission"] = _formRoleService.Permission(userRoleId).ToList();
                     Session["UserRoleId"] = userRoleId;
@@ -82,14 +79,12 @@ namespace CRMS1.WebUI.Controllers
                 }
             }
         }
-
         [CRMSActionFilter("SYS", CheckRolePermission.FormAccessCode.IsView)]
         public ActionResult DashBoard()
         {
             ViewBag.DashBoard = TempData["FormName"] as string;
             return View();
         }
-
         public ActionResult LogOut()
         {
             Session.Clear();

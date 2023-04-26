@@ -35,13 +35,13 @@
             @if (item.AllowDelete && item.AllowInsert && item.AllowUpdate && item.AllowView)
             {
                 <td>
-                    <input type="checkbox" class="Selectall" id="Allrights_@item.FormId" checked="checked" @*@(item.AllRights == false ? "" : "checked='checked'")*@ onclick="SelectAll(this)" />
+                    <input type="checkbox" class="Selectall" id="Allrights_@item.FormId" checked="checked" onclick="SelectAll(this)" />
                 </td>
             }
             else
             {
                 <td>
-                    <input type="checkbox" class="Selectall" id="Allrights_@item.FormId" @*@(item.AllRights == false ? "" : "checked='checked'")*@ onclick="SelectAll(this)" />
+                    <input type="checkbox" class="Selectall" id="Allrights_@item.FormId" onclick="SelectAll(this)" />
                 </td>
             }
             <td>
@@ -63,8 +63,8 @@
         </tr>
     }
 </table>
-<a href="javascript: history.go(-1)" class="btn btn-warning">Cancel</a>
-<a id="Savebtn" class="btn btn-success" onclick="Redirect()">Save</a>
+<button id="Savebtn" style="background-color: #EA4C89; color:white" class="btn" onclick="Redirect()">Save</button>
+<a href="javascript: history.go(-1)" style="background-color: darkorange" class="btn btn-warning">Cancel</a>
 
 
 <script>

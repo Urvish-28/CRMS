@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI;
 
 namespace CRMS1.Services
 {
@@ -20,14 +21,13 @@ namespace CRMS1.Services
         RoomViewModel BindConferenceRoomModel(ConferenceRoom model);
         bool IsAlreadyExist(RoomViewModel model, bool IsCreated = false);
     }
-    public class RoomService : IRoomService
+    public class RoomService :Page, IRoomService
     {
         private readonly IRoomRepository _roomRepository;
         public RoomService(IRoomRepository roomRepository)
         {
             _roomRepository = roomRepository;
         }
-
         public void CreateRoom(RoomViewModel model)
         {
             ConferenceRoom obj = new ConferenceRoom();
@@ -55,7 +55,6 @@ namespace CRMS1.Services
         public bool IsAlreadyExist(RoomViewModel model, bool IsCreated = false)
         {
             var records = GetAllRoom().Where(x => (x.Name.ToLower() == model.RoomName.ToLower()) && (IsCreated || x.Id != model.Id)).ToList();
-
             if (records.Count > 0)
             {
                 return true;
@@ -71,12 +70,13 @@ namespace CRMS1.Services
             if (obj == null)
             {
                 obj = new ConferenceRoom();
-                obj.CreatedBy = model.CreatedBy;
+                obj.CreatedBy = (Guid)Session["UserId"];
+
                 obj.CreatedOn = DateTime.Now;
             }
             else
             {
-                obj.UpdatedBy = model.UpdatedBy;
+                obj.UpdatedBy = (Guid)Session["UserId"];
                 obj.UpdatedOn = DateTime.Now;
             }
             obj.Capacity = model.Capacity;

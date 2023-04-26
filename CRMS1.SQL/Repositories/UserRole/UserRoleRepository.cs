@@ -21,40 +21,33 @@ namespace CRMS1.SQL.Repositories.UserRole
     {
         public CRMSEntities context;
         internal DbSet<UserRoles> dbset;
-
         public UserRoleRepository(CRMSEntities Context)
         {
             this.context = Context;
             this.dbset = context.Set<UserRoles>();
         }
-
         public IQueryable<UserRoles> Collection()
         {
             return dbset;
         }
-
         public void Commit()
         {
             context.SaveChanges();
         }
-
         public void Insert(UserRoles userroles)
         {
             dbset.Add(userroles);
         }
-
         public void Update(UserRoles userroles)
         {
             UserRoles userUpdate = context.UserRole.Where(b => b.UserId == userroles.UserId).FirstOrDefault();
             userUpdate.RoleId = userroles.RoleId;
             Commit();
         }
-
         public UserRoles Find(Guid Id)
         {
             return dbset.Where(x => x.UserId == Id).FirstOrDefault();
         }
-
         public void Delete(Guid Id)
         {
             var userroles = Find(Id);

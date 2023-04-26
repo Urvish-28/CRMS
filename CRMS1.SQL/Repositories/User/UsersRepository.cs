@@ -15,7 +15,8 @@ namespace CRMS1.SQL.Repositories.Users
         void Commit();
         void Insert(User user);
         void Update(User user);
-        User Find(Guid Id);
+        User FindById(Guid Id);
+        User FindByEmail(string Email);
         void Delete(Guid Id);
         IEnumerable<IndexViewModel> UserList();
 
@@ -52,14 +53,18 @@ namespace CRMS1.SQL.Repositories.Users
             context.Entry(user).State = EntityState.Modified;
         }
 
-        public User Find(Guid Id)
+        public User FindById(Guid Id)
         {
             return dbSet.Find(Id);
+        }
+        public User FindByEmail(string Email)
+        {
+            return dbSet.Where(x=>x.Email == Email).FirstOrDefault();
         }
 
         public void Delete(Guid Id)
         {
-            var user = Find(Id);
+            var user = FindById(Id);
             if (context.Entry(user).State == EntityState.Detached)
                 dbSet.Attach(user);
 

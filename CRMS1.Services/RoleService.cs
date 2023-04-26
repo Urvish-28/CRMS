@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.UI;
 
 namespace CRMS1.Services
 {
@@ -22,14 +23,15 @@ namespace CRMS1.Services
         RoleViewModel BindRoleModel(Roles model);
         bool IsAlreadyExist(RoleViewModel model, bool IsCreated = false);
     }
-    public class RoleService : IRoleService
+    public class RoleService :Page, IRoleService
     {
         private readonly IRoleRepository _roleRepository;
-        public RoleService(IRoleRepository roleRepository)
+        private readonly IFormRoleMappingService _formRoleMappingService;
+        public RoleService(IRoleRepository roleRepository, IFormRoleMappingService formRoleMappingService)
         {
-            this._roleRepository = roleRepository;
+            _formRoleMappingService = formRoleMappingService;
+            _roleRepository = roleRepository;
         }
-
         public void CreateRole(RoleViewModel model)
         {
             Roles obj = new Roles();
@@ -45,11 +47,13 @@ namespace CRMS1.Services
         public void DeleteRole(Guid id)
         {
             _roleRepository.DeleteRole(id);
-        }
 
+            var formRoleList = _formRoleMappingService.GetAll().Where(x => x.RoleId == id);
+            _formRoleMappingService.DeleteBulk(formRoleList);
+        }
         public IEnumerable<Roles> GetAllRoles()
         {
-            return _roleRepository.GetRoleList().Where(x=>x.Code != "SADMIN");
+            return _roleRepository.GetRoleList();
         }
         public Roles GetRoleById(Guid id)
         {
@@ -62,12 +66,12 @@ namespace CRMS1.Services
             {
                 obj = new Roles();
                 obj.CreatedOn = DateTime.Now;
-                obj.CreatedBy = model.CreatedBy;
+                obj.CreatedBy = (Guid)Session["UserId"];
             }
             else
             {
                 obj.UpdatedOn = DateTime.Now;
-                obj.UpdatedBy = model.UpdatedBy;
+                obj.UpdatedBy = (Guid)Session["UserId"];
             }
             obj.Id = model.Id;
             obj.Name = model.Name;

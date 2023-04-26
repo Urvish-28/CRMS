@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI;
 
 namespace CRMS1.Services
 {
@@ -17,6 +18,7 @@ namespace CRMS1.Services
         void DeleteUser(Guid id);
         IEnumerable<User> GetAllUsers();
         User GetUserById(Guid id);
+        User GetUserByEmail(string Email);
         IEnumerable<IndexViewModel> GetUserList();
         User BindUserModel(UserViewModel model);
         UserViewModel BindUserModel(User model);
@@ -25,7 +27,7 @@ namespace CRMS1.Services
         void UpdatePassword(ChangePasswordViewModel model);
         bool Checkpassword(ChangePasswordViewModel model);
     }
-    public class UserService : IUserService
+    public class UserService :Page, IUserService
     {
         private readonly IUsersRepository _usersRepository;
         private readonly IUserRoleService _userRoleService;
@@ -46,7 +48,6 @@ namespace CRMS1.Services
             UserRoles userRoles = new UserRoles();
             userRoles.UserId = obj.Id;
             userRoles.RoleId = model.RoleId;
-
             _userRoleService.createUserRole(userRoles);
         }
         public void UpdateUser(UserViewModel model)
@@ -63,11 +64,10 @@ namespace CRMS1.Services
                 userroles.RoleId = model.RoleId;
                 _userRoleService.updateUserRole(userroles);
             }
-
         }
         public void DeleteUser(Guid id)
         {
-            User obj = _usersRepository.Find(id);
+            User obj = _usersRepository.FindById(id);
             obj.IsDelete = true;
             _usersRepository.Update(obj);
             _usersRepository.Commit();
@@ -82,14 +82,16 @@ namespace CRMS1.Services
         }
         public User GetUserById(Guid id)
         {
-            return _usersRepository.Find(id);
+            return _usersRepository.FindById(id);
         }
-
+        public User GetUserByEmail(string Email)
+        {
+            return _usersRepository.FindByEmail(Email);
+        }
         public IEnumerable<IndexViewModel> GetUserList()
         {
             return _usersRepository.UserList();
         }
-
         public User BindUserModel(UserViewModel model)
         {
             User obj = GetUserById(model.Id);
@@ -97,14 +99,14 @@ namespace CRMS1.Services
             {
                 obj = new User();
                 obj.CreatedOn = DateTime.Now;
-                obj.CreatedBy = model.CreatedBy;
+                obj.CreatedBy = (Guid)Session["UserId"];
                 obj.Password = model.Password;
                 obj.Password = PasswordEncode(obj.Password);
             }
             else
             {
                 obj.UpdatedOn = DateTime.Now;
-                obj.UpdatedBy = model.UpdatedBy;
+                obj.UpdatedBy = (Guid)Session["UserId"];
             }
             obj.Name = model.Name;
             obj.Email = model.Email;
@@ -113,7 +115,6 @@ namespace CRMS1.Services
             obj.Gender = model.Gender;
             return obj;
         }
-
         public UserViewModel BindUserModel(User model)
         {
             UserViewModel obj = new UserViewModel();
@@ -180,7 +181,6 @@ namespace CRMS1.Services
             obj.Password = PasswordEncode(obj.Password);
             _usersRepository.Update(obj);
             _usersRepository.Commit();
-
         }
         public bool Checkpassword(ChangePasswordViewModel model)
         {

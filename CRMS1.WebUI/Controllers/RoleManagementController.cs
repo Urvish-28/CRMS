@@ -21,11 +21,6 @@ namespace CRMS1.WebUI.Controllers
         {
             _roleService = roleService;
         }
-        public RoleManagementController()
-        {
-
-        }
-
         // GET: RoleManagement
         [CRMSActionFilter("ROLE", CheckRolePermission.FormAccessCode.IsView)]
         public ActionResult Index()
@@ -56,7 +51,6 @@ namespace CRMS1.WebUI.Controllers
                 }
                 else
                 {
-                    model.CreatedBy = (Guid)Session["UserId"];
                     _roleService.CreateRole(model);
                     TempData["RoleAlert"] = "Role is added successfully...!";
                     TempData["FormName"] = "Role";
@@ -96,7 +90,6 @@ namespace CRMS1.WebUI.Controllers
                 }
                 else
                 {
-                    model.UpdatedBy = (Guid)Session["UserId"];
                     _roleService.UpdateRole(model);
                     TempData["RoleAlert"] = "Role Edited successfully...!";
                     TempData["FormName"] = "Role";

@@ -30,7 +30,6 @@ namespace CRMS1.Services
         {
             _repository = repository;
         }
-
         public void AddCommonLookup(CommonLookupsViewModel model)
         {
             CommonLookups obj = new CommonLookups();
@@ -40,11 +39,9 @@ namespace CRMS1.Services
         }
         public void UpdateCommonLookup(CommonLookupsViewModel model)
         {
-
-            CommonLookups objectToUpdate = GetById(model.Id);
-            objectToUpdate = BindCommonLookupModel(model);
-            _repository.Update(objectToUpdate);
-           // _repository.Commit();
+            CommonLookups obj = GetById(model.Id);
+            obj = BindCommonLookupModel(model);
+            _repository.Update(obj);
         }
         public void DeleteCommonLookup(Guid id)
         {
@@ -110,7 +107,6 @@ namespace CRMS1.Services
             obj.IsActive = model.IsActive;
             return obj;
         }
-
         public bool IsAlreadyExist(CommonLookupsViewModel model , bool IsCreated = false)
         {
 

@@ -71,7 +71,7 @@ namespace CRMS1.SQL.Repositories.FormMsts
                                 IsMenu = f.IsMenu,
                                 ParentFormId = f.ParentFormId,
                                 AllowView = formRole.AllowView,
-                                HasChild = (allForms.Where(x => x.ParentFormId == f.Id && x.IsMenu && x.AllowView).Select(x => x.Id).Any())
+                                HasChild = (allForms.Where(x => x.ParentFormId == f.Id && x.IsMenu).Select(x => x.Id).Any())
                             }).ToList();
                 return list;
             }
@@ -86,7 +86,7 @@ namespace CRMS1.SQL.Repositories.FormMsts
             var list = (from fm in context.FormMst
                         join formrole in context.FormRoleMapping
                         on fm.Id equals formrole.FormId
-                        where formrole.RoleId == roleId
+                        where formrole.RoleId == roleId && formrole.AllowView
                         select new FormMstViewModel()
                         {
                             Id = (Guid)formrole.FormId,

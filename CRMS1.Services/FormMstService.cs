@@ -28,12 +28,13 @@ namespace CRMS1.Services
     {
         private readonly IRepository<FormMst> _repository;
         private readonly IFormMstRepository _formMstRepository;
-        public FormMstService(IRepository<FormMst> repository , IFormMstRepository formMstRepository)
+        private readonly IFormRoleMappingService _formRoleMappingService;
+        public FormMstService(IRepository<FormMst> repository , IFormMstRepository formMstRepository , IFormRoleMappingService formRoleMappingService)
         {
             _formMstRepository = formMstRepository;
             _repository = repository;
+            _formRoleMappingService = formRoleMappingService;
         }
-
         public void AddFormMst(FormMstViewModel model)
         {
             FormMst obj = new FormMst();
@@ -54,13 +55,14 @@ namespace CRMS1.Services
             FormMst obj = GetById(id);
             _repository.Delete(id);
             _repository.Commit();
-        }
 
+            var formRoleList = _formRoleMappingService.GetAll().Where(x => x.FormId == id);
+            _formRoleMappingService.DeleteBulk(formRoleList);
+        }
         public IEnumerable<FormMst> GetAllFormMst()
         {
             return _repository.Collection().ToList();
         }
-
         public FormMst GetById(Guid id)
         {
             return _repository.Find(id);
@@ -90,7 +92,6 @@ namespace CRMS1.Services
             return obj;
 
         }
-
         public FormMstViewModel BindFormMst(FormMst model)
         {
             FormMstViewModel obj = new FormMstViewModel();

@@ -53,19 +53,25 @@
     </Compile>
     <Compile Include="LoginService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoleService.cs" />
-    <Compile Include="RoomService.cs" />
+    <Compile Include="RoleService.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RoomService.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="UserRoleService.cs" />
-    <Compile Include="UserService.cs" />
+    <Compile Include="UserService.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CRMS1.Core\CRMS1.Core.csproj">
+    <ProjectReference Include="..\CRMS1.Core\CRMS.Core.csproj">
       <Project>{A6E0E47A-8F57-4315-9CBE-2A6797738221}</Project>
-      <Name>CRMS1.Core</Name>
+      <Name>CRMS.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CRMS1.SQL\CRMS1.SQL.csproj">
+    <ProjectReference Include="..\CRMS1.SQL\CRMS.SQL.csproj">
       <Project>{C3102E30-6DB0-461E-B28B-C35AA5A16029}</Project>
-      <Name>CRMS1.SQL</Name>
+      <Name>CRMS.SQL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

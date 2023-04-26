@@ -108,7 +108,6 @@ namespace CRMS1.WebUI.Controllers
         [CRMSActionFilter("FORMS", CheckRolePermission.FormAccessCode.IsDelete)]
         public ActionResult Delete(Guid id)
         {
-            FormMst obj = _formService.GetById(id);
             _formService.DeleteFormMst(id);
             return RedirectToAction("Index");
         }

@@ -1337,17 +1337,17 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CRMS1.Core\CRMS1.Core.csproj">
+    <ProjectReference Include="..\CRMS1.Core\CRMS.Core.csproj">
       <Project>{A6E0E47A-8F57-4315-9CBE-2A6797738221}</Project>
-      <Name>CRMS1.Core</Name>
+      <Name>CRMS.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CRMS1.Services\CRMS1.Services.csproj">
+    <ProjectReference Include="..\CRMS1.Services\CRMS.Services.csproj">
       <Project>{3D75984F-C90B-4E23-B377-696382929CB8}</Project>
-      <Name>CRMS1.Services</Name>
+      <Name>CRMS.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CRMS1.SQL\CRMS1.SQL.csproj">
+    <ProjectReference Include="..\CRMS1.SQL\CRMS.SQL.csproj">
       <Project>{C3102E30-6DB0-461E-B28B-C35AA5A16029}</Project>
-      <Name>CRMS1.SQL</Name>
+      <Name>CRMS.SQL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -19,6 +19,7 @@ namespace CRMS1.Services
         void DeleteFormRole(Guid id);
         IEnumerable<FormRoleMappingVM> GetAllForm(Guid id);
         List<FormRoleMapping> Permission(Guid RoleId);
+        void DeleteBulk(IEnumerable<FormRoleMapping> records);
     }
     public class FormRoleMappingService : IFormRoleMappingService
     {
@@ -54,14 +55,12 @@ namespace CRMS1.Services
                 _repository.Commit();
             }
         }
-
         public void DeleteFormRole(Guid id)
         {
             FormRoleMapping obj = GetById(id);
             _repository.Delete(id);
             _repository.Commit();
         }
-
         public IEnumerable<FormRoleMappingVM> GetAllForm(Guid Id)
         {
             var formRoleMappingList = _formRoleRepository.GetFormRoleList(Id);
@@ -71,6 +70,10 @@ namespace CRMS1.Services
         {
             List<FormRoleMapping> list = GetAll().Where(x => x.RoleId == RoleId).ToList();
             return list;
+        }
+        public void DeleteBulk(IEnumerable<FormRoleMapping> records)
+        {
+            _repository.DeleteBulk(records);
         }
     }
 }
