@@ -6,7 +6,8 @@
 
 <!-- Section -->
 <div class="section">
-    <div class="container">
+    <div class="container" style="background-color: white;">
+        <br />
         <div class="topTitleHead pb20">
             <h1> Systems</h1>
         </div>
@@ -21,8 +22,10 @@
 
         <div class="tabContentDetails" id="TabContent">
         </div>
+        <br />
     </div>
 </div>
+
 <script>
     function SelectTab(SystemsName)
     {
@@ -67,6 +70,7 @@
     });
 
     function loadtab(TabName) {
+        debugger;
         var activeTabId = '@ViewBag.DashBoard';
         var tablinks = document.getElementsByClassName("tablinks");
         if (activeTabId == '')

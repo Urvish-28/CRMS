@@ -42,6 +42,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Web" />
@@ -98,14 +99,27 @@
     <Compile Include="Migrations\202304210711255_AddIsMenu.designer.cs">
       <DependentUpon>202304210711255_AddIsMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202304261056515_Ticket Models Add.cs" />
+    <Compile Include="Migrations\202304261056515_Ticket Models Add.designer.cs">
+      <DependentUpon>202304261056515_Ticket Models Add.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202304270435203_Spelling Mistake.cs" />
+    <Compile Include="Migrations\202304270435203_Spelling Mistake.designer.cs">
+      <DependentUpon>202304270435203_Spelling Mistake.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\CommonLookUps\CommonLookUpsRepository.cs" />
     <Compile Include="Repositories\FormMsts\FormMstRepository.cs" />
     <Compile Include="Repositories\FormroleMapping\FormRoleRepository.cs" />
     <Compile Include="Repositories\Login\LoginRepository.cs" />
     <Compile Include="Repositories\Role\RoleRepository.cs" />
     <Compile Include="Repositories\Room\RoomRepository.cs" />
     <Compile Include="Repositories\SqlRepository\SqlRepository.cs" />
+    <Compile Include="Repositories\TicketAttachments\TicketAttachmentRepository.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Repositories\Tickets\TicketRepository.cs" />
     <Compile Include="Repositories\UserRole\UserRoleRepository.cs" />
     <Compile Include="Repositories\User\UsersRepository.cs" />
   </ItemGroup>
@@ -152,6 +166,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202304210711255_AddIsMenu.resx">
       <DependentUpon>202304210711255_AddIsMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202304261056515_Ticket Models Add.resx">
+      <DependentUpon>202304261056515_Ticket Models Add.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202304270435203_Spelling Mistake.resx">
+      <DependentUpon>202304270435203_Spelling Mistake.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

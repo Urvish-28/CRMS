@@ -59,6 +59,9 @@
     <Compile Include="RoomService.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="TicketService.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="UserRoleService.cs" />
     <Compile Include="UserService.cs">
       <SubType>ASPXCodeBehind</SubType>

@@ -5,32 +5,33 @@
     .btnDiv {
         width: 175px;
         position: absolute;
-        right: 215px;
-        top: 140px;
+        right: 230px;
+        top: 150px;
     }
 </style>
 
 @{
     ViewBag.Title = "Index";
 }
-<br />
-<h1>FormMst</h1>
-<br />
+<div class="section">
+    <div class="container" style="background-color: white;">
+        <br />
+        <h1>FormMst</h1>
+        <br />
 
-@if (@TempData["formMst"] != null)
-{
-    <div id="success" class="alert alert-success">
-        <strong>Success !</strong> @TempData["formMst"]
-    </div>
-}
-@if (CheckRolePermission.Insert)
-{
-    <div class="btnDiv">
-        <a class="btn" href="@Url.Action("Create", "FormMst")">+ Add New Form</a>
-    </div>
-}
-<br />
-@(
+        @if (@TempData["formMst"] != null)
+        {
+            <div id="success" class="alert alert-success">
+                <strong>Success !</strong> @TempData["formMst"]
+            </div>
+        }
+        @if (CheckRolePermission.Insert)
+        {
+            <div class="btnDiv">
+                <a class="btn" href="@Url.Action("Create", "FormMst")">+ Add New Form</a>
+            </div>
+        }
+        @(
     Html.Kendo().Grid(Model).Name("grid")
         .Columns(columns =>
         {
@@ -98,6 +99,9 @@
             </text>);
         })
     )
+        <br />
+    </div>
+</div>
 <script>
     $(document).ready(function () {
         //Alert Msg

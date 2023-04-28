@@ -7,31 +7,34 @@
 }
 <style>
     .btnDiv {
-        width: 205px;
+        width: 210px;
         position: absolute;
-        right: 215px;
-        top: 140px;
+        right: 232px;
+        top: 165px;
     }
 </style>
 
-<br />
-<h1>Conference Room</h1>
-<br />
-@if (@TempData["RoomAlert"] != null)
-{
-    <div id="success" class="alert alert-success">
-        <strong>Success !</strong> @TempData["RoomAlert"]
-    </div>
-}
+<div class="section">
+    <div class="container" style="background-color: white;">
 
-@if (CheckRolePermission.Insert)
-{
-    <div class="btnDiv">
-        <a class="btn" href="@Url.Action("Create", "Room")">+ Add Conference Room</a>
-    </div>
-}
-<br />
-@(
+        <br />
+        <h1>Conference Room</h1>
+        <br />
+        @if (@TempData["RoomAlert"] != null)
+        {
+            <div id="success" class="alert alert-success">
+                <strong>Success !</strong> @TempData["RoomAlert"]
+            </div>
+        }
+
+        @if (CheckRolePermission.Insert)
+        {
+            <div class="btnDiv">
+                <a class="btn" href="@Url.Action("Create", "Room")">+ Add Conference Room</a>
+            </div>
+        }
+        <br />
+        @(
     Html.Kendo().Grid(Model).Name("grid")
         .Columns(columns =>
         {
@@ -80,7 +83,9 @@
             </text>);
         })
     )
-
+        <br />
+    </div>
+</div>
 <script>
     $(document).ready(function () {
         //Alert Msg

@@ -1,5 +1,6 @@
 ﻿using CRMS1.Core.Models;
 using CRMS1.Core.ViewModels;
+using CRMS1.SQL.Repositories.CommonLookUps;
 using CRMS1.SQL.Repositories.SqlRepository;
 using System;
 using System.Collections.Generic;
@@ -21,14 +22,17 @@ namespace CRMS1.Services
         CommonLookups BindCommonLookupModel(CommonLookupsViewModel model);
         CommonLookupsViewModel BindCommonLookupModel(CommonLookups model);
         bool IsAlreadyExist(CommonLookupsViewModel model, bool IsCreated = false);
+        IEnumerable<CommonLookups> DropDownList(string ConfigName);
     }
     public class CommonLookupService  :Page, ICommonLookupService 
     {
         private readonly IRepository<CommonLookups> _repository;
+        private readonly ICommonLookUpsRepository _commonLookUpsRepository;
 
-        public CommonLookupService(IRepository<CommonLookups> repository)
+        public CommonLookupService(IRepository<CommonLookups> repository, ICommonLookUpsRepository commonLookUpsRepository)
         {
             _repository = repository;
+            _commonLookUpsRepository = commonLookUpsRepository;
         }
         public void AddCommonLookup(CommonLookupsViewModel model)
         {
@@ -107,7 +111,7 @@ namespace CRMS1.Services
             obj.IsActive = model.IsActive;
             return obj;
         }
-        public bool IsAlreadyExist(CommonLookupsViewModel model , bool IsCreated = false)
+        public bool IsAlreadyExist(CommonLookupsViewModel model , bool IsCreated)
         {
 
             var records = GetAll().Where(x => (x.ConfigName.ToLower() == model.ConfigName.ToLower() &&
@@ -122,6 +126,10 @@ namespace CRMS1.Services
             {
                 return false;
             }
+        }
+        public IEnumerable<CommonLookups> DropDownList(string ConfigName)
+        {
+            return _commonLookUpsRepository.DropDownList(ConfigName);
         }
     }
 }

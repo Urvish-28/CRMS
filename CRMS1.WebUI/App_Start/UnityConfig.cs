@@ -1,12 +1,15 @@
 using CRMS1.Core.Models;
 using CRMS1.Core.ViewModels;
 using CRMS1.Services;
+using CRMS1.SQL.Repositories.CommonLookUps;
 using CRMS1.SQL.Repositories.FormMsts;
 using CRMS1.SQL.Repositories.FormroleMapping;
 using CRMS1.SQL.Repositories.Login;
 using CRMS1.SQL.Repositories.Role;
 using CRMS1.SQL.Repositories.Room;
 using CRMS1.SQL.Repositories.SqlRepository;
+using CRMS1.SQL.Repositories.TicketAttachments;
+using CRMS1.SQL.Repositories.Tickets;
 using CRMS1.SQL.Repositories.UserRole;
 using CRMS1.SQL.Repositories.Users;
 using System;
@@ -56,9 +59,11 @@ namespace CRMS1.WebUI
             container.RegisterType<ILoginRepository, LoginRepository>();
             container.RegisterType<IRoleRepository, RoleRepository>();
             container.RegisterType<IUsersRepository, UsersRepository>();
+            container.RegisterType<IRepository<User>, SqlRepository<User>>();
             container.RegisterType<IUserRoleRepository, UserRoleRepository>();
             container.RegisterType<IRoomRepository, RoomRepository>();
             container.RegisterType<IRepository<CommonLookups>, SqlRepository<CommonLookups>>();
+            container.RegisterType<ICommonLookUpsRepository, CommonLookUpsRepository>();
             container.RegisterType<IRepository<FormMst>, SqlRepository<FormMst>>();
             container.RegisterType<IRepository<FormRoleMapping>, SqlRepository<FormRoleMapping>>();
             container.RegisterType<IRepository<ConferenceRoom>, SqlRepository<ConferenceRoom>>();
@@ -66,6 +71,11 @@ namespace CRMS1.WebUI
             container.RegisterType<IRepository<FormMst>, SqlRepository<FormMst>>();
             container.RegisterType<IFormMstRepository, FormMstRepository>();
             container.RegisterType<IFormRoleRepository, FormRoleRepository>();
+            container.RegisterType<IRepository<Ticket>, SqlRepository<Ticket>>();
+            container.RegisterType<ITicketRepository, TicketRepository>();
+            container.RegisterType<IRepository<TicketAttachment>, SqlRepository<TicketAttachment>>();
+            container.RegisterType<ITicketAttachmentRepository, TicketAttachmentRepository>();
+
 
 
 
@@ -77,6 +87,7 @@ namespace CRMS1.WebUI
             container.RegisterType<ICommonLookupService, CommonLookupService>();
             container.RegisterType<IFormMstService, FormMstService>();
             container.RegisterType<IFormRoleMappingService, FormRoleMappingService>();
+            container.RegisterType<ITicketService, TicketService>();
         }
     }
 }

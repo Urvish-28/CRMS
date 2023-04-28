@@ -4,12 +4,6 @@
     ViewBag.Title = "Create";
 }
 
-<script>
-    $(document).ready(function () {
-
-    });
-</script>
-
 @if (@TempData["formMst"] != null)
 {
     <div id="already" class="alert alert-danger">
@@ -19,7 +13,7 @@
 
 
 <div class="section">
-    <div class="container">
+    <div class="container" style="background-color: white;">
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
@@ -71,11 +65,13 @@
                         @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="inputBox">
-                    <button class="btnDiv" type="submit">Create</button>
-                </div>
-                <div>
-                    <a href="@Url.Action("Index", "FormMst")" id="cancel" class="btnDiv">Cancel</a>
+                <div class="row">
+                    <div class="col-md-2">
+                        <button class="btnDiv" type="submit">Create</button>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="@Url.Action("Index", "FormMst")" id="Cancel" class="btn btnCancel">Cancel</a>
+                    </div>
                 </div>
             </div>
         }

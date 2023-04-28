@@ -18,7 +18,7 @@
 
 
 <div class="section">
-    <div class="container">
+    <div class="container" style="background-color: white;">
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
@@ -69,12 +69,14 @@
                                 <span class="checkmark"></span>
                             </div>
                         </div>
-                    </div>
-                    <div class="inputBox">
-                        <button class="btnDiv" type="submit">Save</button>
-                    </div>
-                    <div>
-                        <a href="javascript: history.go(-1)" id="cancel" class="btnDiv">Cancel</a>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <button class="btnDiv" type="submit">Create</button>
+                            </div>
+                            <div class="col-md-2">
+                                <a href="javascript: history.go(-1)" id="Cancel" class="btn btnCancel">Cancel</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -67,8 +67,6 @@ namespace CRMS1.WebUI.Controllers
                     Session["UserRoleId"] = userRoleId;
                     Session["FormListForMenu"] = _formService.FormMstList(true);
                     Session["FormListForTab"] = _formService.FormMstList();
-
-                    
                     FormsAuthentication.SetAuthCookie(model.Email, false);
                     return RedirectToAction("DashBoard");
                 }

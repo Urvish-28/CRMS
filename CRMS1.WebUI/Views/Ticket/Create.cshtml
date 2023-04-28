@@ -1,0 +1,67 @@
+﻿@model CRMS1.Core.ViewModels.TicketViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<div class="section">
+    <div class="container" style="background-color: white;">
+        @using (Html.BeginForm("Create", "Ticket", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="formDiv">
+                <div class="topTitleHead pb20">
+                    <h1> Create Ticket</h1>
+                </div>
+                <div class="formSection">
+                    <div class="inputBox">
+                        <label>Title</label>
+                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { placeholder = "Name", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="inputBox selectBox">
+                        <label>AssignTo</label>
+                        @Html.DropDownListFor(model => model.AssignTo, new SelectList(Model.AssignToDropDown, "Id", "Name"),
+                            "Select Employee", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.AssignTo, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="inputBox selectBox">
+                        <label>Type</label>
+                        @Html.DropDownListFor(model => model.TypeId, new SelectList(Model.TypeDropDown, "Id", "Name"),
+                                   "Select Type", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="inputBox selectBox">
+                        <label>Priority</label>
+                        @Html.DropDownListFor(model => model.PriorityId, new SelectList(Model.PriorityDropDown, "Id", "Name"),
+                     "Select Priority", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PriorityId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="inputBox selectBox">
+                        <label>Status</label>
+                        @Html.DropDownListFor(model => model.StatusId, new SelectList(Model.StatusDropDown, "Id", "Name"),
+                    "Select Status", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.StatusId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="inputBox">
+                        <label>Description</label>
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="inputBox">
+                        <label>Upload Image</label>
+                        @Html.TextBoxFor(model => model.Image, new { type = "file", @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <button class="btnDiv" type="submit">Create</button>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="@Url.Action("Index", "Ticket")" id="Cancel" class="btn btnCancel">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

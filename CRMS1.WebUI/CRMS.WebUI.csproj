@@ -191,6 +191,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RoleManagementController.cs" />
     <Compile Include="Controllers\RoomController.cs" />
+    <Compile Include="Controllers\TicketController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\AccessPermission.cs" />
     <Compile Include="Filters\CRMSActionFilter.cs" />
@@ -1318,9 +1319,13 @@
     <Content Include="Views\FormMst\Edit.cshtml" />
     <Content Include="Views\FormRoleMapping\Index.cshtml" />
     <Content Include="Views\Account\AccessDenied.cshtml" />
+    <Content Include="Views\Ticket\Create.cshtml" />
+    <Content Include="Views\Ticket\Index.cshtml" />
+    <Content Include="Views\Ticket\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\TicketImage\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

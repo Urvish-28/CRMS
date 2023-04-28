@@ -11,15 +11,8 @@ namespace CRMS1.SQL.Repositories.Users
 {
     public interface IUsersRepository
     {
-        IQueryable<User> Collection();
-        void Commit();
-        void Insert(User user);
-        void Update(User user);
-        User FindById(Guid Id);
         User FindByEmail(string Email);
-        void Delete(Guid Id);
         IEnumerable<IndexViewModel> UserList();
-
     }
     public class UsersRepository : IUsersRepository
     {
@@ -31,44 +24,9 @@ namespace CRMS1.SQL.Repositories.Users
             this.context = Context;
             this.dbSet = context.Set<User>();
         }
-
-        public IQueryable<User> Collection()
-        {
-            return dbSet;
-        }
-
-        public void Commit()
-        {
-            context.SaveChanges();
-        }
-
-        public void Insert(User user)
-        {
-            dbSet.Add(user);
-        }
-
-        public void Update(User user)
-        {
-            dbSet.Attach(user);
-            context.Entry(user).State = EntityState.Modified;
-        }
-
-        public User FindById(Guid Id)
-        {
-            return dbSet.Find(Id);
-        }
         public User FindByEmail(string Email)
         {
             return dbSet.Where(x=>x.Email == Email).FirstOrDefault();
-        }
-
-        public void Delete(Guid Id)
-        {
-            var user = FindById(Id);
-            if (context.Entry(user).State == EntityState.Detached)
-                dbSet.Attach(user);
-
-            dbSet.Remove(user);
         }
         public IEnumerable<IndexViewModel> UserList()
         {

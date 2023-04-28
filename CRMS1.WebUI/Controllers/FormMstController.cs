@@ -100,7 +100,7 @@ namespace CRMS1.WebUI.Controllers
                 else
                 {
                     _formService.UpdateFormMst(model);
-                    TempData["formMst"] = "Added Successfully...!";
+                    TempData["formMst"] = "Edit Successfully...!";
                     return RedirectToAction("Index");
                 }
             }

@@ -39,16 +39,13 @@ namespace CRMS1.Services
         {
             FormMst obj = new FormMst();
             obj = BindFormMst(model);
-            IEnumerable<FormMst> list = GetAllFormMst();
             _repository.Insert(obj);
-            _repository.Commit();
         }
         public void UpdateFormMst(FormMstViewModel model)
         {
             FormMst obj = GetById(model.Id);
             obj = BindFormMst(model);
             _repository.Update(obj);
-            _repository.Commit();
         }
         public void DeleteFormMst(Guid id)
         {

@@ -1,0 +1,166 @@
+﻿@model IEnumerable<CRMS1.Core.ViewModels.TicketIndexViewModel>
+@using CRMS1.Core.Models
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="section">
+    <div class="container" style="background-color: white;">
+        <br />
+        <h1>Ticket</h1>
+        <br />
+        @if (@TempData["Ticket"] != null)
+        {
+            <div id="success" class="alert alert-success">
+                <strong>Success !</strong> @TempData["Ticket"]
+            </div>
+        }
+        @if (CheckRolePermission.Insert)
+        {
+            <div class="btnDiv">
+                <a class="btn" href="@Url.Action("Create", "Ticket")">+ Add New Ticket</a>
+            </div>
+        }
+        <br />
+        @(
+    Html.Kendo().Grid(Model).Name("TicketGrid")
+        .Columns(columns =>
+        {
+            columns.Bound(expression: c => c.Title);
+            columns.Bound(expression: c => c.AssignTo);
+            columns.Bound(expression: c => c.Type);
+            columns.Bound(expression: c => c.Priority);
+            columns.Bound(expression: c => c.Status);
+            columns.Bound(expression: c => c.Description);
+            if (CheckRolePermission.Update || CheckRolePermission.Delete)
+            {
+                columns.Bound(p => p.Id).ClientTemplate(
+                    "#if('" + CheckRolePermission.Update + "'=='True') {#"
+                    + "<a href='" + Url.Action("Edit", "Ticket") + "/#=Id#'><img src=\"/Content/image/edit.svg\" width=\"19\"></img></a>"
+                    + "#}#"
+                    + "#if ('" + CheckRolePermission.Delete + "'=='True') {#"
+                    + " | <a href='" + Url.Action("Delete", "Ticket") + "/#=Id#' onclick='return confirm(\"Are you sure you want to delete this item?\")'><img src=\"/Content/image/trash.svg\"></img></a>"
+                    + "#}#"
+                    ).Width(100).Title("Action").Filterable(false);
+            }
+        })
+    .HtmlAttributes(new { Style = ""})
+    .Sortable()
+    .Scrollable(h=>h.Height("auto"))
+    .Filterable()
+    .Pageable(p=>p.Refresh(true).PageSizes(true))
+    .DataSource(datasource => datasource.Ajax().Read(read => read.Action("TicketGrid", "Ticket"))
+        .PageSize(10).Model(model => model.Id(expression:p => p.Id)))
+    .ToolBar(toolbar =>
+    {
+    toolbar.Template(@<text>
+                <div class="toolbar">
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </text>);
+        })
+    )
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        //Alert Msg
+        $('#success').fadeOut(3000);
+
+        //Search
+        $("#FieldFilter").keyup(function () {
+
+            var value = $("#FieldFilter").val();
+            grid = $("#TicketGrid").data("kendoGrid");
+
+            if (value) {
+                grid.dataSource.filter({ field: "Name", operator: "contains", value: value });
+            } else {
+                grid.dataSource.filter({});
+            }
+        });
+    })
+</script>
+
+<style>
+    .btnDiv {
+        width: 175px;
+        position: absolute;
+        right: 232px;
+        top: 165px;
+    }
+</style>
+
+
+
+
+
+
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AssignTo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Priority)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AssignTo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Priority)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+
+    </table>
+*@

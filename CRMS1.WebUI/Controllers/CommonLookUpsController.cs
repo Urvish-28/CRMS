@@ -53,7 +53,7 @@ namespace CRMS1.WebUI.Controllers
                     _commonLookupService.AddCommonLookup(model);
                     TempData["CMAlert"] = "Create Successfully!!";
                     TempData["FormName"] = "Setting";
-                    return new RedirectResult(Url.Action("Dashboard", "Account"));
+                    return Content("true");
                 }
             }
         }

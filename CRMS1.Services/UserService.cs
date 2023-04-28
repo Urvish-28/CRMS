@@ -1,5 +1,6 @@
 ﻿using CRMS1.Core.Models;
 using CRMS1.Core.ViewModels;
+using CRMS1.SQL.Repositories.SqlRepository;
 using CRMS1.SQL.Repositories.UserRole;
 using CRMS1.SQL.Repositories.Users;
 using System;
@@ -31,19 +32,18 @@ namespace CRMS1.Services
     {
         private readonly IUsersRepository _usersRepository;
         private readonly IUserRoleService _userRoleService;
-        private readonly IRoleService _roleService;
-        public UserService(IUsersRepository usersRepository, IUserRoleService userRoleService, IRoleService roleService)
+        private readonly IRepository<User> _Irepository;
+        public UserService(IUsersRepository usersRepository, IUserRoleService userRoleService , IRepository<User> Irepository)
         {
             _usersRepository = usersRepository;
             _userRoleService = userRoleService;
-            _roleService = roleService;
+            _Irepository = Irepository;
         }
         public void AddUser(UserViewModel model)
         {
             User obj = new User();
             obj = BindUserModel(model);
-            _usersRepository.Insert(obj);
-            _usersRepository.Commit();
+            _Irepository.Insert(obj);
 
             UserRoles userRoles = new UserRoles();
             userRoles.UserId = obj.Id;
@@ -56,8 +56,7 @@ namespace CRMS1.Services
             if (userToUpdate != null)
             {
                 userToUpdate = BindUserModel(model);
-                _usersRepository.Update(userToUpdate);
-                _usersRepository.Commit();
+                _Irepository.Update(userToUpdate);
 
                 UserRoles userroles = new UserRoles();
                 userroles.UserId = _userRoleService.GetAllUserRoles().Where(b => b.UserId == model.Id).FirstOrDefault().UserId;
@@ -67,10 +66,9 @@ namespace CRMS1.Services
         }
         public void DeleteUser(Guid id)
         {
-            User obj = _usersRepository.FindById(id);
+            User obj = _Irepository.Find(id);
             obj.IsDelete = true;
-            _usersRepository.Update(obj);
-            _usersRepository.Commit();
+            _Irepository.Update(obj);
 
             UserRoles userroles = new UserRoles();
             userroles.UserId = id;
@@ -78,11 +76,11 @@ namespace CRMS1.Services
         }
         public IEnumerable<User> GetAllUsers()
         {
-            return _usersRepository.Collection().Where(x => x.IsDelete == false);
+            return _Irepository.Collection().Where(x => x.IsDelete == false);
         }
         public User GetUserById(Guid id)
         {
-            return _usersRepository.FindById(id);
+            return _Irepository.Find(id);
         }
         public User GetUserByEmail(string Email)
         {
@@ -179,8 +177,7 @@ namespace CRMS1.Services
             User obj = GetUserById(model.Id);
             obj.Password = model.ConfirmPassword;
             obj.Password = PasswordEncode(obj.Password);
-            _usersRepository.Update(obj);
-            _usersRepository.Commit();
+            _Irepository.Update(obj);
         }
         public bool Checkpassword(ChangePasswordViewModel model)
         {
