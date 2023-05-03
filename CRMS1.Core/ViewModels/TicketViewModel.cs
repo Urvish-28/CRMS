@@ -31,6 +31,7 @@ namespace CRMS1.Core.ViewModels
         public IEnumerable<DropDown> StatusDropDown { get; set; }
         public string Description { get; set; }
         public HttpPostedFileBase Image { get; set; }
+        public IEnumerable<TicketAttachment> Attachments { get; set; }
         public TicketViewModel()
         {
             this.Id = Guid.NewGuid();
@@ -44,6 +45,6 @@ namespace CRMS1.Core.ViewModels
         public string Priority { get; set; }
         public string Status { get; set; }
         public string Description { get; set; }
-
+        public bool IsAttachment  { get; set; }
     }
 }

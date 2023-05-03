@@ -7,6 +7,7 @@ using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -81,6 +82,7 @@ namespace CRMS1.WebUI.Controllers
                 model.TypeDropDown = _commonLookUpsService.DropDownList("TicketType").Select(x => new DropDown() { Id = x.Id, Name = x.ConfigValue });
                 model.PriorityDropDown = _commonLookUpsService.DropDownList("Priority").Select(x => new DropDown() { Id = x.Id, Name = x.ConfigValue });
                 model.StatusDropDown = _commonLookUpsService.DropDownList("Status").Select(x => new DropDown() { Id = x.Id, Name = x.ConfigValue });
+                model.Attachments = _ticketService.AttachmentList(Id);
                 return View(model);
             }
         }
@@ -101,6 +103,38 @@ namespace CRMS1.WebUI.Controllers
                 TempData["Ticket"] = "Ticket Edit Successfully...!";
                 return RedirectToAction("Index");
             }
+        }
+        public ActionResult Delete(Guid Id)
+        {
+            _ticketService.DeleteTicket(Id);
+            return RedirectToAction("Index");
+        }
+        public ActionResult DeleteAttachment(Guid Id)
+        {
+            _ticketService.DeleteAttachment(Id);
+            return RedirectToAction("Index");
+        }
+        public FileResult DownloadImage(Guid Id)
+        {
+            var getImage = _ticketService.GetImageName(Id);
+            string contentType = string.Empty;
+            if (getImage != null)
+            {
+                contentType = "application/force-download";
+                string fullPath = Path.Combine(Server.MapPath("~/Content/TicketImage/") + getImage);
+                return File(fullPath, contentType, getImage);
+            }
+            return null;
+        }
+        public ActionResult AttachmentList(Guid TicketId)
+        {
+            IEnumerable<TicketAttachment> list = _ticketService.AttachmentList(TicketId);
+            return PartialView("_AttachmentList", list);
+        }
+        public JsonResult StatusFilter()
+        {
+            var statusList = _commonLookUpsService.DropDownList("Status").Select(x => new DropDown() { Id = x.Id, Name = x.ConfigValue }).ToList();
+            return Json(statusList, JsonRequestBehavior.AllowGet);
         }
     }
 }

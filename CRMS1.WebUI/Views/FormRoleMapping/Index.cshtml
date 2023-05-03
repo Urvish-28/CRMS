@@ -4,67 +4,69 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
-<br />
-<table id="tableId" class="table">
-    @Html.Hidden("RoleId", Model.FirstOrDefault().RoleId)
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.AllRights)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FormName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AllowView)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AllowInsert)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AllowUpdate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AllowDelete)
-        </th>
-    </tr>
+<div class="section">
+    <div class="container" style="background-color: white; box-shadow: rgba(0, 0, 0, 0.35) 9px 18px 15px;">
+        <table id="tableId" class="table">
+            @Html.Hidden("RoleId", Model.FirstOrDefault().RoleId)
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.AllRights)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FormName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AllowView)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AllowInsert)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AllowUpdate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AllowDelete)
+                </th>
+            </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr class="align-justify-center" id="tr_@item.FormId" style="background-color:aliceblue">
-            @if (item.AllowDelete && item.AllowInsert && item.AllowUpdate && item.AllowView)
+            @foreach (var item in Model)
             {
-                <td>
-                    <input type="checkbox" class="Selectall" id="Allrights_@item.FormId" checked="checked" onclick="SelectAll(this)" />
-                </td>
+                <tr class="align-justify-center" id="tr_@item.FormId" style="background-color:aliceblue">
+                    @if (item.AllowDelete && item.AllowInsert && item.AllowUpdate && item.AllowView)
+                    {
+                        <td>
+                            <input type="checkbox" class="Selectall" id="Allrights_@item.FormId" checked="checked" onclick="SelectAll(this)" />
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <input type="checkbox" class="Selectall" id="Allrights_@item.FormId" onclick="SelectAll(this)" />
+                        </td>
+                    }
+                    <td>
+                        @Html.HiddenFor(modelItem => item.FormId)
+                        @Html.DisplayFor(modelItem => item.FormName)
+                    </td>
+                    <td>
+                        <input type="checkbox" value="@item.AllowView" @(item.AllowView == false ? "" : "checked='checked'") class="Checkbox" onclick="UnSelect('@item.FormId')" id="Insert_@item.FormId" />
+                    </td>
+                    <td>
+                        <input type="checkbox" value="@item.AllowInsert" @(item.AllowInsert == false ? "" : "checked='checked'") class="Checkbox" onclick="UnSelect('@item.FormId')" id="View_@item.FormId" />
+                    </td>
+                    <td>
+                        <input type="checkbox" value="@item.AllowUpdate" @(item.AllowUpdate == false ? "" : "checked='checked'") class="Checkbox" onclick="UnSelect('@item.FormId')" id="Update_@item.FormId" />
+                    </td>
+                    <td>
+                        <input type="checkbox" value="@item.AllowDelete" @(item.AllowDelete == false ? "" : "checked='checked'") class="Checkbox" onclick="UnSelect('@item.FormId')" id="Delete_@item.FormId" />
+                    </td>
+                </tr>
             }
-            else
-            {
-                <td>
-                    <input type="checkbox" class="Selectall" id="Allrights_@item.FormId" onclick="SelectAll(this)" />
-                </td>
-            }
-            <td>
-                @Html.HiddenFor(modelItem => item.FormId)
-                @Html.DisplayFor(modelItem => item.FormName)
-            </td>
-            <td>
-                <input type="checkbox" value="@item.AllowView" @(item.AllowView == false ? "" : "checked='checked'") class="Checkbox" onclick="UnSelect('@item.FormId')" id="Insert_@item.FormId" />
-            </td>
-            <td>
-                <input type="checkbox" value="@item.AllowInsert" @(item.AllowInsert == false ? "" : "checked='checked'") class="Checkbox" onclick="UnSelect('@item.FormId')" id="View_@item.FormId" />
-            </td>
-            <td>
-                <input type="checkbox" value="@item.AllowUpdate" @(item.AllowUpdate == false ? "" : "checked='checked'") class="Checkbox" onclick="UnSelect('@item.FormId')" id="Update_@item.FormId" />
-            </td>
-            <td>
-                <input type="checkbox" value="@item.AllowDelete" @(item.AllowDelete == false ? "" : "checked='checked'") class="Checkbox" onclick="UnSelect('@item.FormId')" id="Delete_@item.FormId" />
-            </td>
-        </tr>
-    }
-</table>
-<button id="Savebtn" style="background-color: #EA4C89; color:white" class="btn" onclick="Redirect()">Save</button>
-<a href="javascript: history.go(-1)" style="background-color: darkorange" class="btn btn-warning">Cancel</a>
+        </table>
+        <button id="Savebtn" style="background-color: #EA4C89; color:white" class="btn" onclick="Redirect()">Save</button>
+        <a href="javascript: history.go(-1)" style="background-color: darkorange" class="btn btn-warning">Cancel</a>
+    </div>
+</div>
 
 <script>
     function Redirect() {

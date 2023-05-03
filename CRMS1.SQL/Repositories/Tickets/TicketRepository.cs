@@ -28,6 +28,8 @@ namespace CRMS1.SQL.Repositories.Tickets
                        join cPrio in _context.CommonLookups.Where(x => x.IsDelete == false) on t.PriorityId equals cPrio.Id
                        join cSta in _context.CommonLookups.Where(x => x.IsDelete == false) on t.StatusId equals cSta.Id
                        join user in _context.Users.Where(x => x.IsDelete == false) on t.AssignTo equals user.Id
+                       /*                       join Ta in _context.TicketAttachment on t.Id equals Ta.TicketId into tab
+                                              from fTab in tab.DefaultIfEmpty()*/
                        select new TicketIndexViewModel()
                        {
                            Id = t.Id,
@@ -35,7 +37,9 @@ namespace CRMS1.SQL.Repositories.Tickets
                            AssignTo = user.Name,
                            Priority = cPrio.ConfigValue,
                            Status = cSta.ConfigValue,
-                           Type = cType.ConfigValue
+                           Type = cType.ConfigValue,
+                           IsAttachment = _context.TicketAttachment.Where(x => x.TicketId == t.Id && x.IsDelete == false).Any()
+                           /*ImageName = fTab.FileName*/
                        };
             return list;
         }

@@ -4,76 +4,82 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.AssignTo, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.AssignTo, new SelectList(Model.AssignToDropDown, "Id", "Name"),
-            "Select Employee", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.AssignTo, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TypeId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.TypeId, new SelectList(Model.TypeDropDown, "Id", "Name"),
-            "Select Type", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PriorityId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.PriorityId, new SelectList(Model.PriorityDropDown, "Id", "Name"),
+<div class="section">
+    <div class="container" style="background-color: white; box-shadow: rgba(0, 0, 0, 0.35) 9px 18px 15px;">
+        @using (Html.BeginForm("Edit", "Ticket", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+            <div class="formDiv">
+                <div class="topTitleHead pb20">
+                    <h1> Edit Ticket</h1>
+                </div>
+                <div class="formSection">
+                    <div class="inputBox">
+                        <label>Title</label>
+                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { placeholder = "Name", @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="inputBox selectBox">
+                        <label>AssignTo</label>
+                        @Html.DropDownListFor(model => model.AssignTo, new SelectList(Model.AssignToDropDown, "Id", "Name"),
+                            "Select Employee", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.AssignTo, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="inputBox selectBox">
+                        <label>Type</label>
+                        @Html.DropDownListFor(model => model.TypeId, new SelectList(Model.TypeDropDown, "Id", "Name"),
+                                   "Select Type", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="inputBox selectBox">
+                        <label>Priority</label>
+                        @Html.DropDownListFor(model => model.PriorityId, new SelectList(Model.PriorityDropDown, "Id", "Name"),
                      "Select Priority", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.PriorityId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.StatusId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.StatusId, new SelectList(Model.StatusDropDown, "Id", "Name"),
+                        @Html.ValidationMessageFor(model => model.PriorityId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="inputBox selectBox">
+                        <label>Status</label>
+                        @Html.DropDownListFor(model => model.StatusId, new SelectList(Model.StatusDropDown, "Id", "Name"),
                     "Select Status", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.StatusId, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.StatusId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="inputBox">
+                        <label>Description</label>
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="inputBox">
+                        <label>Upload Image</label>
+                        @Html.TextBoxFor(model => model.Image, new { type = "file", @class = "form-control" })
+                    </div>
+                    <div class="inputBox">
+                        <label>Attachments</label>
+                        <table>
+                            @foreach (var item in Model.Attachments)
+                            {
+                                <tr>
+                                    <td><i class="fa fa-paperclip"></i>
+                                        <a href="@Url.Action("DownloadImage" , "Ticket", new { id = item.Id })"> @item.FileName </a>
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("DeleteAttachment" , "Ticket", new { id = item.Id })"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <button class="btnDiv" type="submit">Save</button>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="@Url.Action("Index", "Ticket")" id="Cancel" class="btn btnCancel">Cancel</a>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
+        }
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>

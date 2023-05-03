@@ -21,14 +21,18 @@ namespace CRMS1.Services
         void CreateTicket(TicketViewModel model);
         void UpdateTicket(TicketViewModel model);
         void DeleteTicket(Guid Id);
+        void DeleteAttachment(Guid Id);
         IEnumerable<TicketIndexViewModel> TicketListForIndex();
+        string GetImageName(Guid Id);
+        IEnumerable<TicketAttachment> AttachmentList(Guid TicketId);
     }
     public class TicketService : Page, ITicketService
     {
         private readonly IRepository<Ticket> _repository;
         private readonly ITicketRepository _ticketRepository;
         private readonly ITicketAttachmentRepository _ticketAttachmentRepository;
-        public TicketService(ITicketRepository ticketRepository , ITicketAttachmentRepository ticketAttachmentRepository,
+        public TicketService(ITicketRepository ticketRepository, 
+                             ITicketAttachmentRepository ticketAttachmentRepository,
                              IRepository<Ticket> repository)
         {
             _ticketRepository = ticketRepository;
@@ -92,6 +96,11 @@ namespace CRMS1.Services
         {
             Ticket obj = GetById(model.Id);
             obj = BindTicket(model);
+            if (model.Image != null)
+            {
+                _ticketAttachmentRepository.CreateAttachment(model);
+            }
+
             _repository.Update(obj);
         }
         public void DeleteTicket(Guid Id)
@@ -99,10 +108,30 @@ namespace CRMS1.Services
             Ticket obj = GetById(Id);
             obj.IsDelete = true;
             _repository.Update(obj);
+            
+            _ticketAttachmentRepository.DeleteAttachmentByTicket(Id);
+        }
+        public void DeleteAttachment(Guid Id)
+        {
+            _ticketAttachmentRepository.DeleteAttachment(Id);
         }
         public IEnumerable<TicketIndexViewModel> TicketListForIndex()
         {
             return _ticketRepository.TicketIndexList();
+        }
+        public string GetImageName(Guid Id)
+        {
+            return _ticketAttachmentRepository.GetImageName(Id);
+        }
+        public IEnumerable<TicketAttachment> AttachmentList(Guid TicketId)
+        {
+            var List = _ticketAttachmentRepository.AttachmentList(TicketId);
+            foreach (var item in List)
+            {
+                string name = item.FileName.Split('_')[0];
+                item.FileName = item.FileName.Replace(item.FileName, name);
+            }
+            return List;
         }
     }
 }

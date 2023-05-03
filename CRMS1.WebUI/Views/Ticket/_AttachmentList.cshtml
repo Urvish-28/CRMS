@@ -1,0 +1,40 @@
+﻿@model IEnumerable<CRMS1.Core.Models.TicketAttachment>
+
+
+<script src='@Url.Content("~/Scripts/jquery.validate.js")' type='text/javascript'></script>
+<script src='@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")' type='text/javascript'></script>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<div class="modal fade" id="AttachmentModal" tabindex="-1" role="dialog" data-toggle="popover" aria-labelledby="Attachmentlabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content w-500">
+            <div class="modal-header , topTitleHead pb20 ">
+                <h3 class="modal-title" id="Attachmentlabel">Attachment List</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <tr>
+                        <th text-align="center">
+                            @Html.DisplayNameFor(model => model.FileName)
+                        </th>
+                        <th></th>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a href="@Url.Action("DownloadImage" , "Ticket", new { id = item.Id })"> @item.FileName </a>
+                            </td>
+                            <td>
+                                <a href="@Url.Action("DeleteAttachment" , "Ticket", new { id = item.Id })"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

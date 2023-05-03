@@ -18,13 +18,20 @@ namespace CRMS1.SQL.Repositories.TicketAttachments
         void CreateAttachment(TicketViewModel obj);
         void UpdateAttachment(TicketViewModel obj);
         void DeleteAttachment(Guid Id);
+        void DeleteAttachmentByTicket(Guid TicketId);
+        string GetImageName(Guid Id);
+        IEnumerable<TicketAttachment> AttachmentList(Guid TicketId);
+        TicketAttachment GetByTicketId(Guid TicketId);
+        TicketAttachment GetById(Guid Id);
     }
-    public class TicketAttachmentRepository :Page, ITicketAttachmentRepository
+    public class TicketAttachmentRepository : Page, ITicketAttachmentRepository
     {
         private readonly IRepository<TicketAttachment> _repository;
-        public TicketAttachmentRepository(IRepository<TicketAttachment> repository)
+        private CRMSEntities _context;
+        public TicketAttachmentRepository(IRepository<TicketAttachment> repository, CRMSEntities context)
         {
             _repository = repository;
+            _context = context;
         }
         public void CreateAttachment(TicketViewModel obj)
         {
@@ -33,19 +40,60 @@ namespace CRMS1.SQL.Repositories.TicketAttachments
             model.CreatedBy = (Guid)Session["UserId"];
             string fileExtention = System.IO.Path.GetExtension(obj.Image.FileName);
             string imageName = model.TicketId.ToString() + '_' + DateTime.Now.Ticks + fileExtention;
-            string ImagePath = ConfigurationManager.AppSettings["TicketImage"] +'_' + imageName;
-           // string ImagePath = "~/Content/TicketImage/" + imageName;
+            string ImagePath = ConfigurationManager.AppSettings["TicketImage"] + imageName;
             obj.Image.SaveAs(HostingEnvironment.MapPath(ImagePath));
             model.FileName = imageName;
             _repository.Insert(model);
         }
         public void UpdateAttachment(TicketViewModel obj)
         {
-            throw new NotImplementedException();
+            TicketAttachment model = GetByTicketId(obj.Id);
+            if (model == null)
+            {
+                CreateAttachment(obj);
+            }
+            else
+            {
+                model.UpdatedBy = (Guid)Session["UserId"];
+                string fileExtention = System.IO.Path.GetExtension(obj.Image.FileName);
+                string imageName = model.TicketId.ToString() + '_' + DateTime.Now.Ticks + fileExtention;
+                string ImagePath = ConfigurationManager.AppSettings["TicketImage"] + imageName;
+                obj.Image.SaveAs(HostingEnvironment.MapPath(ImagePath));
+                model.FileName = imageName;
+                _repository.Update(model);
+            }
         }
         public void DeleteAttachment(Guid Id)
         {
-            throw new NotImplementedException();
+            TicketAttachment obj = _repository.Find(Id);
+            obj.IsDelete = true;
+            _repository.Update(obj);
+        }
+        public void DeleteAttachmentByTicket(Guid TicketId)
+        {
+            List<TicketAttachment> list = _repository.Collection().Where(x => x.TicketId == TicketId).ToList();
+            foreach(var item in list)
+            {
+                item.IsDelete = true;
+            }
+            _repository.Commit();
+        }
+        public string GetImageName(Guid Id)
+        {
+            var imagename = _context.TicketAttachment.Where(x => x.Id == Id).Select(x => x.FileName).FirstOrDefault();
+            return imagename;
+        }
+        public TicketAttachment GetByTicketId(Guid TicketId)
+        {
+            return _context.TicketAttachment.Where(x => x.TicketId == TicketId && x.IsDelete == false).FirstOrDefault();
+        }
+        public IEnumerable<TicketAttachment> AttachmentList(Guid TicketId)
+        {
+            return _context.TicketAttachment.Where(x => x.TicketId == TicketId && x.IsDelete == false).ToList();
+        }
+        public TicketAttachment GetById(Guid Id)
+        {
+            return _repository.Find(Id);
         }
     }
 }
