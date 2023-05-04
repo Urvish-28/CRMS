@@ -26,6 +26,7 @@ input:focus-visible, input:focus, select:focus-visible, select:focus { outline: 
 .text-right { text-align: right !important;}
 
 .pb20 { padding-bottom: 20px !important;}
+.mb15 { margin-bottom: 15px !important;}
 
 .grayText { color: #9E9EA7; }
 .navcontainer { padding: 0 20px; width: 100%; margin: 0 auto; display: block;}
@@ -183,3 +184,6 @@ a:hover{
     background-color: darkorange;
 }
 
+.textred {
+    color: red;    
+}

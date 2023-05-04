@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<CRMS1.Core.ViewModels.TicketIndexViewModel>
 @using CRMS1.Core.Models
-
 @{
     ViewBag.Title = "Index";
 }
@@ -22,7 +21,8 @@
             </div>
         }
         <br />
-        @(Html.Kendo().DropDownList()
+        <div class="mb15">
+            @(Html.Kendo().DropDownList()
         .Name("dropdownlist")
         .DataTextField("Name")
         .DataValueField("Name")
@@ -35,19 +35,20 @@
             });
         })
     )
+        </div>
         @(
     Html.Kendo().Grid(Model).Name("TicketGrid")
         .Columns(columns =>
         {
             columns.Bound(expression: c => c.Title);
             columns.Bound(expression: c => c.AssignTo);
-            columns.Bound(expression: c => c.Type);
+            columns.Bound(expression: c => c.Type).Width(150);
             columns.Bound(expression: c => c.Priority);
             columns.Bound(expression: c => c.Status);
             columns.Bound(expression: c => c.Description);
-            columns.Bound(p => p.IsAttachment).ClientTemplate("#if(IsAttachment == true) {#"
-                    + " <a onclick='DownloadAttachment(\"#=Id#\")'><i class='fa fa-download'></i></a>"
-                    + "#}#").Title("Image");
+            columns.Bound(p => p.AttachmentCount).ClientTemplate("#if(AttachmentCount > 0) {#"
+                    + " <a class='label' onclick='DownloadAttachment(\"#=Id#\")'>#=AttachmentCount#</a>"
+                    + "#}#").Title("Attachments").Width(140);
             if (CheckRolePermission.Update || CheckRolePermission.Delete)
             {
                 columns.Bound(p => p.Id).ClientTemplate(
@@ -68,7 +69,7 @@
     .DataSource(datasource => datasource.Ajax().Read(read => read.Action("TicketGrid", "Ticket"))
         .PageSize(10).Model(model => model.Id(expression:p => p.Id)))
     .ToolBar(toolbar =>
-        {
+    {
     toolbar.Template(@<text>
                 <div class="toolbar">
 
@@ -99,7 +100,7 @@
 
         //Search
         $("#FieldFilter").keyup(function () {
-            
+
 
             var value = $("#FieldFilter").val();
             grid = $("#TicketGrid").data("kendoGrid");
@@ -126,7 +127,6 @@
 
 
     function DownloadAttachment(Id) {
-        debugger;
         $.ajax({
             url: '/Ticket/AttachmentList?TicketId=' + Id,
             type: "Get",
@@ -145,6 +145,9 @@
         position: absolute;
         right: 232px;
         top: 165px;
+    }
+    .label {
+        background-color: #7ea700;
     }
 </style>
 

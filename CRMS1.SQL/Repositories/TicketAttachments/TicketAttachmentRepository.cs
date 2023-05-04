@@ -16,8 +16,7 @@ namespace CRMS1.SQL.Repositories.TicketAttachments
     public interface ITicketAttachmentRepository
     {
         void CreateAttachment(TicketViewModel obj);
-        void UpdateAttachment(TicketViewModel obj);
-        void DeleteAttachment(Guid Id);
+        void DeleteAttachment(Guid IdList);
         void DeleteAttachmentByTicket(Guid TicketId);
         string GetImageName(Guid Id);
         IEnumerable<TicketAttachment> AttachmentList(Guid TicketId);
@@ -45,34 +44,19 @@ namespace CRMS1.SQL.Repositories.TicketAttachments
             model.FileName = imageName;
             _repository.Insert(model);
         }
-        public void UpdateAttachment(TicketViewModel obj)
-        {
-            TicketAttachment model = GetByTicketId(obj.Id);
-            if (model == null)
-            {
-                CreateAttachment(obj);
-            }
-            else
-            {
-                model.UpdatedBy = (Guid)Session["UserId"];
-                string fileExtention = System.IO.Path.GetExtension(obj.Image.FileName);
-                string imageName = model.TicketId.ToString() + '_' + DateTime.Now.Ticks + fileExtention;
-                string ImagePath = ConfigurationManager.AppSettings["TicketImage"] + imageName;
-                obj.Image.SaveAs(HostingEnvironment.MapPath(ImagePath));
-                model.FileName = imageName;
-                _repository.Update(model);
-            }
-        }
         public void DeleteAttachment(Guid Id)
         {
-            TicketAttachment obj = _repository.Find(Id);
-            obj.IsDelete = true;
-            _repository.Update(obj);
+            List<TicketAttachment> obj = _repository.Collection().Where(x => x.Id == Id).ToList();
+            foreach (var item in obj)
+            {
+                item.IsDelete = true;
+            }
+            _repository.Commit();
         }
         public void DeleteAttachmentByTicket(Guid TicketId)
         {
             List<TicketAttachment> list = _repository.Collection().Where(x => x.TicketId == TicketId).ToList();
-            foreach(var item in list)
+            foreach (var item in list)
             {
                 item.IsDelete = true;
             }

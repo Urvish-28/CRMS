@@ -15,30 +15,30 @@
                 </div>
                 <div class="formSection">
                     <div class="inputBox">
-                        <label>Title</label>
+                        <label>Title<strong class="textred">*</strong></label>
                         @Html.EditorFor(model => model.Title, new { htmlAttributes = new { placeholder = "Name", @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                     </div>
                     <div class="inputBox selectBox">
-                        <label>AssignTo</label>
+                        <label>AssignTo<strong class="textred">*</strong></label>
                         @Html.DropDownListFor(model => model.AssignTo, new SelectList(Model.AssignToDropDown, "Id", "Name"),
                             "Select Employee", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.AssignTo, "", new { @class = "text-danger" })
                     </div>
                     <div class="inputBox selectBox">
-                        <label>Type</label>
+                        <label>Type<strong class="textred">*</strong></label>
                         @Html.DropDownListFor(model => model.TypeId, new SelectList(Model.TypeDropDown, "Id", "Name"),
                                    "Select Type", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
                     </div>
                     <div class="inputBox selectBox">
-                        <label>Priority</label>
+                        <label>Priority<strong class="textred">*</strong></label>
                         @Html.DropDownListFor(model => model.PriorityId, new SelectList(Model.PriorityDropDown, "Id", "Name"),
                      "Select Priority", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.PriorityId, "", new { @class = "text-danger" })
                     </div>
                     <div class="inputBox selectBox">
-                        <label>Status</label>
+                        <label>Status<strong class="textred">*</strong></label>
                         @Html.DropDownListFor(model => model.StatusId, new SelectList(Model.StatusDropDown, "Id", "Name"),
                     "Select Status", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.StatusId, "", new { @class = "text-danger" })

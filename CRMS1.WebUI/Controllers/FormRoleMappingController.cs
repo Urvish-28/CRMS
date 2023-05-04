@@ -32,7 +32,8 @@ namespace CRMS1.WebUI.Controllers
             }
             _formRoleMappingService.AddFormRole(records);
             TempData["RoleAlert"] = "Permission Update Successful...!";
-            return new RedirectResult(Url.Action("Dashboard", "Account", new { selectedTabId = 1 }));
+            TempData["FormName"] = "Role";
+            return new RedirectResult(Url.Action("Dashboard", "Account"));
         }
     }
 }

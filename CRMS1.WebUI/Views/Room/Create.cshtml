@@ -29,7 +29,7 @@
                 </div>
                 <div class="formSection">
                     <div class="inputBox">
-                        <label>Conference Room Name</label>
+                        <label>Conference Room Name<strong class="textred">*</strong></label>
                         @Html.EditorFor(model => model.RoomName, new { htmlAttributes = new { placeholder = "Conference Room Name", @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.RoomName, "", new { @class = "text-danger" })
                     </div>

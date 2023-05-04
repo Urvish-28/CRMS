@@ -21,10 +21,7 @@ namespace CRMS1.Services
         void CreateTicket(TicketViewModel model);
         void UpdateTicket(TicketViewModel model);
         void DeleteTicket(Guid Id);
-        void DeleteAttachment(Guid Id);
         IEnumerable<TicketIndexViewModel> TicketListForIndex();
-        string GetImageName(Guid Id);
-        IEnumerable<TicketAttachment> AttachmentList(Guid TicketId);
     }
     public class TicketService : Page, ITicketService
     {
@@ -111,27 +108,9 @@ namespace CRMS1.Services
             
             _ticketAttachmentRepository.DeleteAttachmentByTicket(Id);
         }
-        public void DeleteAttachment(Guid Id)
-        {
-            _ticketAttachmentRepository.DeleteAttachment(Id);
-        }
         public IEnumerable<TicketIndexViewModel> TicketListForIndex()
         {
             return _ticketRepository.TicketIndexList();
-        }
-        public string GetImageName(Guid Id)
-        {
-            return _ticketAttachmentRepository.GetImageName(Id);
-        }
-        public IEnumerable<TicketAttachment> AttachmentList(Guid TicketId)
-        {
-            var List = _ticketAttachmentRepository.AttachmentList(TicketId);
-            foreach (var item in List)
-            {
-                string name = item.FileName.Split('_')[0];
-                item.FileName = item.FileName.Replace(item.FileName, name);
-            }
-            return List;
         }
     }
 }

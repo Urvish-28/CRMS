@@ -110,6 +110,7 @@
 
     //Create:Post Bootstrap Modal
     $('#myform').submit(function (e) {
+        debugger;
         e.preventDefault();
         var $form = $(this);
         if (!$form.valid) return false;
@@ -126,6 +127,9 @@
             success: function (data) {
                 if (data == "Exists") {
                     alert("Data Already Exists");
+                }
+                else if (data == "false") {
+                        
                 }
                 else {
                     location.reload();

@@ -38,7 +38,7 @@ namespace CRMS1.SQL.Repositories.Tickets
                            Priority = cPrio.ConfigValue,
                            Status = cSta.ConfigValue,
                            Type = cType.ConfigValue,
-                           IsAttachment = _context.TicketAttachment.Where(x => x.TicketId == t.Id && x.IsDelete == false).Any()
+                           AttachmentCount = _context.TicketAttachment.Where(x => x.TicketId == t.Id && x.IsDelete == false).Count()
                            /*ImageName = fTab.FileName*/
                        };
             return list;

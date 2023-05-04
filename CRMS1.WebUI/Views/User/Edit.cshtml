@@ -29,28 +29,28 @@
                 </div>
                 <div class="formSection">
                     <div class="inputBox">
-                        <label>UserName</label>
+                        <label>UserName<strong class="textred">*</strong></label>
                         @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { placeholder = "UserName", @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
                     </div>
                     <div class="inputBox">
-                        <label>Name</label>
+                        <label>Name<strong class="textred">*</strong></label>
                         @Html.EditorFor(model => model.Name, new { htmlAttributes = new { placeholder = "Name", @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                     </div>
                     <div class="inputBox selectBox">
-                        <label>Role</label>
+                        <label>Role<strong class="textred">*</strong></label>
                         @Html.DropDownListFor(model => model.RoleId, new SelectList(Model.RoleDropdown, "Id", "Name"),
                            "Select Role", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
                     </div>
                     <div class="inputBox">
-                        <label>Email</label>
+                        <label>Email<strong class="textred">*</strong></label>
                         @Html.EditorFor(model => model.Email, new { htmlAttributes = new { placeholder = "Email", @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                     </div>
                     <div class="inputBox">
-                        <label>Mobile Number</label>
+                        <label>Mobile Number<strong class="textred">*</strong></label>
                         @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { placeholder = "Mobile No", @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
                     </div>

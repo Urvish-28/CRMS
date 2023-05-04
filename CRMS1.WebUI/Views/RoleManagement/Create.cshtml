@@ -29,12 +29,12 @@
                 </div>
                 <div class="formSection">
                     <div class="inputBox">
-                        <label>Name</label>
+                        <label>Name<strong class="textred">*</strong></label>
                         @Html.EditorFor(model => model.Name, new { htmlAttributes = new { placeholder = "Name", @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                     </div>
                     <div class="inputBox">
-                        <label>Code</label>
+                        <label>Code<strong class="textred">*</strong></label>
                         @Html.EditorFor(model => model.Code, new { htmlAttributes = new { placeholder = "Code", @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
                     </div>
