@@ -60,6 +60,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="TicketAttachmentService.cs" />
+    <Compile Include="TicketCommentService.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="TicketService.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

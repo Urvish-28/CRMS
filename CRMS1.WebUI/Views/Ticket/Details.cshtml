@@ -1,0 +1,84 @@
+﻿@model CRMS1.Core.ViewModels.TicketIndexViewModel
+@{
+    ViewBag.Title = "Details";
+}
+<div class="row">
+    <div class="col-md-5">
+        <div class="section">
+            <div class="" style="background-color: white; box-shadow: rgba(0, 0, 0, 0.35) 9px 18px 15px;">
+                <table class="table">
+                    <tr>
+                        <th colspan="2" style="text-align:center;">
+                            Ticket Details
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>@Html.DisplayNameFor(model => model.Title)</strong>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Title)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>@Html.DisplayNameFor(model => model.AssignTo)</strong>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.AssignTo)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>@Html.DisplayNameFor(model => model.Type)</strong>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Type)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>@Html.DisplayNameFor(model => model.Priority)</strong>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Priority)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>@Html.DisplayNameFor(model => model.Status)</strong>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Status)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong> @Html.DisplayNameFor(model => model.Description)</strong>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Description)
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <center><h1>Create Comment</h1></center>
+        @Html.Action("CreateComment", "Ticket" , new { TicketId = Model.Id})
+        @Html.Action("CommentIndex", "Ticket" , new { TicketId = Model.Id})
+    </div>
+</div>
+
+<style>
+@*    .container {
+        max-width: 575px;
+        padding: 0 20px;
+        width: 100%;
+        margin: 0;
+        display: block;
+     background-color: white; 
+    border-radius: 15px;
+    }*@
+</style>

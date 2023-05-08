@@ -1,0 +1,81 @@
+﻿@model IEnumerable<CRMS1.Core.ViewModels.TicketCommentViewModel>
+<div class="section">
+    <div class="" style="background-color: white; box-shadow: rgba(0, 0, 0, 0.35) 9px 18px 15px;">
+        <table class="table">
+            <tr>
+                <th colspan="2" style="text-align:center;">
+                    @Html.DisplayNameFor(model => model.Comment)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                @Html.HiddenFor(modelItem => item.Id)
+                <tr style="text-align:center">
+                    <td>
+                        <strong>@Html.DisplayFor(modelItem => item.UserName)</strong> <br />
+                        <p id="@item.Id"> @item.Comment</p>
+                    </td>
+                    <td>
+                        <a class="editbutton" onclick="Edit('@item.Id', '@item.Comment')"><img src="~/Content/image/edit.svg" /> |</a> 
+                        <a onclick="confirmDelete('@item.Id')"><img src="/Content/image/trash.svg" /></a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+<style>
+    .control-label {
+        padding-right: 0px;
+    }
+</style>
+
+<script>
+    function confirmDelete(data) {
+        if (confirm("Are You Sure You Want To Delete?") == true) {
+            $.ajax({
+                url: '/Ticket/DeleteComment?id=' + data,
+                data: { 'id': data },
+                type: "post",
+                success: function (res) {
+                    if (res == "true") {
+                        location.reload();
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                }
+            });
+        }
+    }
+    function Edit(id, data) {
+        $('.editbutton').hide();
+        $('#' + id).html('<input id="inputtag" type="text" value="' + data + '" /> <a onclick="SaveEdit(\'' + id + '\')" class="btn btn-primary">Save</a> <a onclick="cancelEdit()" class="btn btn-danger">Cancel</a>');
+    }
+    function SaveEdit(id) {
+        debugger;
+        var data = $('#inputtag').val();
+        var formdata = $('form').serializeArray();
+        formdata.push({
+            name: 'Id',
+            value: id,
+        });
+        formdata[0].value = id;
+        formdata[2].value = data;
+        $.ajax({
+            type: "POST",
+            data: formdata,
+            url: '/Ticket/EditComment/?model' + formdata,
+            success: function (res) {
+                if (res = "true") {
+                    location.reload();
+                }
+            }
+        })
+    }
+    function cancelEdit() {
+        location.reload();
+    }
+</script>

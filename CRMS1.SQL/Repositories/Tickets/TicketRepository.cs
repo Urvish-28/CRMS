@@ -12,7 +12,7 @@ namespace CRMS1.SQL.Repositories.Tickets
 {
     public interface ITicketRepository
     {
-        IEnumerable<TicketIndexViewModel> TicketIndexList();
+        IEnumerable<TicketIndexViewModel> TicketIndexList(string ticketId);
     }
     public class TicketRepository : ITicketRepository
     {
@@ -21,15 +21,14 @@ namespace CRMS1.SQL.Repositories.Tickets
         {
             _context = context;
         }
-        public IEnumerable<TicketIndexViewModel> TicketIndexList()
+        public IEnumerable<TicketIndexViewModel> TicketIndexList(string ticketId)
         {
             var list = from t in _context.Ticket.Where(x => x.IsDelete == false)
                        join cType in _context.CommonLookups.Where(x => x.IsDelete == false) on t.TypeId equals cType.Id
                        join cPrio in _context.CommonLookups.Where(x => x.IsDelete == false) on t.PriorityId equals cPrio.Id
                        join cSta in _context.CommonLookups.Where(x => x.IsDelete == false) on t.StatusId equals cSta.Id
                        join user in _context.Users.Where(x => x.IsDelete == false) on t.AssignTo equals user.Id
-                       /*                       join Ta in _context.TicketAttachment on t.Id equals Ta.TicketId into tab
-                                              from fTab in tab.DefaultIfEmpty()*/
+                       where (ticketId == "" || ticketId == t.Id.ToString())
                        select new TicketIndexViewModel()
                        {
                            Id = t.Id,
@@ -39,7 +38,6 @@ namespace CRMS1.SQL.Repositories.Tickets
                            Status = cSta.ConfigValue,
                            Type = cType.ConfigValue,
                            AttachmentCount = _context.TicketAttachment.Where(x => x.TicketId == t.Id && x.IsDelete == false).Count()
-                           /*ImageName = fTab.FileName*/
                        };
             return list;
         }

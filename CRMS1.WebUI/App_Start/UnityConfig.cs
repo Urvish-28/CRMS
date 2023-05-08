@@ -9,6 +9,7 @@ using CRMS1.SQL.Repositories.Role;
 using CRMS1.SQL.Repositories.Room;
 using CRMS1.SQL.Repositories.SqlRepository;
 using CRMS1.SQL.Repositories.TicketAttachments;
+using CRMS1.SQL.Repositories.TicketComments;
 using CRMS1.SQL.Repositories.Tickets;
 using CRMS1.SQL.Repositories.UserRole;
 using CRMS1.SQL.Repositories.Users;
@@ -75,6 +76,8 @@ namespace CRMS1.WebUI
             container.RegisterType<ITicketRepository, TicketRepository>();
             container.RegisterType<IRepository<TicketAttachment>, SqlRepository<TicketAttachment>>();
             container.RegisterType<ITicketAttachmentRepository, TicketAttachmentRepository>();
+            container.RegisterType<IRepository<TicketComment>, SqlRepository<TicketComment>>();
+            container.RegisterType<ITicketCommentRepository, TicketCommentRepository>();
 
 
 
@@ -89,6 +92,7 @@ namespace CRMS1.WebUI
             container.RegisterType<IFormRoleMappingService, FormRoleMappingService>();
             container.RegisterType<ITicketService, TicketService>();
             container.RegisterType<ITicketAttachmentService, TicketAttachmentService>();
+            container.RegisterType<ITicketCommentService, TicketCommentService>();
         }
     }
 }

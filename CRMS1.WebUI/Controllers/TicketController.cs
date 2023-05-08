@@ -20,17 +20,20 @@ namespace CRMS1.WebUI.Controllers
     {
         private readonly ITicketService _ticketService;
         private readonly ITicketAttachmentService _ticketAttachmentService;
+        private readonly ITicketCommentService _ticketCommentService;
         private readonly IUserService _userService;
         private readonly ICommonLookupService _commonLookUpsService;
         public TicketController(ITicketService ticketService,
                                 IUserService userService,
                                 ICommonLookupService commonLookUpsService,
-                                 ITicketAttachmentService ticketAttachmentService)
+                                 ITicketAttachmentService ticketAttachmentService,
+                                 ITicketCommentService ticketCommentService)
         {
             _ticketService = ticketService;
             _userService = userService;
             _commonLookUpsService = commonLookUpsService;
             _ticketAttachmentService = ticketAttachmentService;
+            _ticketCommentService = ticketCommentService;
         }
         // GET: Ticket
         [CRMSActionFilter("TICKET", CheckRolePermission.FormAccessCode.IsView)]
@@ -48,7 +51,7 @@ namespace CRMS1.WebUI.Controllers
         public ActionResult Create()
         {
             TicketViewModel model = new TicketViewModel();
-            model.AssignToDropDown = _userService.GetAllUsers().Select(x => new DropDown() {Id = x.Id , Name = x.Name});
+            model.AssignToDropDown = _userService.GetAllUsers().Select(x => new DropDown() { Id = x.Id, Name = x.Name });
             model.TypeDropDown = _commonLookUpsService.DropDownList("TicketType").Select(x => new DropDown() { Id = x.Id, Name = x.ConfigValue });
             model.PriorityDropDown = _commonLookUpsService.DropDownList("Priority").Select(x => new DropDown() { Id = x.Id, Name = x.ConfigValue });
             model.StatusDropDown = _commonLookUpsService.DropDownList("Status").Select(x => new DropDown() { Id = x.Id, Name = x.ConfigValue });
@@ -75,7 +78,7 @@ namespace CRMS1.WebUI.Controllers
         public ActionResult Edit(Guid Id)
         {
             Ticket obj = _ticketService.GetById(Id);
-            if(obj == null)
+            if (obj == null)
             {
                 return HttpNotFound();
             }
@@ -91,7 +94,7 @@ namespace CRMS1.WebUI.Controllers
             }
         }
         [HttpPost]
-        public ActionResult Edit(TicketViewModel model , HttpPostedFileBase file)
+        public ActionResult Edit(TicketViewModel model, HttpPostedFileBase file)
         {
             model.AssignToDropDown = _userService.GetAllUsers().Select(x => new DropDown() { Id = x.Id, Name = x.Name });
             model.TypeDropDown = _commonLookUpsService.DropDownList("TicketType").Select(x => new DropDown() { Id = x.Id, Name = x.ConfigValue });
@@ -103,10 +106,10 @@ namespace CRMS1.WebUI.Controllers
             }
             else
             {
-                if(model.AttachmentListFromView != null)
+                if (model.AttachmentListFromView != null)
                 {
                     List<string> listOfTicket = JsonConvert.DeserializeObject<List<string>>(model.AttachmentListFromView);
-                    foreach(var item in listOfTicket)
+                    foreach (var item in listOfTicket)
                     {
                         Guid Id = Guid.Parse(item);
                         _ticketAttachmentService.DeleteAttachment(Id);
@@ -144,6 +147,68 @@ namespace CRMS1.WebUI.Controllers
         {
             var statusList = _commonLookUpsService.DropDownList("Status").Select(x => new DropDown() { Id = x.Id, Name = x.ConfigValue }).ToList();
             return Json(statusList, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Details(Guid Id)
+        {
+            Ticket obj = _ticketService.GetById(Id);
+            TicketIndexViewModel model = _ticketService.TicketListForIndex(Id.ToString()).FirstOrDefault();
+            return View(model);
+        }
+        public ActionResult CommentIndex(Guid TicketId)
+        {
+            IEnumerable<TicketCommentViewModel> list = _ticketCommentService.GetAllComment(TicketId).ToList();
+            return PartialView("_CommentIndex", list);
+        }
+        public ActionResult CreateComment(Guid TicketId)
+        {
+            TicketCommentViewModel obj = new TicketCommentViewModel();
+            obj.TicketId = TicketId;
+            return PartialView("_CreateComment", obj);
+        }
+        [HttpPost]
+        public ActionResult CreateComment(TicketCommentViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else
+            {
+                _ticketCommentService.AddComment(model);
+                return Content("true");
+            }
+        }
+        public ActionResult EditComment(Guid id)
+        {
+            TicketComment obj = _ticketCommentService.GetById(id);
+            if (obj == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                TicketCommentViewModel model = _ticketCommentService.BindModel(obj);
+                return View(model);
+            }
+        }
+        [HttpPost]
+        public ActionResult EditComment(TicketCommentViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Content("false");
+            }
+            else
+            {
+                _ticketCommentService.EditComment(model);
+                return Content("true");
+            }
+        }
+        [HttpPost]
+        public ActionResult DeleteComment(Guid Id)
+        {
+            _ticketCommentService.DeleteComment(Id);
+            return Content("true");
         }
     }
 }

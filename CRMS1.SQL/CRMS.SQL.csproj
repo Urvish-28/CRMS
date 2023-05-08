@@ -119,6 +119,7 @@
     <Compile Include="Repositories\TicketAttachments\TicketAttachmentRepository.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Repositories\TicketComments\TicketCommentRepository.cs" />
     <Compile Include="Repositories\Tickets\TicketRepository.cs" />
     <Compile Include="Repositories\UserRole\UserRoleRepository.cs" />
     <Compile Include="Repositories\User\UsersRepository.cs" />
