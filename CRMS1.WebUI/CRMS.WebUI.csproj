@@ -179,15 +179,16 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AuditLogController.cs" />
     <Compile Include="Controllers\CommonLookUpsController.cs" />
     <Compile Include="Controllers\FormMstController.cs" />
     <Compile Include="Controllers\FormRoleMappingController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RoleManagementController.cs" />
-    <Compile Include="Controllers\RoomController.cs" />
     <Compile Include="Controllers\TicketController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\AccessPermission.cs" />
+    <Compile Include="Filters\ActivityLogFilter.cs" />
     <Compile Include="Filters\CRMSActionFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -304,6 +305,9 @@
     <Content Include="Content\Images\crms-logo.png" />
     <Content Include="Content\Images\crms.png" />
     <Content Include="Content\Images\favicon.ico" />
+    <Content Include="Content\Images\tms-logo.png" />
+    <Content Include="Content\Images\user %282%29.png" />
+    <Content Include="Content\Images\user__2_-removebg-preview.png" />
     <Content Include="Content\image\down-arrow.svg" />
     <Content Include="Content\image\edit.svg" />
     <Content Include="Content\image\eye.svg" />
@@ -796,6 +800,7 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.timeago.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -1160,6 +1165,7 @@
     <Content Include="Scripts\kendo\Office365\sprite_kpi.png" />
     <Content Include="Scripts\kendo\Office365\sprite_kpi_2x.png" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Nw\jquery.timeago.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1182,9 +1188,6 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
-    <Content Include="Views\Room\Index.cshtml" />
-    <Content Include="Views\Room\Create.cshtml" />
-    <Content Include="Views\Room\Edit.cshtml" />
     <Content Include="Views\CommonLookUps\Index.cshtml" />
     <Content Include="Views\CommonLookUps\_CreatePartial.cshtml" />
     <Content Include="Views\CommonLookUps\_EditPartial.cshtml" />
@@ -1320,6 +1323,10 @@
     <Content Include="Views\Ticket\Details.cshtml" />
     <Content Include="Views\Ticket\_CreateComment.cshtml" />
     <Content Include="Views\Ticket\_CommentIndex.cshtml" />
+    <Content Include="Views\AuditLog\_ActivityLogIndex.cshtml" />
+    <Content Include="Views\AuditLog\_ErrorLogIndex.cshtml" />
+    <Content Include="Views\AuditLog\ActivityLogDetails.cshtml" />
+    <Content Include="Views\AuditLog\ErrorLogDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

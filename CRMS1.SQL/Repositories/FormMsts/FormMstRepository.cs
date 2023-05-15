@@ -11,19 +11,19 @@ using System.Web;
 
 namespace CRMS1.SQL.Repositories.FormMsts
 {
-    public interface IFormMstRepository
+    public interface IFormMstRepository : IRepository<FormMst>
     {
         IEnumerable<FormMstViewModel> FormListIndex();
         IEnumerable<FormMstViewModel> FormMstMenuList(bool isMenu);
     }
-    public class FormMstRepository : IFormMstRepository
+    public class FormMstRepository :SqlRepository<FormMst>, IFormMstRepository
     {
-        public CRMSEntities context;
-        internal DbSet<FormMst> dbset;
-        public FormMstRepository(CRMSEntities Context)
+        public CRMSEntities _context;
+        internal DbSet<FormMst> _dbset;
+        public FormMstRepository(CRMSEntities context) :base(context)
         {
-            this.context = Context;
-            this.dbset = context.Set<FormMst>();
+            _context = this.context;
+            _dbset = this.dbset;
         }
         public IEnumerable<FormMstViewModel> FormListIndex()
         {
@@ -42,8 +42,9 @@ namespace CRMS1.SQL.Repositories.FormMsts
                             IsActive = f.IsActive,
                             IsMenu = f.IsMenu,
                             ParentFormId = f.ParentFormId,
+                            CreatedOn = f.CreatedOn,
                             HasChild = (allForms.Where(x => x.ParentFormId == f.Id && x.IsMenu).Select(x => x.Id).Any())
-                        }).ToList();
+                        }).OrderBy(x => x.CreatedOn).ToList();
             return list;
         }
         public IEnumerable<FormMstViewModel> FormMstMenuList(bool isMenu)
@@ -70,9 +71,10 @@ namespace CRMS1.SQL.Repositories.FormMsts
                                 IsActive = f.IsActive,
                                 IsMenu = f.IsMenu,
                                 ParentFormId = f.ParentFormId,
+                                CreatedOn = f.CreatedOn,
                                 AllowView = formRole.AllowView,
                                 HasChild = (allForms.Where(x => x.ParentFormId == f.Id && x.IsMenu).Select(x => x.Id).Any())
-                            }).ToList();
+                            }).OrderBy(x => x.CreatedOn).ToList();
                 return list;
             }
             else
@@ -97,8 +99,9 @@ namespace CRMS1.SQL.Repositories.FormMsts
                             DisplayOrder = fm.DisplayOrder,
                             IsActive = fm.IsActive,
                             AllowView = formrole.AllowView,
-                            IsMenu = fm.IsMenu
-                        }).ToList();
+                            IsMenu = fm.IsMenu,
+                            CreatedOn = fm.CreatedOn
+                        }).OrderBy(x=>x.CreatedOn).ToList();
             return list;
         }
     }

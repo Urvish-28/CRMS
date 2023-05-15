@@ -1,5 +1,6 @@
 ﻿using CRMS1.Core.Models;
 using CRMS1.Core.ViewModels;
+using CRMS1.SQL.Repositories.SqlRepository;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,18 +10,18 @@ using System.Threading.Tasks;
 
 namespace CRMS1.SQL.Repositories.FormroleMapping
 {
-    public interface IFormRoleRepository
+    public interface IFormRoleRepository : IRepository<FormRoleMapping>
     {
         IEnumerable<FormRoleMappingVM> GetFormRoleList(Guid Id);
     }
-    public class FormRoleRepository : IFormRoleRepository
+    public class FormRoleRepository :SqlRepository<FormRoleMapping>, IFormRoleRepository
     {
-        internal CRMSEntities context;
-        internal DbSet<FormRoleMapping> dbset;
-        public FormRoleRepository(CRMSEntities Context)
+        internal CRMSEntities _context;
+        internal DbSet<FormRoleMapping> _dbset;
+        public FormRoleRepository(CRMSEntities context) : base(context)
         {
-            context = Context;
-            this.dbset = context.Set<FormRoleMapping>();
+            _context = this.context;
+            _dbset = this.dbset;
         }
         public IEnumerable<FormRoleMappingVM> GetFormRoleList(Guid Id)
         {

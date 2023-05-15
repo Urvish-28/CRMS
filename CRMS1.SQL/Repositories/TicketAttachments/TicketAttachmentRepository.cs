@@ -4,6 +4,7 @@ using CRMS1.SQL.Repositories.SqlRepository;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ using System.Web.UI;
 
 namespace CRMS1.SQL.Repositories.TicketAttachments
 {
-    public interface ITicketAttachmentRepository
+    public interface ITicketAttachmentRepository : IRepository<TicketAttachment>
     {
         void CreateAttachment(TicketViewModel obj);
         void DeleteAttachment(Guid IdList);
@@ -23,44 +24,44 @@ namespace CRMS1.SQL.Repositories.TicketAttachments
         TicketAttachment GetByTicketId(Guid TicketId);
         TicketAttachment GetById(Guid Id);
     }
-    public class TicketAttachmentRepository : Page, ITicketAttachmentRepository
+    public class TicketAttachmentRepository :SqlRepository<TicketAttachment>,ITicketAttachmentRepository
     {
-        private readonly IRepository<TicketAttachment> _repository;
-        private CRMSEntities _context;
-        public TicketAttachmentRepository(IRepository<TicketAttachment> repository, CRMSEntities context)
+        internal CRMSEntities _context;
+        internal DbSet<TicketAttachment> _dbset;
+        public TicketAttachmentRepository(CRMSEntities context) : base(context)
         {
-            _repository = repository;
-            _context = context;
+            _context = this.context;
+            _dbset = this.dbset;
         }
         public void CreateAttachment(TicketViewModel obj)
         {
             TicketAttachment model = new TicketAttachment();
             model.TicketId = obj.Id;
-            model.CreatedBy = (Guid)Session["UserId"];
+            model.CreatedBy = (Guid)HttpContext.Current.Session["UserId"];
             string fileExtention = System.IO.Path.GetExtension(obj.Image.FileName);
             string imageName = model.TicketId.ToString() + '_' + DateTime.Now.Ticks + fileExtention;
             string ImagePath = ConfigurationManager.AppSettings["TicketImage"] + imageName;
             obj.Image.SaveAs(HostingEnvironment.MapPath(ImagePath));
             model.FileName = imageName;
-            _repository.Insert(model);
+            Insert(model);
         }
         public void DeleteAttachment(Guid Id)
         {
-            List<TicketAttachment> obj = _repository.Collection().Where(x => x.Id == Id).ToList();
+            List<TicketAttachment> obj = Collection().Where(x => x.Id == Id).ToList();
             foreach (var item in obj)
             {
                 item.IsDelete = true;
             }
-            _repository.Commit();
+            Commit();
         }
         public void DeleteAttachmentByTicket(Guid TicketId)
         {
-            List<TicketAttachment> list = _repository.Collection().Where(x => x.TicketId == TicketId).ToList();
+            List<TicketAttachment> list = Collection().Where(x => x.TicketId == TicketId).ToList();
             foreach (var item in list)
             {
                 item.IsDelete = true;
             }
-            _repository.Commit();
+            Commit();
         }
         public string GetImageName(Guid Id)
         {
@@ -77,7 +78,7 @@ namespace CRMS1.SQL.Repositories.TicketAttachments
         }
         public TicketAttachment GetById(Guid Id)
         {
-            return _repository.Find(Id);
+            return Find(Id);
         }
     }
 }

@@ -75,6 +75,7 @@ namespace CRMS1.WebUI.Controllers
                 return RedirectToAction("Index");
             }
         }
+        [CRMSActionFilter("TICKET", CheckRolePermission.FormAccessCode.IsUpdate)]
         public ActionResult Edit(Guid Id)
         {
             Ticket obj = _ticketService.GetById(Id);
@@ -121,6 +122,7 @@ namespace CRMS1.WebUI.Controllers
                 return RedirectToAction("Index");
             }
         }
+        [CRMSActionFilter("TICKET", CheckRolePermission.FormAccessCode.IsDelete)]
         public ActionResult Delete(Guid Id)
         {
             _ticketService.DeleteTicket(Id);
@@ -150,7 +152,6 @@ namespace CRMS1.WebUI.Controllers
         }
         public ActionResult Details(Guid Id)
         {
-            Ticket obj = _ticketService.GetById(Id);
             TicketIndexViewModel model = _ticketService.TicketListForIndex(Id.ToString()).FirstOrDefault();
             return View(model);
         }
@@ -176,19 +177,6 @@ namespace CRMS1.WebUI.Controllers
             {
                 _ticketCommentService.AddComment(model);
                 return Content("true");
-            }
-        }
-        public ActionResult EditComment(Guid id)
-        {
-            TicketComment obj = _ticketCommentService.GetById(id);
-            if (obj == null)
-            {
-                return HttpNotFound();
-            }
-            else
-            {
-                TicketCommentViewModel model = _ticketCommentService.BindModel(obj);
-                return View(model);
             }
         }
         [HttpPost]

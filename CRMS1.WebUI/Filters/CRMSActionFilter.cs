@@ -23,6 +23,7 @@ namespace CRMS1.WebUI.Filters
             bool checkPermission = AccessPermission.CheckPermission(FormAccessCode, _Action.ToString());
             if (!checkPermission)
             {
+                filterContext.HttpContext.Items["Error"] = "Unauthorized";
                 filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary
                 {
                     { "controller" , "Account" },

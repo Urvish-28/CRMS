@@ -24,7 +24,6 @@ namespace CRMS1.Services
         }
         public User Login(LoginViewModel model)
         {
-           
             model.Password = _userService.PasswordEncode(model.Password);
             var user = _loginRepository.Collection().Where(a => a.Email == model.Email && a.Password == model.Password).FirstOrDefault();
             return user;

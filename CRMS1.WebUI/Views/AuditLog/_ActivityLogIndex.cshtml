@@ -1,0 +1,41 @@
+﻿@model IEnumerable<CRMS1.Core.ViewModels.ActivityLogViewModel>
+
+@(
+    Html.Kendo().Grid(Model).Name("ActivityLogGrid")
+    .Columns(columns =>
+    {
+        columns.Bound(expression: c => c.UserName).Width(130);
+        columns.Bound(expression: c => c.ExecutionTime);
+        columns.Bound(expression: c => c.HttpMethod);
+        columns.Bound(expression: c => c.Url);
+        columns.Bound(expression: c => c.HttpStatusCode);
+        columns.Bound(p => p.Id).ClientTemplate(
+                " <a href='" + Url.Action("ActivityLogDetails", "AuditLog") + "/#=Id#'><img src=\"/Content/image/eye.svg\" width=\"19\"></img></a>")
+    .Width(110).Title("Action").Filterable(false);
+    }).HtmlAttributes(new { Style = ""})
+    .Sortable()
+    .Scrollable(h=>h.Height("auto"))
+    .Filterable()
+    .Pageable(p=>p.Refresh(true).PageSizes(true))
+    .DataSource(datasource => datasource.Ajax().Read(read => read.Action("ActivityLogGrid", "AuditLog"))
+        .PageSize(10).Model(model => model.Id(expression:p => p.Id)))
+    .ToolBar(toolbar =>
+    {
+        toolbar.Template(@<text>
+                <div class="toolbar">
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </text>);
+        })
+    )

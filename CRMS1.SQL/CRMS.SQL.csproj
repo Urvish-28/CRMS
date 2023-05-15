@@ -107,26 +107,34 @@
     <Compile Include="Migrations\202304270435203_Spelling Mistake.designer.cs">
       <DependentUpon>202304270435203_Spelling Mistake.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202305100734276_AddAuditLogs.cs" />
+    <Compile Include="Migrations\202305100734276_AddAuditLogs.designer.cs">
+      <DependentUpon>202305100734276_AddAuditLogs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202305100736243_nullableUserId.cs" />
+    <Compile Include="Migrations\202305100736243_nullableUserId.designer.cs">
+      <DependentUpon>202305100736243_nullableUserId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202305101228236_baseentityadded.cs" />
+    <Compile Include="Migrations\202305101228236_baseentityadded.designer.cs">
+      <DependentUpon>202305101228236_baseentityadded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AuditRepository\AuditRepository.cs" />
     <Compile Include="Repositories\CommonLookUps\CommonLookUpsRepository.cs" />
     <Compile Include="Repositories\FormMsts\FormMstRepository.cs" />
     <Compile Include="Repositories\FormroleMapping\FormRoleRepository.cs" />
     <Compile Include="Repositories\Login\LoginRepository.cs" />
-    <Compile Include="Repositories\Role\RoleRepository.cs" />
     <Compile Include="Repositories\Room\RoomRepository.cs" />
     <Compile Include="Repositories\SqlRepository\SqlRepository.cs" />
-    <Compile Include="Repositories\TicketAttachments\TicketAttachmentRepository.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Repositories\TicketAttachments\TicketAttachmentRepository.cs" />
     <Compile Include="Repositories\TicketComments\TicketCommentRepository.cs" />
     <Compile Include="Repositories\Tickets\TicketRepository.cs" />
-    <Compile Include="Repositories\UserRole\UserRoleRepository.cs" />
     <Compile Include="Repositories\User\UsersRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CRMS1.Core\CRMS.Core.csproj">
@@ -174,8 +182,16 @@
     <EmbeddedResource Include="Migrations\202304270435203_Spelling Mistake.resx">
       <DependentUpon>202304270435203_Spelling Mistake.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305100734276_AddAuditLogs.resx">
+      <DependentUpon>202305100734276_AddAuditLogs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305100736243_nullableUserId.resx">
+      <DependentUpon>202305100736243_nullableUserId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305101228236_baseentityadded.resx">
+      <DependentUpon>202305101228236_baseentityadded.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -26,43 +26,42 @@ namespace CRMS1.Services
     }
     public class FormMstService : Page, IFormMstService
     {
-        private readonly IRepository<FormMst> _repository;
         private readonly IFormMstRepository _formMstRepository;
         private readonly IFormRoleMappingService _formRoleMappingService;
-        public FormMstService(IRepository<FormMst> repository , IFormMstRepository formMstRepository , IFormRoleMappingService formRoleMappingService)
+        public FormMstService(IFormMstRepository formMstRepository , 
+                              IFormRoleMappingService formRoleMappingService)
         {
             _formMstRepository = formMstRepository;
-            _repository = repository;
             _formRoleMappingService = formRoleMappingService;
         }
         public void AddFormMst(FormMstViewModel model)
         {
             FormMst obj = new FormMst();
             obj = BindFormMst(model);
-            _repository.Insert(obj);
+            _formMstRepository.Insert(obj);
         }
         public void UpdateFormMst(FormMstViewModel model)
         {
             FormMst obj = GetById(model.Id);
             obj = BindFormMst(model);
-            _repository.Update(obj);
+            _formMstRepository.Update(obj);
         }
         public void DeleteFormMst(Guid id)
         {
             FormMst obj = GetById(id);
-            _repository.Delete(id);
-            _repository.Commit();
+            _formMstRepository.Delete(id);
+            _formMstRepository.Commit();
 
             var formRoleList = _formRoleMappingService.GetAll().Where(x => x.FormId == id);
             _formRoleMappingService.DeleteBulk(formRoleList);
         }
         public IEnumerable<FormMst> GetAllFormMst()
         {
-            return _repository.Collection().ToList();
+            return _formMstRepository.Collection().ToList();
         }
         public FormMst GetById(Guid id)
         {
-            return _repository.Find(id);
+            return _formMstRepository.Find(id);
         }
         public FormMst BindFormMst(FormMstViewModel model)
         {
@@ -87,7 +86,6 @@ namespace CRMS1.Services
             obj.IsActive = model.IsActive;
             obj.IsMenu = model.IsMenu;
             return obj;
-
         }
         public FormMstViewModel BindFormMst(FormMst model)
         {

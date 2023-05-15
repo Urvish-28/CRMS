@@ -6,7 +6,7 @@
 
 <!-- Section -->
 <div class="section">
-    <div class="container" style="background-color: white; box-shadow: rgba(0, 0, 0, 0.35) 9px 18px 15px;">
+    <div class="container" style="background-color: white; box-shadow: rgba(0, 0, 0, 0.30) 5px 5px 15px;">
         <br />
         <div class="topTitleHead pb20">
             <h1> Systems</h1>
@@ -30,7 +30,7 @@
     function SelectTab(SystemsName)
     {
         var url = $('#child' + SystemsName).data('url');
-        $('#child' + SystemsName).load(url)
+        $('#child' + SystemsName).load(url);
     }
     function openSystems(evt, SystemsName)
     {

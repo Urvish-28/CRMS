@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 <div class="section">
-    <div class="container" style="background-color: white; box-shadow: rgba(0, 0, 0, 0.35) 9px 18px 15px;">
+    <div class="container" style="background-color: white; box-shadow: rgba(0, 0, 0, 0.30) 5px 5px 15px;">
         <br />
         <h1>Ticket</h1>
         <br />
@@ -47,7 +47,7 @@
             columns.Bound(expression: c => c.Status);
             columns.Bound(expression: c => c.Description);
             columns.Bound(p => p.AttachmentCount).ClientTemplate("#if(AttachmentCount > 0) {#"
-                    + " <a class='label' onclick='DownloadAttachment(\"#=Id#\")'>#=AttachmentCount#</a>"
+                    + "<center><a class='label' onclick='DownloadAttachment(\"#=Id#\")'>#=AttachmentCount#</a></center>"
                     + "#}#").Title("Attachments").Width(140);
             if (CheckRolePermission.Update || CheckRolePermission.Delete)
             {

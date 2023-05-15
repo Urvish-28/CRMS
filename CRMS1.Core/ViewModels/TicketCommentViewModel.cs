@@ -12,6 +12,8 @@ namespace CRMS1.Core.ViewModels
         public Guid TicketId { get; set; }
         public string Comment { get; set; }
         public string UserName { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public Guid? CreatedBy { get; set; }
         public TicketCommentViewModel()
         {
             Id = Guid.NewGuid();

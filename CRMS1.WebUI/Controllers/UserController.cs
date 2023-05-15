@@ -87,7 +87,7 @@ namespace CRMS1.WebUI.Controllers
             {
                 model = _usersevice.BindUserModel(obj);
                 model.RoleDropdown = _roleService.GetAllRoles().Select(x => new DropDown() { Id = x.Id, Name = x.Name }).ToList();
-                model.RoleId = _userRoleService.getByUserId(id).RoleId;
+                model.RoleId = _userRoleService.GetByUserId(id).RoleId;
                 return View(model);
             }
         }

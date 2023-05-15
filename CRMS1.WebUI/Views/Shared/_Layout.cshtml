@@ -12,6 +12,7 @@
     @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/Content/css")
     <link href="~/Content/css/style.css" rel="stylesheet" />
+    <script src="~/Scripts/Nw/jquery.timeago.js"></script>
 </head>
 <body>
 
@@ -20,7 +21,7 @@
             <div class="align-center align-between">
                 <div class="align-center">
                     <div class="logoDiv">
-                        <a href="#"> <img src="~/Content/image/logo.svg" alt="CRB Logo"> </a>
+                        <a href="#"> <img src="~/Content/Images/tms-logo.png" alt="CRB Logo"> </a>
                     </div>
                     <div class="menuDiv">
                         <ul class="align-center myDiv" id="List">
@@ -61,6 +62,7 @@
                 <div class="userInfo">
                     <div class="align-center">
                         <div class="userProfile">
+                            <img src="~/Content/Images/user__2_-removebg-preview.png" />
                         </div>
                         <div class="userName align-center">
                             <span>Hello @Session["Name"] </span>

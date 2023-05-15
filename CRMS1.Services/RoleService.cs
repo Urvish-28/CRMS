@@ -1,7 +1,7 @@
 ﻿using CRMS1.Core.Models;
 using CRMS1.Core.ViewModels;
 using CRMS1.SQL;
-using CRMS1.SQL.Repositories.Role;
+using CRMS1.SQL.Repositories.SqlRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,9 +25,9 @@ namespace CRMS1.Services
     }
     public class RoleService :Page, IRoleService
     {
-        private readonly IRoleRepository _roleRepository;
+        private readonly IRepository<Roles> _roleRepository;
         private readonly IFormRoleMappingService _formRoleMappingService;
-        public RoleService(IRoleRepository roleRepository, IFormRoleMappingService formRoleMappingService)
+        public RoleService(IRepository<Roles> roleRepository, IFormRoleMappingService formRoleMappingService)
         {
             _formRoleMappingService = formRoleMappingService;
             _roleRepository = roleRepository;
@@ -36,28 +36,28 @@ namespace CRMS1.Services
         {
             Roles obj = new Roles();
             obj = BindRoleModel(model);
-            _roleRepository.AddRole(obj);
+            _roleRepository.Insert(obj);
         }
         public void UpdateRole(RoleViewModel model)
         {
             Roles obj = new Roles();
             obj = BindRoleModel(model);
-            _roleRepository.UpdateRole(obj);
+            _roleRepository.Update(obj);
         }
         public void DeleteRole(Guid id)
         {
-            _roleRepository.DeleteRole(id);
+            _roleRepository.SoftDelete(id);
 
             var formRoleList = _formRoleMappingService.GetAll().Where(x => x.RoleId == id);
             _formRoleMappingService.DeleteBulk(formRoleList);
         }
         public IEnumerable<Roles> GetAllRoles()
         {
-            return _roleRepository.GetRoleList();
+            return _roleRepository.Collection().Where(x=>x.IsDelete == false && x.Code != "SADMIN");
         }
         public Roles GetRoleById(Guid id)
         {
-            return _roleRepository.GetById(id);
+            return _roleRepository.Find(id);
         }
         public Roles BindRoleModel(RoleViewModel model)
         {

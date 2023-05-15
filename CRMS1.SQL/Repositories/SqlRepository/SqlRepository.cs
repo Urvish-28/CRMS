@@ -15,6 +15,7 @@ namespace CRMS1.SQL.Repositories.SqlRepository
         void Insert(T t);
         void Update(T t);
         void Delete(Guid Id);
+        void SoftDelete(Guid Id);
         T Find(Guid Id);
         IQueryable<T> Collection();
         void InsertBulk(IEnumerable<T> t);
@@ -56,6 +57,12 @@ namespace CRMS1.SQL.Repositories.SqlRepository
             if (context.Entry(t).State == EntityState.Detached)
                 dbset.Attach(t);
             dbset.Remove(t);
+        }
+        public void SoftDelete(Guid Id)
+        {
+            T obj = Find(Id);
+            obj.IsDelete = true;
+            Commit();
         }
         public T Find(Guid Id)
         {

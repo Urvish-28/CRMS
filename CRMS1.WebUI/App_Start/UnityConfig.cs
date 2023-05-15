@@ -1,17 +1,15 @@
 using CRMS1.Core.Models;
-using CRMS1.Core.ViewModels;
 using CRMS1.Services;
+using CRMS1.SQL.Repositories.AuditRepository;
 using CRMS1.SQL.Repositories.CommonLookUps;
 using CRMS1.SQL.Repositories.FormMsts;
 using CRMS1.SQL.Repositories.FormroleMapping;
 using CRMS1.SQL.Repositories.Login;
-using CRMS1.SQL.Repositories.Role;
 using CRMS1.SQL.Repositories.Room;
 using CRMS1.SQL.Repositories.SqlRepository;
 using CRMS1.SQL.Repositories.TicketAttachments;
 using CRMS1.SQL.Repositories.TicketComments;
 using CRMS1.SQL.Repositories.Tickets;
-using CRMS1.SQL.Repositories.UserRole;
 using CRMS1.SQL.Repositories.Users;
 using System;
 
@@ -58,10 +56,10 @@ namespace CRMS1.WebUI
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<ILoginRepository, LoginRepository>();
-            container.RegisterType<IRoleRepository, RoleRepository>();
+            container.RegisterType<IRepository<Roles>, SqlRepository<Roles>>();
             container.RegisterType<IUsersRepository, UsersRepository>();
             container.RegisterType<IRepository<User>, SqlRepository<User>>();
-            container.RegisterType<IUserRoleRepository, UserRoleRepository>();
+            container.RegisterType<IRepository<UserRoles>, SqlRepository<UserRoles>>();
             container.RegisterType<IRoomRepository, RoomRepository>();
             container.RegisterType<IRepository<CommonLookups>, SqlRepository<CommonLookups>>();
             container.RegisterType<ICommonLookUpsRepository, CommonLookUpsRepository>();
@@ -78,21 +76,21 @@ namespace CRMS1.WebUI
             container.RegisterType<ITicketAttachmentRepository, TicketAttachmentRepository>();
             container.RegisterType<IRepository<TicketComment>, SqlRepository<TicketComment>>();
             container.RegisterType<ITicketCommentRepository, TicketCommentRepository>();
-
-
+            container.RegisterType<IRepository<AuditLogs>, SqlRepository<AuditLogs>>();
+            container.RegisterType<IAuditRepository, AuditRepository>();
 
 
             container.RegisterType<ILoginService, LoginService>();
             container.RegisterType<IRoleService, RoleService>();
             container.RegisterType<IUserService, UserService>();
             container.RegisterType<IUserRoleService, UserRoleService>();
-            container.RegisterType<IRoomService, RoomService>();
             container.RegisterType<ICommonLookupService, CommonLookupService>();
             container.RegisterType<IFormMstService, FormMstService>();
             container.RegisterType<IFormRoleMappingService, FormRoleMappingService>();
             container.RegisterType<ITicketService, TicketService>();
             container.RegisterType<ITicketAttachmentService, TicketAttachmentService>();
             container.RegisterType<ITicketCommentService, TicketCommentService>();
+            container.RegisterType<IAuditLogService, AuditLogService>();
         }
     }
 }

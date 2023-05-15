@@ -1,0 +1,110 @@
+﻿@model CRMS1.Core.ViewModels.ActivityLogViewModel
+
+@{
+    ViewBag.Title = "ActivityLogDetails";
+}
+
+<div class="section">
+    <div class="container" style="background-color: white; box-shadow: rgba(0, 0, 0, 0.30) 5px 5px 15px;">
+        <table class="table">
+            <tr>
+                <th colspan="2" style="text-align:center;">
+                    ActivityLog Details
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <strong>@Html.DisplayNameFor(model => model.UserName)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.UserName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>@Html.DisplayNameFor(model => model.ExecutionTime)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.ExecutionTime)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>@Html.DisplayNameFor(model => model.ExecutionDuration)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.ExecutionDuration)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>@Html.DisplayNameFor(model => model.ClientIpAddress)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.ClientIpAddress)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>@Html.DisplayNameFor(model => model.BrowserInfo)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.BrowserInfo)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong> @Html.DisplayNameFor(model => model.HttpMethod)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.HttpMethod)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong> @Html.DisplayNameFor(model => model.Url)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Url)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong> @Html.DisplayNameFor(model => model.HttpStatusCode)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.HttpStatusCode)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong> @Html.DisplayNameFor(model => model.Comments)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Comments)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong> @Html.DisplayNameFor(model => model.Parameters)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Parameters)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong> @Html.DisplayNameFor(model => model.Headers)</strong>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Headers)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="javascript: history.go(-1)" id="Cancel" class="btn btnCancel">Cancel</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

@@ -2,26 +2,29 @@
 using CRMS1.SQL.Repositories.SqlRepository;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CRMS1.SQL.Repositories.CommonLookUps
 {
-    public interface ICommonLookUpsRepository
+    public interface ICommonLookUpsRepository : IRepository<CommonLookups>
     {
         IEnumerable<CommonLookups> DropDownList(string configName);
     }
-    public class CommonLookUpsRepository : ICommonLookUpsRepository
+    public class CommonLookUpsRepository :SqlRepository<CommonLookups>, ICommonLookUpsRepository
     {
-        private readonly IRepository<CommonLookups> _repository;
-        public CommonLookUpsRepository(IRepository<CommonLookups> repository)
+        public CRMSEntities _context;
+        internal DbSet<CommonLookups> _dbset;
+        public CommonLookUpsRepository(CRMSEntities context) : base(context)
         {
-            _repository = repository;
+            _dbset = this.dbset;
+            _context = this.context;
         }
         public IEnumerable<CommonLookups> DropDownList(string configName)
         {
-            var list = _repository.Collection().Where(x => x.ConfigName == configName && x.IsDelete == false).ToList();
+            var list = Collection().Where(x => x.ConfigName == configName && x.IsDelete == false).ToList();
             return list;
         }
     }

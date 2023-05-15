@@ -9,30 +9,30 @@ using System.Threading.Tasks;
 
 namespace CRMS1.SQL.Repositories.TicketComments
 {
-    public interface ITicketCommentRepository
+    public interface ITicketCommentRepository : IRepository<TicketComment>
     {
         IEnumerable<TicketCommentViewModel> GetAllComment(Guid TicketId);
     }
-    public class TicketCommentRepository : ITicketCommentRepository
+    public class TicketCommentRepository :SqlRepository<TicketComment> , ITicketCommentRepository
     {
-        private readonly IRepository<TicketComment> _repository;
         private CRMSEntities _context;
-        public TicketCommentRepository(IRepository<TicketComment> repository , CRMSEntities context)
+        public TicketCommentRepository(CRMSEntities context) : base(context)
         {
-            _repository = repository;
-            _context = context;
+            _context = this.context;
         }
         public IEnumerable<TicketCommentViewModel> GetAllComment(Guid TicketId)
         {
-            var list = from u in _context.Users.Where(x => x.IsDelete == false)
-                       join tc in _context.TicketComment.Where(x => x.IsDelete == false && x.TicketId == TicketId) on u.Id equals tc.CreatedBy 
-                       select new TicketCommentViewModel()
-                       {
-                           Id = tc.Id,
-                           TicketId = tc.TicketId,
-                           Comment = tc.Comment,
-                           UserName = u.Name
-                       };
+            var list = (from u in _context.Users.Where(x => x.IsDelete == false)
+                        join tc in _context.TicketComment.Where(x => x.IsDelete == false && x.TicketId == TicketId) on u.Id equals tc.CreatedBy
+                        select new TicketCommentViewModel()
+                        {
+                            Id = tc.Id,
+                            TicketId = tc.TicketId,
+                            Comment = tc.Comment,
+                            UserName = u.Name,
+                            CreatedOn = (DateTime)(tc.UpdatedOn.HasValue ? tc.UpdatedOn : tc.CreatedOn),
+                            CreatedBy = u.Id
+                        }).ToList().OrderByDescending(x=>x.CreatedOn);
             return list;
         }
     }

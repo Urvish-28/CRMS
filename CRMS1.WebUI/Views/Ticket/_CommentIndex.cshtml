@@ -1,25 +1,28 @@
 ﻿@model IEnumerable<CRMS1.Core.ViewModels.TicketCommentViewModel>
 <div class="section">
-    <div class="" style="background-color: white; box-shadow: rgba(0, 0, 0, 0.35) 9px 18px 15px;">
+    <div class="" style="background-color: white; box-shadow: rgba(0, 0, 0, 0.30) 5px 5px 15px;">
         <table class="table">
             <tr>
                 <th colspan="2" style="text-align:center;">
-                    @Html.DisplayNameFor(model => model.Comment)
+                    <label>Comments</label>
                 </th>
                 <th></th>
             </tr>
-
             @foreach (var item in Model)
             {
                 @Html.HiddenFor(modelItem => item.Id)
                 <tr style="text-align:center">
                     <td>
-                        <strong>@Html.DisplayFor(modelItem => item.UserName)</strong> <br />
+                        <strong>@Html.DisplayFor(modelItem => item.UserName)</strong>
+                            <small>  (<time class="timeago" datetime="">@item.CreatedOn</time>)</small>
                         <p id="@item.Id"> @item.Comment</p>
                     </td>
                     <td>
-                        <a class="editbutton" onclick="Edit('@item.Id', '@item.Comment')"><img src="~/Content/image/edit.svg" /> |</a> 
-                        <a onclick="confirmDelete('@item.Id')"><img src="/Content/image/trash.svg" /></a>
+                        @if (Session["UserId"].ToString() == item.CreatedBy.ToString())
+                        {
+                            <a class="editbutton" onclick="Edit('@item.Id', '@item.Comment')"><img src="~/Content/image/edit.svg" /> |</a>
+                            <a onclick="confirmDelete('@item.Id')"><img src="/Content/image/trash.svg" /></a>
+                        }
                     </td>
                 </tr>
             }
@@ -32,6 +35,24 @@
         padding-right: 0px;
     }
 </style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.4.1/jquery.timeago.min.js" 
+        integrity="sha512-gdWUVos7+EJk5jtktjRAtVxZKOYcjnjq0ubOYKIQ4jRLN/7jP+Fq35OwPYJt9FpdDdZO6yyICf6SFbVv+OXl1w==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
+<script>
+    var $j = jQuery.noConflict();
+    $j(document).ready(function () {
+        var dateVal;
+        $(".timeago").each(function (i, item) {
+            dateVal = moment($(item).html(), 'DD-MM-YYYY hh:mm:ss');
+            $(item).attr('datetime', dateVal.toISOString());
+        });
+        $j("time.timeago").timeago();
+    });
+</script>
 
 <script>
     function confirmDelete(data) {
@@ -52,7 +73,7 @@
     }
     function Edit(id, data) {
         $('.editbutton').hide();
-        $('#' + id).html('<input id="inputtag" type="text" value="' + data + '" /> <a onclick="SaveEdit(\'' + id + '\')" class="btn btn-primary">Save</a> <a onclick="cancelEdit()" class="btn btn-danger">Cancel</a>');
+        $('#' + id).html('<input id="inputtag" type="text" value="' + data + '" /> <a onclick="SaveEdit(\'' + id + '\')" class="btn btn-primary">Save</a> <a onclick="cancelEdit(\'' + id + '\',\'' + data + '\')" class="btn btn-danger">Cancel</a>');
     }
     function SaveEdit(id) {
         debugger;
@@ -75,7 +96,8 @@
             }
         })
     }
-    function cancelEdit() {
-        location.reload();
+    function cancelEdit(id, data) {
+        $('.editbutton').show();
+        $('#' + id).html('<p>' + data + '</p>');
     }
 </script>

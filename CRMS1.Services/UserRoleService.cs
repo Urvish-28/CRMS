@@ -1,5 +1,5 @@
 ﻿using CRMS1.Core.Models;
-using CRMS1.SQL.Repositories.UserRole;
+using CRMS1.SQL.Repositories.SqlRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,30 +10,30 @@ namespace CRMS1.Services
 {
     public interface IUserRoleService
     {
-        void createUserRole(UserRoles model);
-        void updateUserRole(UserRoles model);
-        UserRoles getByUserId(Guid userId);
+        void CreateUserRole(UserRoles model);
+        void UpdateUserRole(UserRoles model);
+        UserRoles GetByUserId(Guid userId);
         void DeleteUserRole(Guid id);
         IEnumerable<UserRoles> GetAllUserRoles();
     }
     public class UserRoleService : IUserRoleService
     {
-        private readonly IUserRoleRepository _userRoleRepository;
-        public UserRoleService(IUserRoleRepository userRoleRepository)
+        private readonly IRepository<UserRoles> _userRoleRepository;
+        public UserRoleService(IRepository<UserRoles> userRoleRepository)
         {
             _userRoleRepository = userRoleRepository;
         }
-        public void createUserRole(UserRoles model)
+        public void CreateUserRole(UserRoles model)
         {
             _userRoleRepository.Insert(model);
             _userRoleRepository.Commit();
         }
-        public void updateUserRole(UserRoles model)
+        public void UpdateUserRole(UserRoles model)
         {
             _userRoleRepository.Update(model);
             _userRoleRepository.Commit();
         }
-        public UserRoles getByUserId(Guid userId)
+        public UserRoles GetByUserId(Guid userId)
         {
             return _userRoleRepository.Collection().Where(x=>x.UserId == userId).FirstOrDefault();
         }
@@ -41,7 +41,6 @@ namespace CRMS1.Services
         {
             UserRoles obj = _userRoleRepository.Find(id);
             obj.IsDelete = true;
-            _userRoleRepository.Update(obj);
             _userRoleRepository.Commit();
         }
         public IEnumerable<UserRoles> GetAllUserRoles()

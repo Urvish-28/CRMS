@@ -26,6 +26,7 @@ namespace CRMS1.Core.ViewModels
         public bool AllowView { get; set; }
         public bool IsMenu { get; set; }
         public bool HasChild { get; set; }
+        public DateTime CreatedOn { get; set; }
         public FormMstViewModel()
         {
             this.Id = Guid.NewGuid();

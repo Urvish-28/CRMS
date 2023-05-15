@@ -23,16 +23,14 @@ namespace CRMS1.Services
     }
     public class TicketCommentService :Page, ITicketCommentService
     {
-        private readonly IRepository<TicketComment> _repository;
         private readonly ITicketCommentRepository _ticketCommentRepository;
-        public TicketCommentService(IRepository<TicketComment> repository, ITicketCommentRepository ticketCommentRepository)
+        public TicketCommentService(ITicketCommentRepository ticketCommentRepository)
         {
             _ticketCommentRepository = ticketCommentRepository;
-            _repository = repository;
         }
         public TicketComment BindModel(TicketCommentViewModel model)
         {
-            TicketComment obj = _repository.Find(model.Id);
+            TicketComment obj = _ticketCommentRepository.Find(model.Id);
             if(obj == null)
             {
                 obj = new TicketComment();
@@ -58,7 +56,7 @@ namespace CRMS1.Services
         }
         public TicketComment GetById(Guid Id)
         {
-            return _repository.Find(Id);
+            return _ticketCommentRepository.Find(Id);
         }
         public IEnumerable<TicketCommentViewModel> GetAllComment(Guid TicketId)
         {
@@ -68,19 +66,19 @@ namespace CRMS1.Services
         {
             TicketComment obj = new TicketComment();
             obj = BindModel(model);
-            _repository.Insert(obj);
+            _ticketCommentRepository.Insert(obj);
         }
         public void EditComment(TicketCommentViewModel model)
         {
             TicketComment obj = GetById(model.Id);
             obj = BindModel(model);
-            _repository.Update(obj);
+            _ticketCommentRepository.Update(obj);
         }
         public void DeleteComment(Guid Id)
         {
             TicketComment obj = GetById(Id);
             obj.IsDelete = true;
-            _repository.Commit();
+            _ticketCommentRepository.Commit();
         }
     }
 }

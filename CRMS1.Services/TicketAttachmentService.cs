@@ -18,12 +18,10 @@ namespace CRMS1.Services
     }
     public class TicketAttachmentService : ITicketAttachmentService
     {
-        private readonly IRepository<TicketAttachment> _repository;
         private readonly ITicketAttachmentRepository _ticketAttachmentRepository;
-        public TicketAttachmentService(ITicketAttachmentRepository ticketAttachmentRepository , IRepository<TicketAttachment> repository)
+        public TicketAttachmentService(ITicketAttachmentRepository ticketAttachmentRepository)
         {
             _ticketAttachmentRepository = ticketAttachmentRepository;
-            _repository = repository;
         }
         public string GetImageName(Guid Id)
         {
@@ -41,7 +39,7 @@ namespace CRMS1.Services
         }
         public IEnumerable<TicketAttachment> GetAllAttachment()
         {
-            return _repository.Collection();
+            return _ticketAttachmentRepository.Collection();
         }
         public void DeleteAttachment(Guid Id)
         {

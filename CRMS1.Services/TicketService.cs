@@ -25,24 +25,21 @@ namespace CRMS1.Services
     }
     public class TicketService : Page, ITicketService
     {
-        private readonly IRepository<Ticket> _repository;
         private readonly ITicketRepository _ticketRepository;
         private readonly ITicketAttachmentRepository _ticketAttachmentRepository;
         public TicketService(ITicketRepository ticketRepository, 
-                             ITicketAttachmentRepository ticketAttachmentRepository,
-                             IRepository<Ticket> repository)
+                             ITicketAttachmentRepository ticketAttachmentRepository)
         {
             _ticketRepository = ticketRepository;
             _ticketAttachmentRepository = ticketAttachmentRepository;
-            _repository = repository;
         }
         public Ticket GetById(Guid id)
         {
-            return _repository.Find(id);
+            return _ticketRepository.Find(id);
         }
         public IEnumerable<Ticket> GetAllTicket()
         {
-            return _repository.Collection();
+            return _ticketRepository.Collection();
         }
         public Ticket BindTicket(TicketViewModel model)
         {
@@ -82,7 +79,7 @@ namespace CRMS1.Services
         {
             Ticket obj = new Ticket();
             obj = BindTicket(model);
-            _repository.Insert(obj);
+            _ticketRepository.Insert(obj);
             if (model.Image != null)
             {
                 model.Id = obj.Id;
@@ -98,13 +95,13 @@ namespace CRMS1.Services
                 _ticketAttachmentRepository.CreateAttachment(model);
             }
 
-            _repository.Update(obj);
+            _ticketRepository.Update(obj);
         }
         public void DeleteTicket(Guid Id)
         {
             Ticket obj = GetById(Id);
             obj.IsDelete = true;
-            _repository.Update(obj);
+            _ticketRepository.Update(obj);
             
             _ticketAttachmentRepository.DeleteAttachmentByTicket(Id);
         }

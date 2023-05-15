@@ -37,15 +37,13 @@ namespace CRMS1.WebUI.Controllers
             _formRoleService = formRoleService;
             _roleService = roleService;
         }
-
-          [AllowAnonymous]
+        [AllowAnonymous]
         // GET: Account
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
-
         [HttpPost]
         public ActionResult Login(LoginViewModel model, string returnUrl)
         {
@@ -61,7 +59,7 @@ namespace CRMS1.WebUI.Controllers
                 {
                     Session["Name"] = _userService.GetUserByEmail(model.Email).UserName;
                     Session["UserId"] = _userService.GetUserByEmail(model.Email).Id;
-                    var userRoleId = _userroleService.getByUserId(user.Id).RoleId;
+                    var userRoleId = _userroleService.GetByUserId(user.Id).RoleId;
                     Session["RoleCode"] = (_roleService.GetRoleById(userRoleId).Code == "SADMIN");
                     Session["Permission"] = _formRoleService.Permission(userRoleId).ToList();
                     Session["UserRoleId"] = userRoleId;

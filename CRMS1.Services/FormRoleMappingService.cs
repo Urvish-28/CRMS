@@ -23,20 +23,18 @@ namespace CRMS1.Services
     }
     public class FormRoleMappingService : IFormRoleMappingService
     {
-        private readonly IRepository<FormRoleMapping> _repository;
         private readonly IFormRoleRepository _formRoleRepository;
-        public FormRoleMappingService(IRepository<FormRoleMapping> repository, IFormRoleRepository formRoleRepository)
+        public FormRoleMappingService(IFormRoleRepository formRoleRepository)
         {
-            _repository = repository;
             _formRoleRepository = formRoleRepository;
         }
         public IEnumerable<FormRoleMapping> GetAll()
         {
-            return _repository.Collection().ToList();
+            return _formRoleRepository.Collection().ToList();
         }
         public FormRoleMapping GetById(Guid id)
         {
-            return _repository.Find(id);
+            return _formRoleRepository.Find(id);
         }
         public void AddFormRole(IEnumerable<FormRoleMapping> records)
         {
@@ -44,22 +42,22 @@ namespace CRMS1.Services
             var recordsByRoleId = GetAll().Where(x => x.Id == Id).Select(x => x.RoleId);
             if (recordsByRoleId == null)
             {
-                _repository.InsertBulk(records);
-                _repository.Commit();
+                _formRoleRepository.InsertBulk(records);
+                _formRoleRepository.Commit();
             }
             else
             {
                 var DeleteList = GetAll().Where(x => x.RoleId == Id);
-                _repository.DeleteBulk(DeleteList);
-                _repository.InsertBulk(records);
-                _repository.Commit();
+                _formRoleRepository.DeleteBulk(DeleteList);
+                _formRoleRepository.InsertBulk(records);
+                _formRoleRepository.Commit();
             }
         }
         public void DeleteFormRole(Guid id)
         {
             FormRoleMapping obj = GetById(id);
-            _repository.Delete(id);
-            _repository.Commit();
+            _formRoleRepository.Delete(id);
+            _formRoleRepository.Commit();
         }
         public IEnumerable<FormRoleMappingVM> GetAllForm(Guid Id)
         {
@@ -73,7 +71,7 @@ namespace CRMS1.Services
         }
         public void DeleteBulk(IEnumerable<FormRoleMapping> records)
         {
-            _repository.DeleteBulk(records);
+            _formRoleRepository.DeleteBulk(records);
         }
     }
 }

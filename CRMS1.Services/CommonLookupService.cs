@@ -18,7 +18,6 @@ namespace CRMS1.Services
         void DeleteCommonLookup(Guid id);
         List<CommonLookupsViewModel> GetAll();
         CommonLookups GetById(Guid id);
-
         CommonLookups BindCommonLookupModel(CommonLookupsViewModel model);
         CommonLookupsViewModel BindCommonLookupModel(CommonLookups model);
         bool IsAlreadyExist(CommonLookupsViewModel model, bool IsCreated = false);
@@ -26,37 +25,35 @@ namespace CRMS1.Services
     }
     public class CommonLookupService  :Page, ICommonLookupService 
     {
-        private readonly IRepository<CommonLookups> _repository;
         private readonly ICommonLookUpsRepository _commonLookUpsRepository;
 
-        public CommonLookupService(IRepository<CommonLookups> repository, ICommonLookUpsRepository commonLookUpsRepository)
+        public CommonLookupService(ICommonLookUpsRepository commonLookUpsRepository)
         {
-            _repository = repository;
             _commonLookUpsRepository = commonLookUpsRepository;
         }
         public void AddCommonLookup(CommonLookupsViewModel model)
         {
             CommonLookups obj = new CommonLookups();
             obj = BindCommonLookupModel(model);
-            _repository.Insert(obj);
-            _repository.Commit();
+            _commonLookUpsRepository.Insert(obj);
+            _commonLookUpsRepository.Commit();
         }
         public void UpdateCommonLookup(CommonLookupsViewModel model)
         {
             CommonLookups obj = GetById(model.Id);
             obj = BindCommonLookupModel(model);
-            _repository.Update(obj);
+            _commonLookUpsRepository.Update(obj);
         }
         public void DeleteCommonLookup(Guid id)
         {
-            CommonLookups obj = _repository.Find(id);
+            CommonLookups obj = _commonLookUpsRepository.Find(id);
             obj.IsDelete = true;
-            _repository.Update(obj);
-            _repository.Commit();
+            _commonLookUpsRepository.Update(obj);
+            _commonLookUpsRepository.Commit();
         }
         public List<CommonLookupsViewModel> GetAll()
         {
-            IEnumerable<CommonLookups> model= _repository.Collection().Where(x => x.IsDelete == false);
+            IEnumerable<CommonLookups> model= _commonLookUpsRepository.Collection().Where(x => x.IsDelete == false);
             List<CommonLookupsViewModel> obj = new List<CommonLookupsViewModel>();
             foreach(var item in model)
             {
@@ -74,7 +71,7 @@ namespace CRMS1.Services
         }
         public CommonLookups GetById(Guid id)
         {
-            return _repository.Find(id);
+            return _commonLookUpsRepository.Find(id);
         }
         public CommonLookups BindCommonLookupModel(CommonLookupsViewModel model)
         {
@@ -113,7 +110,6 @@ namespace CRMS1.Services
         }
         public bool IsAlreadyExist(CommonLookupsViewModel model , bool IsCreated)
         {
-
             var records = GetAll().Where(x => (x.ConfigName.ToLower() == model.ConfigName.ToLower() &&
                                                x.ConfigKey.ToLower() == model.ConfigKey.ToLower()) &&
                                                (IsCreated || x.Id !=model.Id)
