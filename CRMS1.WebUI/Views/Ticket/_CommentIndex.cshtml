@@ -72,12 +72,11 @@
         }
     }
     function Edit(id, data) {
-        $('.editbutton').hide();
-        $('#' + id).html('<input id="inputtag" type="text" value="' + data + '" /> <a onclick="SaveEdit(\'' + id + '\')" class="btn btn-primary">Save</a> <a onclick="cancelEdit(\'' + id + '\',\'' + data + '\')" class="btn btn-danger">Cancel</a>');
+        @*$('.editbutton').hide();*@
+        $('#' + id).html('<input id="inputtag_'+id+'" type="text" value="' + data + '" /> <a onclick="SaveEdit(\'' + id + '\')" class="btn btn-primary">Save</a> <a onclick="cancelEdit(\'' + id + '\',\'' + data + '\')" class="btn btn-danger">Cancel</a>');
     }
     function SaveEdit(id) {
-        debugger;
-        var data = $('#inputtag').val();
+        var data = $('#inputtag_' + id).val();
         var formdata = $('form').serializeArray();
         formdata.push({
             name: 'Id',
