@@ -84,7 +84,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success">Save</button>  
+                        <button type="submit" class="btn btn-success">Save</button>
                     </div>
                 </form>
             </div>
@@ -114,13 +114,18 @@
         e.preventDefault();
         editOnChange();
         var $form = $(this);
-        if (!$form.valid) return false;
-        var ConfigName = $('#ConfigName').val();
-        var ConfigKey = $('#ConfigKey').val();
-        if (ConfigName != "" && (ConfigName == ConfigKey)) {
-            alert("ConfigName and ConfigKey not be Same")
+        debugger;
+        if (!$form.valid)
+        {
             return false;
         }
+        else {
+            var ConfigName = $('#ConfigName').val();
+            var ConfigKey = $('#ConfigKey').val();
+            if (ConfigName != "" && (ConfigName == ConfigKey)) {
+                alert("ConfigName and ConfigKey not be Same")
+                return false;
+            }
         $.ajax({
             url: '@Url.Action("Edit","CommonLookUps")',
             type: "Post",
@@ -134,6 +139,7 @@
                 }
             }
         });
+        }
     });
 </script>
 

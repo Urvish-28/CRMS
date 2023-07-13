@@ -1,5 +1,6 @@
 ﻿using CRMS1.Core.Models;
 using CRMS1.Core.ViewModels;
+using CRMS1.SQL.Repositories.SqlRepository;
 using CRMS1.SQL.Repositories.Users;
 using System;
 using System.Collections.Generic;
@@ -67,7 +68,7 @@ namespace CRMS1.Services
             _usersRepository.Update(obj);
 
             UserRoles userroles = _userRoleService.GetByUserId(id);
-            userroles.UserId = id;
+            // userroles.UserId = id;
             _userRoleService.DeleteUserRole(id);
         }
         public IEnumerable<User> GetAllUsers()

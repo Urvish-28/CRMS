@@ -22,6 +22,8 @@ namespace CRMS1.Services
         void UpdateTicket(TicketViewModel model);
         void DeleteTicket(Guid Id);
         IEnumerable<TicketIndexViewModel> TicketListForIndex(string ticketId = "");
+        HomeViewModel GetStatusCountForChart();
+        HomeViewModel GetPriorityCount();
     }
     public class TicketService : Page, ITicketService
     {
@@ -108,6 +110,14 @@ namespace CRMS1.Services
         public IEnumerable<TicketIndexViewModel> TicketListForIndex(string ticketId)
         {
             return _ticketRepository.TicketIndexList(ticketId);
+        }
+        public HomeViewModel GetStatusCountForChart()
+        {
+            return _ticketRepository.StatusCountForChart();
+        }
+        public HomeViewModel GetPriorityCount()
+        {
+            return _ticketRepository.BarChart();
         }
     }
 }

@@ -1179,7 +1179,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\DashBoard.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\RoleManagement\Index.cshtml" />
@@ -1327,6 +1326,7 @@
     <Content Include="Views\AuditLog\_ErrorLogIndex.cshtml" />
     <Content Include="Views\AuditLog\ActivityLogDetails.cshtml" />
     <Content Include="Views\AuditLog\ErrorLogDetails.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

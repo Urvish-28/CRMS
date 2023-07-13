@@ -48,7 +48,7 @@ namespace CRMS1.Services
             RouteData routeData = urlHelper.RouteCollection.GetRouteData(currentContext);
             model.UserId = (Guid?)HttpContext.Current.Session["UserId"];
             model.HttpMethod = HttpContext.Current.Request.HttpMethod;
-            model.Comments = routeData.Values["controller"].ToString() + " || Action = " + routeData.Values["action"].ToString();
+            model.Comments = routeData.Values["controller"].ToString() + " || Action = " + routeData.Values["Action"].ToString();
             model.Parameters = routeData.Values["Id"].ToString();
             model.BrowserInfo = HttpContext.Current.Request.Browser.Browser + "" + HttpContext.Current.Request.Browser.Version;
             model.Url = HttpContext.Current.Request.Url.ToString();

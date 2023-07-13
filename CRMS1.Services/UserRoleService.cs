@@ -39,7 +39,7 @@ namespace CRMS1.Services
         }
         public void DeleteUserRole(Guid id)
         {
-            UserRoles obj = _userRoleRepository.Find(id);
+            UserRoles obj = _userRoleRepository.Collection().Where(x => x.UserId == id).FirstOrDefault();
             obj.IsDelete = true;
             _userRoleRepository.Commit();
         }

@@ -26,7 +26,7 @@ namespace CRMS1.WebUI.Controllers
         public ActionResult Index()
         {
             List<CommonLookupsViewModel> commonLookups = _commonLookupService.GetAll();
-            return PartialView("_IndexPartial",commonLookups);
+            return PartialView("_IndexPartial", commonLookups);
         }
         [CRMSActionFilter("CML", CheckRolePermission.FormAccessCode.IsInsert)]
         public ActionResult Create()
@@ -46,7 +46,7 @@ namespace CRMS1.WebUI.Controllers
                 bool isExist = _commonLookupService.IsAlreadyExist(model, false);
                 if (isExist)
                 {
-                    return Content("Exists"); 
+                    return Content("Exists");
                 }
                 else
                 {
@@ -73,7 +73,7 @@ namespace CRMS1.WebUI.Controllers
         }
         [HttpPost]
         public ActionResult Edit(CommonLookupsViewModel model)
-            {
+        {
             var existingmodel = _commonLookupService.IsAlreadyExist(model);
             if (!ModelState.IsValid)
             {
